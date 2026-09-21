@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #131211;
+  --paper: #faf9f6;
+  --porcelain: #f2efe8;
+  --line: #e4ded1;
+  --gold: #a9803f;
+  --gold-light: #cfae74;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-porcelain: var(--porcelain);
+  --color-line: var(--line);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: var(--gold-light);
+  color: var(--ink);
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+}
+
+/* Placeholder produit : dégradé discret + grain, à remplacer par de vraies photos */
+.placeholder-media {
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(169, 128, 63, 0.16), transparent 55%),
+    linear-gradient(135deg, #ececE4 0%, #dedad0 100%);
+}
