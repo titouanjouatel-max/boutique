@@ -1,11 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { ShieldCheck, Snowflake, Truck } from "lucide-react";
 import { Button } from "@/components/Button";
-import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { StarRating } from "@/components/StarRating";
 import { PRODUCT } from "@/lib/constants";
+
+const thumbnails = [
+  { src: "/images/feature-thin.webp", alt: "CRYOLUME™ ultra-fin et léger" },
+  { src: "/images/feature-led.webp", alt: "7 couleurs de photothérapie LED" },
+  { src: "/images/feature-waterproof.webp", alt: "CRYOLUME™ étanche IPX7" },
+  { src: "/images/feature-ergonomic.webp", alt: "Silicone souple et ergonomique" },
+];
 
 const fadeUp = {
   initial: { opacity: 0, y: 24 },
@@ -74,12 +81,33 @@ export function Hero() {
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           className="order-1 lg:order-2"
         >
-          {/* TODO: remplacer par une vraie photo du masque CRYOLUME (porté ou packshot) */}
-          <PlaceholderImage
-            label="Photo produit — masque CRYOLUME porté ou packshot"
-            ratio="aspect-[4/5]"
-            className="lg:aspect-square"
-          />
+          <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-line">
+            <Image
+              src="/images/hero-main.webp"
+              alt="Masque LED CRYOLUME™ porté, effet lumineux rouge"
+              fill
+              priority
+              sizes="(min-width: 1024px) 40vw, 90vw"
+              className="object-cover"
+            />
+          </div>
+
+          <div className="mt-3 grid grid-cols-4 gap-3">
+            {thumbnails.map((thumb) => (
+              <div
+                key={thumb.src}
+                className="relative aspect-square overflow-hidden rounded-xl border border-line"
+              >
+                <Image
+                  src={thumb.src}
+                  alt={thumb.alt}
+                  fill
+                  sizes="120px"
+                  className="object-cover"
+                />
+              </div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

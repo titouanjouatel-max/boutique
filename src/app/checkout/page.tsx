@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, Lock, ShieldCheck, Truck } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { PlaceholderImage } from "@/components/PlaceholderImage";
 import { PRODUCT, SITE, STRIPE_CHECKOUT_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -48,8 +48,15 @@ export default function CheckoutPage() {
           )}
 
           <div className="mt-10 grid gap-6 rounded-2xl border border-line bg-porcelain p-6 sm:grid-cols-[160px_1fr] sm:p-8">
-            {/* TODO: remplacer par une vraie photo packshot du produit */}
-            <PlaceholderImage label="Packshot CRYOLUME™" ratio="aspect-square" />
+            <div className="relative aspect-square w-full overflow-hidden rounded-xl border border-line bg-paper">
+              <Image
+                src="/images/checkout-packshot.webp"
+                alt="Packshot du masque LED CRYOLUME™"
+                fill
+                sizes="160px"
+                className="object-contain p-2"
+              />
+            </div>
 
             <div className="flex flex-col">
               <h2 className="font-display text-xl font-semibold text-ink">
