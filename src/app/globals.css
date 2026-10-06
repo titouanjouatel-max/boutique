@@ -1,45 +1,273 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
+/*
+ * Système de design inspiré de Wise : vert forêt dominant, lime électrique en
+ * ponctuation, typographie d'affichage ultra-grasse, formes en pilule.
+ */
 :root {
-  --ink: #131211;
-  --paper: #faf9f6;
-  --porcelain: #f2efe8;
-  --line: #e4ded1;
-  --gold: #a9803f;
-  --gold-light: #cfae74;
+  --forest: #163300;
+  --lime: #9fe870;
+  --spruce: #054d28;
+  --mist: #e2f6d5;
+  --signal: #0b4c72;
+  --alarm: #cb272f;
+  --charcoal: #454745;
+  --obsidian: #0e0f0c;
+  --pebble: #868685;
+  --slate: #6a6c6a;
+  --fog: #e8ebe6;
+  --paper: #ffffff;
+
+  --sh-subtle: rgba(14, 15, 12, 0.12) 0px 0px 0px 1px;
+  --sh-lg: rgba(0, 0, 0, 0.08) 0px 6px 20px 0px;
+  --sh-xl: rgba(0, 0, 0, 0.15) 0px 10px 32px 0px, rgba(0, 0, 0, 0.04) 0px 40px 40px 0px;
+
+  --expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @theme inline {
-  --color-ink: var(--ink);
+  --color-forest: var(--forest);
+  --color-lime: var(--lime);
+  --color-spruce: var(--spruce);
+  --color-mist: var(--mist);
+  --color-signal: var(--signal);
+  --color-alarm: var(--alarm);
+  --color-charcoal: var(--charcoal);
+  --color-obsidian: var(--obsidian);
+  --color-pebble: var(--pebble);
+  --color-slate: var(--slate);
+  --color-fog: var(--fog);
   --color-paper: var(--paper);
-  --color-porcelain: var(--porcelain);
-  --color-line: var(--line);
-  --color-gold: var(--gold);
-  --color-gold-light: var(--gold-light);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --radius-card: 10px;
+  --radius-card-lg: 28px;
+
+  --shadow-subtle: var(--sh-subtle);
+  --shadow-lg: var(--sh-lg);
+  --shadow-xl: var(--sh-xl);
+
+  --ease-out-expo: var(--expo);
 }
 
 html {
-  scroll-behavior: smooth;
+  /* `clip` évite le défilement horizontal sans casser `position: sticky`. */
+  overflow-x: clip;
 }
 
 body {
-  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  overflow-x: clip;
+  font-family: var(--font-sans);
+  font-feature-settings: "calt";
+  font-size: 18px;
+  line-height: 1.5;
+  letter-spacing: -0.007em;
+  color: var(--charcoal);
+  background: var(--paper);
 }
 
 ::selection {
-  background: var(--gold-light);
-  color: var(--ink);
+  background: var(--lime);
+  color: var(--forest);
 }
 
-.font-display {
-  font-family: var(--font-display), Georgia, serif;
+:focus-visible {
+  outline: 2px solid var(--forest);
+  outline-offset: 3px;
 }
 
-/* Placeholder produit : dégradé discret + grain, à remplacer par de vraies photos */
-.placeholder-media {
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(169, 128, 63, 0.16), transparent 55%),
-    linear-gradient(135deg, #ececE4 0%, #dedad0 100%);
+/* Les ancres atterrissent sous le header fixe. */
+[id] {
+  scroll-margin-top: 88px;
+}
+
+/* ---------- Typographie d'affichage (substitut Wise Sans : Inter 900) ---------- */
+
+@utility display {
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  /* 0.85 chez Wise ; en français il faut 1 pour que les accents des capitales
+     (É, À, Ë), très hauts dans Inter, ne touchent pas la ligne du dessus. */
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+@utility display-hero {
+  font-size: clamp(2.2rem, 11.4vw, 8.4rem);
+}
+
+@utility display-xl {
+  font-size: clamp(2.2rem, 8.4vw, 6.56rem);
+}
+
+@utility display-lg {
+  font-size: clamp(2rem, 6.6vw, 5.56rem);
+}
+
+@utility display-md {
+  font-size: clamp(1.75rem, 4.6vw, 3.8rem);
+}
+
+@utility display-giant {
+  font-size: clamp(4rem, 22vw, 18.75rem);
+}
+
+/* ---------- Lien texte : soulignement qui se redessine au survol ---------- */
+
+@utility link-underline {
+  background-image: linear-gradient(currentColor, currentColor), linear-gradient(currentColor, currentColor);
+  background-size: 100% 1.5px, 0% 1.5px;
+  background-position: 0 100%, 100% 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size 0.5s var(--expo), background-position 0s 0.5s;
+
+  &:hover {
+    background-size: 0% 1.5px, 100% 1.5px;
+    background-position: 100% 100%, 0 100%;
+    transition: background-size 0.5s var(--expo);
+  }
+}
+
+/* Soulignement qui apparaît au survol (liens de navigation / footer). */
+@utility link-reveal {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1.5px;
+  background-position: 100% 100%;
+  background-repeat: no-repeat;
+  padding-bottom: 2px;
+  transition: background-size 0.45s var(--expo);
+
+  &:hover {
+    background-size: 100% 1.5px;
+    background-position: 0 100%;
+  }
+}
+
+/* ---------- Marquee CSS (avis clients) ---------- */
+
+@keyframes marquee-left {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes marquee-right {
+  from {
+    transform: translate3d(-50%, 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@utility marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-left var(--marquee-duration, 40s) linear infinite;
+
+  &[data-direction="right"] {
+    animation-name: marquee-right;
+  }
+}
+
+.marquee-group:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ---------- Rideau d'intro (100 % CSS, ne dépend pas de l'hydratation) ---------- */
+
+@keyframes intro-curtain {
+  0%,
+  45% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -100%, 0);
+    visibility: hidden;
+  }
+}
+
+@keyframes intro-word {
+  0% {
+    transform: translate3d(0, 110%, 0);
+  }
+  35%,
+  70% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -110%, 0);
+  }
+}
+
+@keyframes intro-bar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.intro-curtain {
+  animation: intro-curtain 1.15s var(--expo) forwards;
+}
+
+.intro-word {
+  animation: intro-word 1s var(--expo) forwards;
+}
+
+.intro-bar {
+  transform-origin: left;
+  animation: intro-bar 0.55s var(--expo) forwards;
+}
+
+/* ---------- Ondes lumineuses (modes LED) ---------- */
+
+@keyframes ripple {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+.ripple {
+  animation: ripple 2.8s cubic-bezier(0.2, 0.6, 0.35, 1) infinite;
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 14s linear infinite;
+}
+
+/* ---------- Accessibilité : mouvement réduit ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .intro-curtain {
+    display: none;
+  }
+
+  .marquee-track,
+  .ripple,
+  .spin-slow {
+    animation: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

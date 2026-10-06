@@ -1,8 +1,11 @@
 "use client";
 
-import { ChevronDown } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Plus } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/Button";
 import { Reveal } from "@/components/Reveal";
+import { RevealText } from "@/components/RevealText";
 
 // TODO: adaptez les réponses (délais de livraison, zones desservies, durée de garantie réelle) à votre activité.
 const faqs = [
@@ -37,47 +40,71 @@ export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="bg-porcelain py-20 sm:py-28">
-      <div className="mx-auto max-w-3xl px-5 sm:px-8">
-        <Reveal className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-gold">
-            Questions fréquentes
-          </span>
-          <h2 className="mt-3 font-display text-3xl font-semibold text-ink sm:text-4xl">
+    <section id="faq" className="bg-mist py-24 lg:py-32">
+      <div className="mx-auto grid max-w-[1200px] gap-12 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <span className="mb-6 inline-flex rounded-full bg-paper px-3 py-2 text-xs font-medium text-forest">
             FAQ
-          </h2>
-        </Reveal>
+          </span>
+          <RevealText text={"Vos\nquestions."} className="display display-xl text-forest" />
+          <p className="mt-6 max-w-sm text-lg text-charcoal">
+            Une autre question ? Notre équipe vous répond sous 24h ouvrées.
+          </p>
+          <Button href="/contact" variant="outline" arrow className="mt-8">
+            Nous contacter
+          </Button>
+        </div>
 
-        <div className="mt-12 space-y-3">
+        <div className="space-y-3">
           {faqs.map((faq, i) => {
             const isOpen = openIndex === i;
             return (
-              <Reveal key={faq.question} delay={i * 0.05}>
-                <div className="overflow-hidden rounded-xl border border-line bg-paper">
+              <Reveal key={faq.question} delay={i * 0.06} y={30}>
+                <div
+                  className={`overflow-hidden rounded-[10px] transition-colors duration-500 ${
+                    isOpen ? "bg-forest" : "bg-paper hover:bg-paper/70"
+                  }`}
+                >
                   <button
                     type="button"
+                    id={`faq-q-${i}`}
                     onClick={() => setOpenIndex(isOpen ? null : i)}
                     aria-expanded={isOpen}
-                    className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                    aria-controls={`faq-a-${i}`}
+                    className="group flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
                   >
-                    <span className="font-medium text-ink">{faq.question}</span>
-                    <ChevronDown
-                      className={`h-4 w-4 flex-none text-ink/50 transition-transform duration-300 ${
-                        isOpen ? "rotate-180" : ""
+                    <span
+                      className={`text-lg font-semibold tracking-[-0.01em] transition-[color,transform] duration-500 ease-out-expo group-hover:translate-x-1 sm:text-xl ${
+                        isOpen ? "text-lime" : "text-forest"
                       }`}
-                    />
+                    >
+                      {faq.question}
+                    </span>
+                    <motion.span
+                      animate={{ rotate: isOpen ? 135 : 0 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 18 }}
+                      className={`flex h-10 w-10 flex-none items-center justify-center rounded-full transition-colors duration-500 ${
+                        isOpen ? "bg-lime text-forest" : "bg-mist text-forest group-hover:bg-lime"
+                      }`}
+                    >
+                      <Plus className="h-5 w-5" />
+                    </motion.span>
                   </button>
-                  <div
-                    className={`grid transition-all duration-300 ease-out ${
-                      isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <p className="px-5 pb-4 text-sm leading-relaxed text-ink/65">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </div>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        id={`faq-a-${i}`}
+                        role="region"
+                        aria-labelledby={`faq-q-${i}`}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                      >
+                        <p className="px-6 pb-6 text-base leading-relaxed text-paper/80">{faq.answer}</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               </Reveal>
             );

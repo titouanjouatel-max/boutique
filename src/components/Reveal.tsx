@@ -8,16 +8,18 @@ type RevealProps = {
   delay?: number;
   className?: string;
   y?: number;
+  x?: number;
+  scale?: number;
 };
 
-// Animation discrète au scroll : fondu + léger déplacement vertical, une seule fois.
-export function Reveal({ children, delay = 0, className, y = 20 }: RevealProps) {
+// Apparition au scroll : fondu + glissement (+ zoom optionnel), une seule fois.
+export function Reveal({ children, delay = 0, className, y = 40, x = 0, scale = 1 }: RevealProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10% 0px -10% 0px" }}
-      transition={{ duration: 0.6, delay, ease: [0.22, 1, 0.36, 1] }}
+      initial={{ opacity: 0, y, x, scale }}
+      whileInView={{ opacity: 1, y: 0, x: 0, scale: 1 }}
+      viewport={{ once: true, margin: "0px 0px -12% 0px" }}
+      transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
       {children}

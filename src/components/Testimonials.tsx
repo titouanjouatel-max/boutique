@@ -1,5 +1,7 @@
-import { Reveal } from "@/components/Reveal";
+import { Quote } from "lucide-react";
+import { RevealText } from "@/components/RevealText";
 import { StarRating } from "@/components/StarRating";
+import { PRODUCT, RATING_LABEL } from "@/lib/constants";
 
 // TODO: remplacer les avis ci-dessous par vos vrais témoignages clients (texte, prénom, note, photo).
 const reviews = [
@@ -35,48 +37,76 @@ const reviews = [
   },
 ];
 
-function Avatar({ name }: { name: string }) {
-  const initial = name.charAt(0);
+function ReviewCard({ review, tilt }: { review: (typeof reviews)[number]; tilt: string }) {
   return (
-    // TODO: remplacer par une vraie photo cliente (avec autorisation) via next/image
-    <div className="flex h-11 w-11 flex-none items-center justify-center rounded-full bg-ink font-display text-sm font-semibold text-paper">
-      {initial}
+    <figure
+      className={`group mx-2 flex w-[300px] flex-none flex-col rounded-[28px] bg-fog p-7 transition-all duration-500 ease-out-expo hover:-translate-y-2 hover:bg-mist sm:mx-3 sm:w-[360px] ${tilt}`}
+    >
+      <div className="flex items-center justify-between">
+        <StarRating rating={review.rating} />
+        <Quote className="h-7 w-7 text-forest/20 transition-all duration-500 group-hover:rotate-12 group-hover:text-forest" />
+      </div>
+      <blockquote className="mt-5 flex-1 text-lg leading-snug text-obsidian">
+        &ldquo;{review.text}&rdquo;
+      </blockquote>
+      <figcaption className="mt-6 flex items-center gap-3">
+        {/* TODO: remplacer par une vraie photo cliente (avec autorisation) via next/image */}
+        <span className="display flex h-11 w-11 flex-none items-center justify-center rounded-full bg-forest text-lg text-lime transition-transform duration-500 group-hover:scale-110">
+          {review.name.charAt(0)}
+        </span>
+        <span>
+          <span className="block text-base font-semibold text-obsidian">{review.name}</span>
+          <span className="text-sm text-slate">{review.location} · Achat vérifié</span>
+        </span>
+      </figcaption>
+    </figure>
+  );
+}
+
+function ReviewRow({ items, direction, duration }: { items: typeof reviews; direction: "left" | "right"; duration: string }) {
+  return (
+    <div className="marquee-group flex overflow-hidden py-3">
+      <div
+        className="marquee-track"
+        data-direction={direction}
+        style={{ ["--marquee-duration" as string]: duration }}
+      >
+        {[0, 1].map((copy) =>
+          items.map((review, i) => (
+            <div key={`${copy}-${review.name}`} aria-hidden={copy > 0}>
+              <ReviewCard review={review} tilt={i % 2 === 0 ? "hover:-rotate-1" : "hover:rotate-1"} />
+            </div>
+          )),
+        )}
+      </div>
     </div>
   );
 }
 
 export function Testimonials() {
   return (
-    <section className="bg-paper py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-gold">
-            Ils l&apos;ont testé
+    <section id="avis" className="overflow-hidden bg-paper py-24 lg:py-32">
+      <div className="mx-auto flex max-w-[1200px] flex-col justify-between gap-8 px-4 sm:px-6 lg:flex-row lg:items-end">
+        <div>
+          <span className="mb-6 inline-flex rounded-full bg-mist px-3 py-2 text-xs font-medium text-forest">
+            Avis clients
           </span>
-          <h2 className="mt-3 font-display text-3xl font-semibold text-ink sm:text-4xl">
-            Ce que nos clientes en disent
-          </h2>
-        </Reveal>
-
-        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {reviews.map((review, i) => (
-            <Reveal key={review.name} delay={(i % 3) * 0.08}>
-              <div className="flex h-full flex-col rounded-2xl border border-line bg-porcelain p-6">
-                <StarRating rating={review.rating} />
-                <p className="mt-4 flex-1 text-sm leading-relaxed text-ink/75">
-                  &ldquo;{review.text}&rdquo;
-                </p>
-                <div className="mt-6 flex items-center gap-3">
-                  <Avatar name={review.name} />
-                  <div>
-                    <p className="text-sm font-semibold text-ink">{review.name}</p>
-                    <p className="text-xs text-ink/50">{review.location} · Achat vérifié</p>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          ))}
+          <RevealText text={"Elles l'ont\nadopté."} className="display display-xl text-obsidian" />
         </div>
+        <div className="flex items-center gap-5 rounded-[28px] bg-forest p-6 pr-8">
+          <p className="display text-7xl text-lime">{RATING_LABEL}</p>
+          <div>
+            <StarRating rating={PRODUCT.rating} tone="lime" size={18} />
+            <p className="mt-2 text-sm text-paper/80">
+              Note moyenne sur {PRODUCT.reviewCount} avis
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-16 space-y-3">
+        <ReviewRow items={reviews} direction="left" duration="55s" />
+        <ReviewRow items={[...reviews].reverse()} direction="right" duration="65s" />
       </div>
     </section>
   );

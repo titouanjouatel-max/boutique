@@ -1,67 +1,147 @@
-import { Droplet, Power, Sparkles, Timer } from "lucide-react";
-import { Reveal } from "@/components/Reveal";
+"use client";
 
-const steps = [
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { Droplet, Power, Sparkles, Timer, type LucideIcon } from "lucide-react";
+import { useRef } from "react";
+import { Button } from "@/components/Button";
+import { RevealText } from "@/components/RevealText";
+
+type Step = {
+  icon: LucideIcon;
+  title: string;
+  text: string;
+  theme: { card: string; title: string; text: string; number: string; icon: string };
+};
+
+const steps: Step[] = [
   {
     icon: Droplet,
     title: "Nettoyez votre visage",
     text: "Démaquillez et nettoyez votre peau pour une absorption optimale de la lumière LED.",
+    theme: {
+      card: "bg-fog",
+      title: "text-obsidian",
+      text: "text-charcoal",
+      number: "text-forest/10",
+      icon: "bg-forest text-lime",
+    },
   },
   {
     icon: Power,
     title: "Enfilez le masque",
-    text: "Positionnez le masque CRYOLUME confortablement grâce aux sangles ajustables.",
+    text: "Positionnez CRYOLUME confortablement grâce aux sangles ajustables, visage et cou.",
+    theme: {
+      card: "bg-mist",
+      title: "text-forest",
+      text: "text-charcoal",
+      number: "text-forest/10",
+      icon: "bg-lime text-forest",
+    },
   },
   {
     icon: Sparkles,
     title: "Choisissez votre mode",
-    text: "Sélectionnez LED rouge (anti-âge), bleu (imperfections) ou l'effet cryo anti-gonflement.",
+    text: "LED rouge (anti-âge), bleue (imperfections) ou effet cryo anti-gonflement : à vous de jouer.",
+    theme: {
+      card: "bg-forest",
+      title: "text-lime",
+      text: "text-paper/80",
+      number: "text-lime/15",
+      icon: "bg-lime text-forest",
+    },
   },
   {
     icon: Timer,
     title: "Détendez-vous 10 min",
-    text: "Laissez agir la séance, sans risque, pendant que vous lisez ou vous relaxez.",
+    text: "Laissez agir pendant que vous lisez ou vous relaxez. Le masque s'éteint tout seul.",
+    theme: {
+      card: "bg-lime",
+      title: "text-forest",
+      text: "text-forest/80",
+      number: "text-forest/15",
+      icon: "bg-forest text-lime",
+    },
   },
 ];
 
-export function HowItWorks() {
-  return (
-    <section className="bg-paper py-20 sm:py-28">
-      <div className="mx-auto max-w-6xl px-5 sm:px-8">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-semibold uppercase tracking-[0.25em] text-gold">
-            Simplicité
-          </span>
-          <h2 className="mt-3 font-display text-3xl font-semibold text-ink sm:text-4xl">
-            Comment ça marche
-          </h2>
-          <p className="mt-4 text-ink/70">
-            Un rituel simple, rapide et sans risque, à intégrer en quelques minutes.
-          </p>
-        </Reveal>
+function StepCard({
+  step,
+  index,
+  total,
+  progress,
+}: {
+  step: Step;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const Icon = step.icon;
+  // Chaque carte rétrécit légèrement quand les suivantes viennent s'empiler dessus.
+  const targetScale = 1 - (total - 1 - index) * 0.05;
+  const scale = useTransform(progress, [index / total, 1], [1, targetScale]);
 
-        <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, i) => {
-            const Icon = step.icon;
-            return (
-              <Reveal key={step.title} delay={i * 0.08}>
-                <div className="relative h-full rounded-2xl border border-line bg-porcelain p-6">
-                  <span className="font-display text-4xl font-semibold text-ink/10">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div className="mt-2 flex h-11 w-11 items-center justify-center rounded-full bg-ink text-paper">
-                    <Icon className="h-5 w-5" />
-                  </div>
-                  <h3 className="mt-4 font-display text-lg font-semibold text-ink">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-ink/65">
-                    {step.text}
-                  </p>
-                </div>
-              </Reveal>
-            );
-          })}
+  return (
+    <div
+      className="sticky h-[min(420px,70vh)]"
+      style={{ top: `calc(6rem + ${index * 1.75}rem)` }}
+    >
+      <motion.article
+        style={{ scale }}
+        className={`group relative flex h-full origin-top flex-col justify-between overflow-hidden rounded-[28px] p-7 sm:p-10 ${step.theme.card}`}
+      >
+        <span
+          aria-hidden
+          className={`display pointer-events-none absolute -bottom-6 -right-2 text-[clamp(8rem,22vw,15rem)] transition-transform duration-700 ease-out-expo group-hover:-translate-y-4 group-hover:-rotate-6 ${step.theme.number}`}
+        >
+          0{index + 1}
+        </span>
+        <div className="flex items-center justify-between">
+          <span
+            className={`flex h-14 w-14 items-center justify-center rounded-full transition-transform duration-700 ease-out-expo group-hover:rotate-[360deg] group-hover:scale-110 ${step.theme.icon}`}
+          >
+            <Icon className="h-6 w-6" />
+          </span>
+          <span className={`text-sm font-semibold ${step.theme.title}`}>
+            Étape {index + 1}/{total}
+          </span>
+        </div>
+        <div className="relative max-w-md">
+          <h3 className={`display display-md ${step.theme.title}`}>{step.title}</h3>
+          <p className={`mt-4 text-lg ${step.theme.text}`}>{step.text}</p>
+        </div>
+      </motion.article>
+    </div>
+  );
+}
+
+export function HowItWorks() {
+  const stackRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: stackRef,
+    offset: ["start start", "end end"],
+  });
+
+  return (
+    <section id="comment-ca-marche" className="bg-paper py-24 lg:py-32">
+      <div className="mx-auto grid max-w-[1200px] gap-12 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
+        <div className="lg:sticky lg:top-28 lg:self-start">
+          <span className="mb-6 inline-flex rounded-full bg-mist px-3 py-2 text-xs font-medium text-forest">
+            La méthode
+          </span>
+          <RevealText text={"4 étapes.\n10 minutes."} className="display display-lg text-obsidian" />
+          <p className="mt-6 max-w-md text-lg text-charcoal">
+            Un rituel simple et sans risque, à glisser dans votre routine du
+            matin ou du soir. Aucun rendez-vous, aucune aiguille.
+          </p>
+          <Button href="/checkout" variant="outline" arrow className="mt-8">
+            Je commence mon rituel
+          </Button>
+        </div>
+
+        <div ref={stackRef} className="relative space-y-6 pb-[6vh]">
+          {steps.map((step, i) => (
+            <StepCard key={step.title} step={step} index={i} total={steps.length} progress={scrollYProgress} />
+          ))}
         </div>
       </div>
     </section>

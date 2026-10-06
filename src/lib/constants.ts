@@ -16,6 +16,9 @@ export const PRODUCT = {
   reviewCount: 312,
 };
 
+// Note affichée au format français (4,8).
+export const RATING_LABEL = String(PRODUCT.rating).replace(".", ",");
+
 // TODO: Stripe — remplacez cette URL par votre vrai lien Stripe Checkout
 // (Stripe Dashboard > Payment links, ou une session Checkout créée côté serveur).
 // Vous pouvez aussi définir NEXT_PUBLIC_STRIPE_CHECKOUT_URL dans un fichier .env.local

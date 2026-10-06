@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { RevealText } from "@/components/RevealText";
 import { CONTACT, SITE } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -14,20 +15,18 @@ export default function RefundPolicyPage() {
   return (
     <>
       <Header />
-      <main className="flex-1 bg-paper pt-32 pb-20">
-        <div className="mx-auto max-w-3xl px-5 sm:px-8">
-          <Link href="/" className="inline-flex items-center gap-2 text-sm text-ink/60 hover:text-gold">
-            <ArrowLeft className="h-4 w-4" /> Retour à la boutique
+      <main className="flex-1 bg-paper pb-24 pt-32 sm:pt-40">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <Link href="/" className="group inline-flex items-center gap-2 text-sm font-medium text-forest">
+            <ArrowLeft className="h-4 w-4 transition-transform duration-500 ease-out-expo group-hover:-translate-x-1" /> Retour à la boutique
           </Link>
 
-          <h1 className="mt-6 font-display text-3xl font-semibold text-ink sm:text-4xl">
-            Politique de remboursement
-          </h1>
-          <p className="mt-2 text-sm text-ink/50">Dernière mise à jour : TODO — indiquer la date</p>
+          <RevealText as="h1" immediate text="Politique de remboursement" className="display display-lg mt-8 text-forest" />
+          <p className="mt-4 text-sm text-slate">Dernière mise à jour : TODO — indiquer la date</p>
 
-          <div className="prose prose-neutral mt-10 max-w-none space-y-8 text-sm leading-relaxed text-ink/75">
+          <div className="mt-12 space-y-10 text-base leading-relaxed text-charcoal">
             <section>
-              <h2 className="font-display text-xl font-semibold text-ink">Garantie 30 jours satisfait ou remboursé</h2>
+              <h2 className="text-2xl font-bold tracking-[-0.02em] text-obsidian">Garantie 30 jours satisfait ou remboursé</h2>
               <p className="mt-2">
                 Si vous n&apos;êtes pas entièrement satisfait(e) de votre
                 CRYOLUME™, vous pouvez demander un remboursement dans les 30
@@ -38,11 +37,11 @@ export default function RefundPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-xl font-semibold text-ink">Comment demander un remboursement</h2>
+              <h2 className="text-2xl font-bold tracking-[-0.02em] text-obsidian">Comment demander un remboursement</h2>
               <ol className="mt-2 list-decimal space-y-2 pl-5">
                 <li>
                   Contactez-nous à{" "}
-                  <a href={`mailto:${CONTACT.email}`} className="text-gold underline">
+                  <a href={`mailto:${CONTACT.email}`} className="link-underline font-medium text-forest">
                     {CONTACT.email}
                   </a>{" "}
                   avec votre numéro de commande.
@@ -54,11 +53,11 @@ export default function RefundPolicyPage() {
                   délai de 5 à 10 jours ouvrés.
                 </li>
               </ol>
-              <p className="mt-2 text-ink/50">TODO : adapter ce processus à votre organisation logistique réelle.</p>
+              <p className="mt-2 text-slate">TODO : adapter ce processus à votre organisation logistique réelle.</p>
             </section>
 
             <section>
-              <h2 className="font-display text-xl font-semibold text-ink">Produits défectueux</h2>
+              <h2 className="text-2xl font-bold tracking-[-0.02em] text-obsidian">Produits défectueux</h2>
               <p className="mt-2">
                 Si votre masque CRYOLUME™ présente un défaut de fabrication,
                 il est remplacé ou remboursé gratuitement, frais de retour
@@ -68,7 +67,7 @@ export default function RefundPolicyPage() {
             </section>
 
             <section>
-              <h2 className="font-display text-xl font-semibold text-ink">Exclusions</h2>
+              <h2 className="text-2xl font-bold tracking-[-0.02em] text-obsidian">Exclusions</h2>
               <p className="mt-2">
                 Ne sont pas remboursables : les produits endommagés par une
                 mauvaise utilisation, ou dont le sceau d&apos;hygiène a été

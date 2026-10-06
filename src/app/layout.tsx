@@ -1,17 +1,15 @@
-import type { Metadata } from "next";
-import { Playfair_Display, Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import { Providers } from "@/components/Providers";
+import { Cursor } from "@/components/Cursor";
+import { Intro } from "@/components/Intro";
 import "./globals.css";
 
-const playfair = Playfair_Display({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-});
-
+// Inter variable : 400 → 700 pour le texte, 900 pour les titres d'affichage
+// (substitut de Wise Sans).
 const inter = Inter({
-  variable: "--font-body",
+  variable: "--font-inter",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -20,14 +18,19 @@ export const metadata: Metadata = {
     "Dégonflez, illuminez et rajeunissez votre visage en 10 minutes par jour grâce à la photothérapie LED et à la cryothérapie CRYOLUME™.",
 };
 
+export const viewport: Viewport = {
+  themeColor: "#163300",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="fr"
-      className={`${playfair.variable} ${inter.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-paper text-ink">
-        {children}
+    <html lang="fr" className={`${inter.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col">
+        <Intro />
+        <Providers>
+          {children}
+          <Cursor />
+        </Providers>
       </body>
     </html>
   );
