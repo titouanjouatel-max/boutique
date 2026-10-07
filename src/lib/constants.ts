@@ -6,23 +6,72 @@ export const SITE = {
   domain: "braise.fr", // TODO: remplacer par votre vrai nom de domaine
 };
 
-// TODO: prix provisoires — ajustez prix de vente et prix barré.
 export const PRODUCT = {
   name: "BRAISE™",
   fullName: "Chauffe-mains rechargeable BRAISE™",
-  price: 24.9,
-  compareAtPrice: 39.9,
   currency: "€",
 };
 
-// Prix au format français : 24,90€
+// Prix au format français : 24,99€
 export function formatPrice(value: number) {
   return `${value.toFixed(2).replace(".", ",")}${PRODUCT.currency}`;
 }
 
-export const PRICE_LABEL = formatPrice(PRODUCT.price);
-export const COMPARE_AT_LABEL = formatPrice(PRODUCT.compareAtPrice);
-export const DISCOUNT_PERCENT = Math.round((1 - PRODUCT.price / PRODUCT.compareAtPrice) * 100);
+// Packs par quantité : la remise grandit avec la quantité, le pack du milieu est mis en avant.
+// Les économies sont calculées par rapport à l'achat à l'unité (pas de faux prix barré).
+// TODO (STRIPE) : créez un Payment Link par pack et renseignez les variables d'env ci-dessous.
+export const UNIT_PRICE = 24.99;
+
+const PACK_DEFS = [
+  {
+    id: "solo",
+    name: "Solo",
+    quantity: 1,
+    price: 24.99,
+    tagline: "Pour vous",
+    badge: null,
+    freeShipping: false, // TODO: frais de port réels pour 1 unité
+    stripeUrl: process.env.NEXT_PUBLIC_STRIPE_URL_SOLO,
+  },
+  {
+    id: "duo",
+    name: "Duo",
+    quantity: 2,
+    price: 44.99,
+    tagline: "Un pour vous, un à offrir",
+    badge: "Le plus choisi",
+    freeShipping: true,
+    stripeUrl: process.env.NEXT_PUBLIC_STRIPE_URL_DUO,
+  },
+  {
+    id: "famille",
+    name: "Famille",
+    quantity: 3,
+    price: 59.99,
+    tagline: "Toute la famille au chaud",
+    badge: "Meilleur prix",
+    freeShipping: true,
+    stripeUrl: process.env.NEXT_PUBLIC_STRIPE_URL_FAMILLE,
+  },
+] as const;
+
+export const PACKS = PACK_DEFS.map((pack) => {
+  const fullPrice = UNIT_PRICE * pack.quantity;
+  return {
+    ...pack,
+    perUnit: pack.price / pack.quantity,
+    saving: fullPrice - pack.price,
+    savingPercent: Math.round((1 - pack.price / fullPrice) * 100),
+  };
+});
+
+export type Pack = (typeof PACKS)[number];
+export type PackId = Pack["id"];
+export const DEFAULT_PACK_ID: PackId = "duo";
+
+export const PRICE_LABEL = formatPrice(UNIT_PRICE);
+export const MAX_SAVING_PERCENT = Math.max(...PACKS.map((p) => p.savingPercent));
+export const LOWEST_UNIT_LABEL = formatPrice(Math.min(...PACKS.map((p) => p.perUnit)));
 
 // Caractéristiques issues de la notice du fabricant (modèle Q11).
 export const SPECS = {
@@ -51,13 +100,15 @@ export const COLORS = [
 
 export type ColorId = (typeof COLORS)[number]["id"];
 
-// TODO: Stripe — remplacez cette URL par votre vrai lien Stripe Checkout
-// (Stripe Dashboard > Payment links, ou une session Checkout créée côté serveur).
-// Vous pouvez aussi définir NEXT_PUBLIC_STRIPE_CHECKOUT_URL dans un fichier .env.local
-// pour ne pas modifier le code source.
+// TODO: Stripe — lien utilisé pour les packs qui n'ont pas encore leur propre Payment Link
+// (Stripe Dashboard > Payment links). Définissez les variables dans .env.local.
 export const STRIPE_CHECKOUT_URL =
   process.env.NEXT_PUBLIC_STRIPE_CHECKOUT_URL ||
   "https://buy.stripe.com/REMPLACER_PAR_VOTRE_LIEN_STRIPE";
+
+export function stripeUrlFor(pack: Pack) {
+  return pack.stripeUrl || STRIPE_CHECKOUT_URL;
+}
 
 // TODO: Compte à rebours — ajustez la date limite de l'offre de Noël si besoin.
 export const CHRISTMAS_DEADLINE_ISO = "2026-12-25T00:00:00";
