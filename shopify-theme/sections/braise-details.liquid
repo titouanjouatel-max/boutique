@@ -1,0 +1,67 @@
+<section id="details" class="details section-pad">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="tag">{{ section.settings.tag }}</span>
+        {%- render 'reveal-text', text: section.settings.title, class: 'display display-lg' -%}
+      </div>
+      <p class="lead" data-reveal style="--d: .2s">{{ section.settings.text }}</p>
+    </div>
+    <div class="details__grid">
+      {%- for block in section.blocks -%}
+        <figure class="detail" data-reveal style="--d: {{ forloop.index0 | times: 0.1 }}s" {{ block.shopify_attributes }}>
+          <div class="detail__media">
+            {%- if block.settings.image != blank -%}
+              {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'detail__img' }}
+            {%- else -%}
+              <img src="{{ block.settings.theme_photo | asset_url }}" alt="{{ block.settings.title | escape }}" class="detail__img" loading="lazy" width="368" height="360">
+            {%- endif -%}
+          </div>
+          <figcaption>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </figcaption>
+        </figure>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Le produit en détail",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "Le produit" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Un bouton.|Deux faces chaudes." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Pas d'appli, pas de pile à racheter : un appui long pour l'allumer, et toute la paume est au chaud." }
+  ],
+  "blocks": [
+    {
+      "type": "photo",
+      "name": "Photo",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Photo" },
+        {
+          "type": "select", "id": "theme_photo", "label": "Photo fournie (si aucune photo choisie)", "default": "photo-bouton.jpg",
+          "options": [
+            { "value": "photo-bouton.jpg", "label": "Bouton et ports USB" },
+            { "value": "photo-double-face.jpg", "label": "Chauffe double face" },
+            { "value": "photo-coloris.jpg", "label": "Coloris" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Un seul bouton" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Appui long pour allumer ou éteindre." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Le produit en détail",
+      "blocks": [
+        { "type": "photo", "settings": { "theme_photo": "photo-bouton.jpg", "title": "Un seul bouton", "text": "Appui long pour allumer, appui court pour changer de niveau. Un port USB pour le recharger, un autre pour dépanner votre téléphone." } },
+        { "type": "photo", "settings": { "theme_photo": "photo-double-face.jpg", "title": "Chaud des deux côtés", "text": "Les deux faces chauffent en quelques secondes : tenez-le dans la paume ou glissez-le dans la poche." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

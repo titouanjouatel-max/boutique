@@ -10,9 +10,11 @@
           {%- endfor -%}
         </div>
       {%- else -%}
-        <div class="product-main__art">
-          <span class="hero__halo hero__halo--1" aria-hidden="true"></span>
-          {%- render 'hand-warmer', color: 'or', level: 3, title: product.title -%}
+        <div class="product-main__gallery product-main__gallery--theme">
+          {%- assign shots = 'photo-coloris.jpg,photo-double-face.jpg,photo-bouton.jpg,photo-or.jpg,photo-argent.jpg,photo-rose.jpg,photo-noir.jpg' | split: ',' -%}
+          {%- for shot in shots -%}
+            <img src="{{ shot | asset_url }}" alt="{{ product.title | escape }}" class="product-main__img" width="368" height="360" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">
+          {%- endfor -%}
         </div>
       {%- endif -%}
     </div>

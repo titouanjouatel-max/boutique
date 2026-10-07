@@ -51,12 +51,7 @@
       {%- if section.settings.image != blank -%}
         {{ section.settings.image | image_url: width: 1400 | image_tag: class: 'hero__photo', loading: 'eager', sizes: '(min-width: 1024px) 600px, 100vw' }}
       {%- else -%}
-        <p class="hero__caption">{{ section.settings.caption }}</p>
-        <div class="hero__main" data-hero-warmer>
-          {%- render 'hand-warmer', color: 'or', level: 3, title: 'Chauffe-mains, coloris or, niveau 3' -%}
-        </div>
-        <div class="hero__side hero__side--left">{%- render 'hand-warmer', color: 'noir', level: 0, heat: false -%}</div>
-        <div class="hero__side hero__side--right">{%- render 'hand-warmer', color: 'rose', level: 0, heat: false -%}</div>
+        <img src="{{ 'photo-coloris.jpg' | asset_url }}" alt="Chauffe-mains rechargeables en plusieurs coloris" class="hero__photo" width="368" height="360" loading="eager">
       {%- endif -%}
       <div class="hero__badge">
         <span class="hero__badge-num">-{{ max_saving | strip }}%</span>
@@ -81,7 +76,6 @@
     { "type": "text", "id": "perks", "label": "Arguments (séparés par des virgules, 4 max)", "default": "Chauffe double face,Batterie externe USB,Livraison suivie,Retour 30 jours" },
     { "type": "header", "content": "Visuel" },
     { "type": "image_picker", "id": "image", "label": "Photo (remplace l'illustration)", "info": "Photo produit sur fond clair, format carré conseillé." },
-    { "type": "text", "id": "caption", "label": "Légende", "default": "Niveau 3 · environ 60 °C d'après la notice" },
     { "type": "text", "id": "badge_text", "label": "Texte sous la remise", "default": "en pack Famille" }
   ],
   "presets": [{ "name": "Hero BRAISE" }]

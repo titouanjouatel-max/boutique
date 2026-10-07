@@ -7,7 +7,7 @@
           {%- for item in cart.items -%}
             <li class="cart-item">
               <div class="cart-item__media">
-                {%- if item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy' }}{%- else -%}{%- render 'hand-warmer', color: 'or', level: 2 -%}{%- endif -%}
+                {%- if item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy' }}{%- else -%}{%- render 'color-photo', color: 'or' -%}{%- endif -%}
               </div>
               <div class="cart-item__info">
                 <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>

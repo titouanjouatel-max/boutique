@@ -599,6 +599,8 @@
     const packIndex = parseInt(box.dataset.packIndex, 10) || 0;
     const colorIndex = parseInt(box.dataset.colorIndex, 10) || 0;
     const moneyFormat = box.dataset.moneyFormat;
+    let photos = {};
+    try { photos = JSON.parse(box.dataset.photos || '{}'); } catch (e) { photos = {}; }
     const variantInput = $('[data-variant-id]', box);
     const submit = $('[data-submit]', box);
     const ctaLabels = $$('[data-cta-label]', box);
@@ -637,7 +639,14 @@
           $('[data-pack-saving-amount]', packEl).textContent = formatMoney(saving, moneyFormat);
           $('[data-pack-saving-percent]', packEl).textContent = Math.round((saving / full) * 100);
         }
-        if (color) $$('.hw', packEl).forEach((hw) => { hw.dataset.color = handleize(color); });
+        if (color) {
+          const photo = $('[data-color-photo]', packEl);
+          const src = photos[handleize(color)];
+          if (photo && src && !photo.src.endsWith(src.replace(/^https?:/, ''))) {
+            photo.classList.add('is-swapping');
+            setTimeout(() => { photo.src = src; photo.alt = `Chauffe-mains coloris ${color}`; photo.classList.remove('is-swapping'); }, reduced ? 0 : 200);
+          }
+        }
       });
 
       if (colorLabel && color) colorLabel.textContent = color;

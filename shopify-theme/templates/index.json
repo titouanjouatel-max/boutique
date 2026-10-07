@@ -8,6 +8,32 @@
       "type": "braise-marquee",
       "settings": {}
     },
+    "details": {
+      "type": "braise-details",
+      "settings": {},
+      "blocks": {
+        "photo-1": {
+          "type": "photo",
+          "settings": {
+            "theme_photo": "photo-bouton.jpg",
+            "title": "Un seul bouton",
+            "text": "Appui long pour allumer, appui court pour changer de niveau. Un port USB pour le recharger, un autre pour dépanner votre téléphone."
+          }
+        },
+        "photo-2": {
+          "type": "photo",
+          "settings": {
+            "theme_photo": "photo-double-face.jpg",
+            "title": "Chaud des deux côtés",
+            "text": "Les deux faces chauffent en quelques secondes : tenez-le dans la paume ou glissez-le dans la poche."
+          }
+        }
+      },
+      "block_order": [
+        "photo-1",
+        "photo-2"
+      ]
+    },
     "benefits": {
       "type": "braise-benefits",
       "settings": {
@@ -202,6 +228,7 @@
   "order": [
     "hero",
     "bands",
+    "details",
     "benefits",
     "packs",
     "reviews",

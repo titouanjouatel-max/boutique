@@ -16,7 +16,7 @@ Le produit contient :
 - les coloris **Argent**, **Or**, **Rose** et **Noir** ;
 - le coût d'achat AliExpress (7,49 € par unité), pour que Shopify calcule ta marge.
 
-Ajoute ensuite tes photos sur la fiche produit.
+Les 7 photos du produit sont déjà intégrées au thème (accueil, packs, fiche produit). Ajoute-les aussi sur la fiche produit dans Shopify (Produits › Chauffe-mains › Médias) pour qu'elles apparaissent dans le panier, au paiement et dans les e-mails de commande.
 
 Garde les noms des options « Pack » et « Couleur », et le « ×N » à la fin des noms de packs : le thème s'en sert pour calculer la remise et le prix à l'unité.
 

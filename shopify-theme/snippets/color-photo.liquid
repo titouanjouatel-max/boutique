@@ -1,0 +1,13 @@
+{%- comment -%}
+  Photo produit livrée avec le thème pour un coloris (argent, or, rose, noir).
+  Paramètres : color (nom ou handle du coloris), class, loading
+{%- endcomment -%}
+{%- liquid
+  assign cp_color = color | default: 'argent' | handleize
+  assign cp_known = 'argent,or,rose,noir' | split: ','
+  unless cp_known contains cp_color
+    assign cp_color = 'argent'
+  endunless
+  assign cp_file = 'photo-' | append: cp_color | append: '.jpg'
+-%}
+<img src="{{ cp_file | asset_url }}" alt="Chauffe-mains coloris {{ color | escape }}" class="{{ class }}" width="240" height="297" loading="{{ loading | default: 'lazy' }}" data-color-photo>

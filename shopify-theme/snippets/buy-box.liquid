@@ -88,7 +88,8 @@
   assign uid = section.id | append: '-' | append: product.id
 -%}
 
-<div class="buybox" data-buybox data-pack-index="{{ pack_index }}" data-color-index="{{ color_index }}" data-money-format="{{ shop.money_format | strip_html | escape }}">
+{%- capture photo_map -%}{"argent":"{{ 'photo-argent.jpg' | asset_url }}","or":"{{ 'photo-or.jpg' | asset_url }}","rose":"{{ 'photo-rose.jpg' | asset_url }}","noir":"{{ 'photo-noir.jpg' | asset_url }}"}{%- endcapture -%}
+<div class="buybox" data-photos="{{ photo_map | escape }}" data-buybox data-pack-index="{{ pack_index }}" data-color-index="{{ color_index }}" data-money-format="{{ shop.money_format | strip_html | escape }}">
   <script type="application/json" data-product-json>{{ product | json }}</script>
 
   {%- form 'product', product, class: 'buybox__form', data-buybox-form: '' -%}
@@ -174,12 +175,8 @@
             <span class="pack__badge">{{ pack_block.settings.badge }}</span>
           {%- endif -%}
           <span class="pack__visual" aria-hidden="true">
-            {%- for i in (1..qty) -%}
-              {%- assign tilt = forloop.index0 | times: 2 | minus: qty | plus: 1 | times: 5 -%}
-              <span class="pack__unit" style="--tilt: {{ tilt }}deg; --delay: {{ forloop.index0 | times: 0.15 }}s">
-                {%- render 'hand-warmer', color: current_color, level: 2 -%}
-              </span>
-            {%- endfor -%}
+            {%- render 'color-photo', color: current_color, class: 'pack__photo' -%}
+            {%- if qty > 1 -%}<span class="pack__qty">×{{ qty }}</span>{%- endif -%}
           </span>
           <span class="pack__body">
             <span class="pack__head">
