@@ -53,3 +53,5 @@ Installe **DSers** (appli officielle AliExpress) et associe chaque variante au p
 - **FAQ** : complète le délai de livraison.
 - **Contact** : e-mail et téléphone dans Paramètres du thème › Contact.
 - **Bandeau du haut** : section En-tête.
+- **Offre de lancement** : Paramètres du thème › Offre limitée. Le compte à rebours vise la date de fin choisie (19/10 par défaut) et l'offre disparaît toute seule après. À la fin de l'offre, remonte le prix des packs ou lance une nouvelle offre avec une nouvelle date : ne la prolonge pas en boucle, c'est interdit en France (pratique commerciale trompeuse).
+- **« Le plus populaire »** : badge du pack Duo (section Packs). Garde-le seulement s'il reste vrai d'après tes ventes.

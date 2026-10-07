@@ -20,6 +20,31 @@
     ]
   },
   {
+    "name": "Offre limitée",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "promo_enabled",
+        "label": "Afficher l'offre limitée",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "promo_title",
+        "label": "Texte de l'offre",
+        "info": "[remise] = meilleure remise des packs",
+        "default": "Offre de lancement : jusqu'à -[remise]% en pack"
+      },
+      {
+        "type": "text",
+        "id": "promo_end",
+        "label": "Date de fin (AAAA-MM-JJ)",
+        "info": "L'offre et le compte à rebours disparaissent automatiquement après cette date. Utilisez une vraie date de fin.",
+        "default": "2026-10-19"
+      }
+    ]
+  },
+  {
     "name": "Produit",
     "settings": [
       {

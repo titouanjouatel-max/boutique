@@ -21,6 +21,7 @@
     </div>
 
     <div class="packs-section__box" data-reveal>
+      {%- render 'promo', style: 'card', saving: max_saving -%}
       {%- if pk_product != blank and pk_product.id != blank -%}
         {%- render 'buy-box', product: pk_product, section: section -%}
       {%- else -%}
@@ -62,7 +63,7 @@
       "name": "Packs (achat)",
       "blocks": [
         { "type": "pack", "settings": { "option_value": "Solo ×1", "tagline": "Pour vous", "free_shipping": false } },
-        { "type": "pack", "settings": { "option_value": "Duo ×2", "tagline": "Un pour vous, un à offrir", "badge": "Le plus choisi", "free_shipping": true, "is_default": true } },
+        { "type": "pack", "settings": { "option_value": "Duo ×2", "tagline": "Un pour vous, un à offrir", "badge": "Le plus populaire", "free_shipping": true, "is_default": true } },
         { "type": "pack", "settings": { "option_value": "Famille ×3", "tagline": "Toute la famille au chaud", "badge": "Meilleur prix", "free_shipping": true } }
       ]
     }

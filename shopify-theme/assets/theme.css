@@ -199,6 +199,22 @@ body.has-intro { --intro-delay: .6s; }
 .js .reveal-text__word { transform: translateY(105%); transition: transform .8s var(--expo); transition-delay: calc(var(--i, 0) * .04s); }
 .js .reveal-text.is-in .reveal-text__word { transform: none; }
 
+/* ---------- Offre limitée ---------- */
+
+.promo-inline strong { font-weight: 600; }
+.promo-inline__left { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--paper); }
+.promo-card {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px;
+  margin-bottom: 32px; padding: 16px 20px;
+  border: 1px solid var(--ember); border-radius: var(--radius); background: var(--ember-tint);
+}
+.promo-card__text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.promo-card__live { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; color: var(--ink); }
+.promo-card__end { font-size: .875rem; color: var(--graphite); }
+.promo-card__timer { display: flex; gap: 6px; }
+.promo-card__unit { display: flex; align-items: baseline; gap: 3px; min-width: 56px; padding: 8px 10px; border-radius: 8px; background: var(--paper); font-size: .75rem; color: var(--graphite); }
+.promo-card__num { font-size: 1.375rem; font-weight: 600; letter-spacing: -0.03em; color: var(--ember-dark); font-variant-numeric: tabular-nums; }
+
 /* ---------- En-tête + bandeau d'annonce ---------- */
 
 .header {

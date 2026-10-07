@@ -9,7 +9,10 @@
       "intro_enabled": false,
       "cursor_enabled": false,
       "smooth_scroll": true,
-      "type_font": "inter_n4"
+      "type_font": "inter_n4",
+      "promo_enabled": true,
+      "promo_title": "Offre de lancement : jusqu'à -[remise]% en pack",
+      "promo_end": "2026-10-19"
     }
   }
 }

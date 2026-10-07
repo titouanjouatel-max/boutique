@@ -1,0 +1,38 @@
+{%- comment -%}
+  Offre limitée vers une date de fin FIXE (Paramètres du thème › Offre). Pas de minuteur qui se relance :
+  une fois la date passée, la mention disparaît d'elle-même.
+  Paramètres : style ('bar' pour le bandeau du haut, 'card' pour la section Packs), saving (remise en %)
+{%- endcomment -%}
+{%- liquid
+  assign promo_end = settings.promo_end | strip
+  assign show_promo = false
+  if settings.promo_enabled and promo_end != blank
+    assign now_s = 'now' | date: '%s' | plus: 0
+    assign end_s = promo_end | append: 'T23:59:59' | date: '%s' | plus: 0
+    if end_s > now_s
+      assign show_promo = true
+    endif
+  endif
+  assign promo_title = settings.promo_title | replace: '[remise]', saving
+  assign promo_date = promo_end | date: '%d/%m'
+-%}
+{%- if show_promo -%}
+  {%- if style == 'bar' -%}
+    <span class="promo-inline" data-promo data-promo-end="{{ promo_end }}">
+      <strong>{{ promo_title }}</strong> · se termine dans <span class="promo-inline__left" data-promo-left>{{ promo_date }}</span>
+    </span>
+  {%- else -%}
+    <div class="promo-card" data-promo data-promo-end="{{ promo_end }}">
+      <div class="promo-card__text">
+        <span class="promo-card__live"><span class="ping" aria-hidden="true"><span></span><span></span></span>{{ promo_title }}</span>
+        <span class="promo-card__end">Se termine le {{ promo_date }} à minuit</span>
+      </div>
+      <div class="promo-card__timer" role="timer" aria-label="Temps restant">
+        {%- assign units = 'j,h,min,s' | split: ',' -%}
+        {%- for unit in units -%}
+          <span class="promo-card__unit"><span class="promo-card__num" data-promo-unit="{{ forloop.index0 }}">--</span><span>{{ unit }}</span></span>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+{%- endif -%}

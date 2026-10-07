@@ -9,7 +9,12 @@
 <header class="header" data-header>
   {%- if section.settings.announcement != blank -%}
     <div class="announce">
-      <p class="container">{{ section.settings.announcement }} <a href="{{ packs_url }}" data-anchor>{{ section.settings.announcement_link }} →</a></p>
+      {%- capture header_saving -%}{%- render 'pack-stats', output: 'max_saving', fallback: '20' -%}{%- endcapture -%}
+      {%- capture promo_bar -%}{%- render 'promo', style: 'bar', saving: header_saving -%}{%- endcapture -%}
+      <p class="container">
+        {%- if promo_bar != blank -%}{{ promo_bar }}{%- else -%}{{ section.settings.announcement }}{%- endif %}
+        <a href="{{ packs_url }}" data-anchor>{{ section.settings.announcement_link }} →</a>
+      </p>
     </div>
   {%- endif -%}
   <div class="header__inner container">

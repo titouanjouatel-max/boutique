@@ -554,6 +554,25 @@
     setInterval(tick, 1000);
   });
 
+  /* ---------- Offre limitée (date de fin fixe) ---------- */
+
+  const promos = $$('[data-promo-end]');
+  if (promos.length) {
+    const tickPromos = () => {
+      promos.forEach((el) => {
+        const end = new Date(`${el.dataset.promoEnd}T23:59:59`).getTime();
+        const diff = end - Date.now();
+        if (Number.isNaN(end) || diff <= 0) { el.hidden = true; return; }
+        const parts = [Math.floor(diff / 86400000), Math.floor((diff / 3600000) % 24), Math.floor((diff / 60000) % 60), Math.floor((diff / 1000) % 60)];
+        const left = $('[data-promo-left]', el);
+        if (left) left.textContent = `${parts[0]} j ${String(parts[1]).padStart(2, '0')} h ${String(parts[2]).padStart(2, '0')} min ${String(parts[3]).padStart(2, '0')} s`;
+        $$('[data-promo-unit]', el).forEach((u, i) => { u.textContent = String(parts[i]).padStart(2, '0'); });
+      });
+    };
+    tickPromos();
+    setInterval(tickPromos, 1000);
+  }
+
   /* ---------- Choix du pack + coloris ---------- */
 
   function formatMoney(cents, format) {
