@@ -16,7 +16,7 @@ import { Button } from "@/components/Button";
 import { HandWarmer } from "@/components/HandWarmer";
 import { Magnetic } from "@/components/Magnetic";
 import { SpinningBadge } from "@/components/SpinningBadge";
-import { COLORS, DISCOUNT_PERCENT, PRICE_LABEL, PRODUCT, SPECS } from "@/lib/constants";
+import { COLORS, MAX_SAVING_PERCENT, PRICE_LABEL, PRODUCT, SPECS } from "@/lib/constants";
 
 const EXPO = [0.16, 1, 0.3, 1] as const;
 // Les animations démarrent pendant que le rideau d'intro se lève.
@@ -203,7 +203,7 @@ export function Hero() {
         >
           <Magnetic>
             <Button href="/checkout" size="lg" arrow>
-              Commander — {PRICE_LABEL}
+              Commander — dès {PRICE_LABEL}
             </Button>
           </Magnetic>
           <AnchorLink
@@ -291,11 +291,11 @@ export function Hero() {
         >
           <SpinningBadge
             id="hero-badge"
-            text="Offre de Noël • Offre de Noël • "
+            text="En pack • En pack • En pack • "
             className="h-28 w-28 bg-lime sm:h-36 sm:w-36"
             textClassName="fill-forest"
           >
-            <span className="display text-3xl text-forest sm:text-4xl">-{DISCOUNT_PERCENT}%</span>
+            <span className="display text-3xl text-forest sm:text-4xl">-{MAX_SAVING_PERCENT}%</span>
           </SpinningBadge>
         </Floater>
 
