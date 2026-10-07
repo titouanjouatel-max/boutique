@@ -36,15 +36,14 @@ export function FinalCta() {
           >
             <SpinningBadge
               id="final-cta-badge"
-              text="Livraison rapide • Garantie 30 jours • "
+              text="Livraison offerte dès 2 • Retour 30 jours • "
               className="h-44 w-44 bg-lime sm:h-56 sm:w-56"
               textClassName="fill-forest"
             >
               <span className="flex flex-col items-center text-forest">
                 <ArrowUpRight className="h-10 w-10 transition-transform duration-500 ease-out-expo group-hover:rotate-45" />
-                <span className="display mt-1 text-2xl sm:text-3xl">
-                  {PRICE_LABEL}
-                </span>
+                <span className="text-[11px] font-semibold">dès</span>
+                <span className="display text-2xl sm:text-3xl">{PRICE_LABEL}</span>
                 <span className="text-xs font-semibold">Commander</span>
               </span>
             </SpinningBadge>

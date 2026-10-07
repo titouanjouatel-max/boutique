@@ -36,13 +36,13 @@ export function FloatingOrder() {
             <span className="flex-1 text-sm font-semibold text-paper sm:hidden">
               {PRODUCT.name}{" "}
               <span className="text-lime">
-                {PRICE_LABEL}
+                dès {PRICE_LABEL}
               </span>
             </span>
             <span className="rounded-full bg-lime px-5 py-3 text-sm font-semibold text-forest sm:bg-transparent sm:p-0 sm:text-center sm:text-xs sm:font-medium sm:text-lime">
               <span className="sm:hidden">Commander</span>
               <span className="hidden sm:inline">
-                Commander · {PRICE_LABEL}
+                Dès {PRICE_LABEL}
               </span>
             </span>
           </AnchorLink>

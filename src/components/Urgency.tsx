@@ -6,7 +6,7 @@ import { Button } from "@/components/Button";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { Magnetic } from "@/components/Magnetic";
 import { RevealText } from "@/components/RevealText";
-import { CHRISTMAS_DEADLINE_ISO, COMPARE_AT_LABEL, DISCOUNT_PERCENT, PRICE_LABEL, STOCK } from "@/lib/constants";
+import { CHRISTMAS_DEADLINE_ISO, LOWEST_UNIT_LABEL, MAX_SAVING_PERCENT, STOCK } from "@/lib/constants";
 
 const EXPO = [0.16, 1, 0.3, 1] as const;
 
@@ -35,7 +35,7 @@ export function Urgency() {
             </span>
             <RevealText
               id="offer-title"
-              text={`-${DISCOUNT_PERCENT}%\npour Noël.`}
+              text={`Jusqu'à -${MAX_SAVING_PERCENT}%\nen pack.`}
               className="display display-lg mt-6 text-lime"
             />
             <p className="mt-6 max-w-md text-lg text-paper/80">
@@ -44,16 +44,11 @@ export function Urgency() {
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-6">
               <Magnetic>
-                <Button href="/checkout" size="lg" arrow>
-                  Commander — {PRICE_LABEL}
+                <Button href="/#packs" size="lg" arrow>
+                  Choisir mon pack
                 </Button>
               </Magnetic>
-              <p className="text-paper/60">
-                au lieu de{" "}
-                <span className="line-through">
-                  {COMPARE_AT_LABEL}
-                </span>
-              </p>
+              <p className="text-paper/60">dès {LOWEST_UNIT_LABEL} / unité</p>
             </div>
           </div>
 

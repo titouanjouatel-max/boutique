@@ -8,6 +8,7 @@ import { Hero } from "@/components/Hero";
 import { HowItWorks } from "@/components/HowItWorks";
 import { HeatModes } from "@/components/HeatModes";
 import { MarqueeBands } from "@/components/MarqueeBands";
+import { Packs } from "@/components/Packs";
 import { ProductShowcase } from "@/components/ProductShowcase";
 import { WinterDay } from "@/components/WinterDay";
 import { Stats } from "@/components/Stats";
@@ -28,6 +29,7 @@ export default function Home() {
         <Benefits />
         <WinterDay />
         <Testimonials />
+        <Packs />
         <Urgency />
         <FAQ />
         <FinalCta />
