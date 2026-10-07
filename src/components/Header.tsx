@@ -19,7 +19,7 @@ import { lockScroll, scrollToTarget } from "@/lib/scroll";
 const NAV = [
   { id: "produit", label: "Produit" },
   { id: "comment-ca-marche", label: "Méthode" },
-  { id: "usages", label: "Usages" },
+  { id: "packs", label: "Packs" },
   { id: "avis", label: "Avis" },
   { id: "faq", label: "FAQ" },
 ];
@@ -225,7 +225,7 @@ export function Header() {
               className="flex flex-col gap-5"
             >
               <Button href="/checkout" variant="light" size="lg" arrow className="self-start">
-                Commander — {PRICE_LABEL}
+                Commander — dès {PRICE_LABEL}
               </Button>
               <p className="text-sm text-paper/70">
                 {CONTACT.email} · {CONTACT.phone}

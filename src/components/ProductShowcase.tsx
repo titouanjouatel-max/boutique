@@ -7,7 +7,7 @@ import { Button } from "@/components/Button";
 import { HandWarmer } from "@/components/HandWarmer";
 import { RevealText } from "@/components/RevealText";
 import { TiltCard } from "@/components/TiltCard";
-import { COMPARE_AT_LABEL, PRICE_LABEL, SPECS } from "@/lib/constants";
+import { LOWEST_UNIT_LABEL, PRICE_LABEL, SPECS } from "@/lib/constants";
 
 // Chaque carte = une illustration (en attendant de vraies photos) + un argument.
 const features: { title: string; text: string; bg: string; visual: ReactNode }[] = [
@@ -172,10 +172,11 @@ export function ProductShowcase() {
               Prêt·e pour l&apos;hiver&nbsp;?
             </p>
             <div className="mt-10">
+              <p className="text-sm font-semibold text-forest/80">À partir de</p>
               <p className="display text-6xl text-forest">{PRICE_LABEL}</p>
-              <p className="mt-1 text-forest/70 line-through">{COMPARE_AT_LABEL}</p>
-              <Button href="/checkout" variant="dark" size="lg" arrow className="mt-6">
-                Commander
+              <p className="mt-1 text-forest/80">ou {LOWEST_UNIT_LABEL} / unité en pack Famille</p>
+              <Button href="/#packs" variant="dark" size="lg" arrow className="mt-6">
+                Voir les packs
               </Button>
             </div>
           </div>
