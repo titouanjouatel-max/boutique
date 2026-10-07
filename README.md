@@ -41,6 +41,7 @@ Ouvrez [http://localhost:3000](http://localhost:3000).
 | Bénéfices | Disque vert qui envahit la carte depuis l'icône au survol |
 | Journée d'hiver | Ligne de temps qui se dessine au scroll |
 | Avis | Deux rangées défilantes en sens inverse, pause au survol |
+| Packs | Cartes de packs (Solo / Duo / Famille) avec économies calculées, sélection animée, lien direct vers la commande |
 | Offre | Compte à rebours à chiffres roulants, jauge de stock animée |
 | Fin de page | Typographie géante qui glisse au scroll, badge rotatif magnétique, logo du footer lettre par lettre |
 
@@ -54,14 +55,15 @@ curseur affiche une étiquette à son survol.
 - [ ] **Photos produit** : le site utilise une illustration SVG
       (`src/components/HandWarmer.tsx`). Ajoutez vos vraies photos dans
       `public/images/` et remplacez l'illustration là où vous voulez.
-- [ ] **Prix** : `price` (24,90€) et `compareAtPrice` (39,90€) sont provisoires.
+- [ ] **Prix et packs** : Solo 24,99€, Duo 44,99€ (-10%), Famille 59,99€ (-20%),
+      livraison offerte dès 2. Tout se règle dans `PACK_DEFS` (`src/lib/constants.ts`).
+      Les remises sont calculées par rapport au prix unitaire : pas de faux prix barré.
 - [ ] **Coloris au paiement** : le coloris choisi n'est pas transmis à Stripe ;
       ajoutez un champ « Coloris » à votre Payment Link.
 - [ ] **Délai de livraison** : à indiquer dans la FAQ (`src/components/FAQ.tsx`).
-- [ ] **Lien Stripe Checkout** : copier `.env.example` en `.env.local` et
-      renseigner `NEXT_PUBLIC_STRIPE_CHECKOUT_URL` avec votre vrai Payment
-      Link Stripe (ou modifier `STRIPE_CHECKOUT_URL` dans
-      `src/lib/constants.ts`).
+- [ ] **Liens Stripe** : créez un Payment Link par pack, copiez `.env.example`
+      en `.env.local` et renseignez `NEXT_PUBLIC_STRIPE_URL_SOLO`, `_DUO` et
+      `_FAMILLE`.
 - [ ] **Informations produit** : ajuster nom, prix, devise et description
       dans `src/lib/constants.ts`.
 - [ ] **Coordonnées** : mettre à jour `CONTACT` (e-mail, téléphone, adresse)

@@ -34,7 +34,7 @@ export function Footer() {
             Des mains au chaud, tout l&apos;hiver.
           </p>
           <Button href="/checkout" variant="light" size="lg" arrow className="self-start lg:self-auto">
-            Commander — {PRICE_LABEL}
+            Commander — dès {PRICE_LABEL}
           </Button>
         </div>
 

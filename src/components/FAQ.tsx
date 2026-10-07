@@ -36,6 +36,16 @@ const faqs = [
       "Si la chaleur devient trop forte, glissez-le dans une poche ou baissez le niveau pour éviter les brûlures. Ne le jetez jamais au feu et rangez-le au sec. Surveillez son usage par les enfants et les personnes peu sensibles à la chaleur.",
   },
   {
+    question: "Pourquoi prendre un pack ?",
+    answer:
+      "Chaque chauffe-mains revient moins cher : 22,50€ l'unité en pack Duo, 20,00€ en pack Famille, au lieu de 24,99€. La livraison est offerte dès 2 chauffe-mains. Pratique pour en offrir un ou équiper toute la famille.",
+  },
+  {
+    question: "Puis-je choisir des coloris différents dans un pack ?",
+    answer:
+      "Oui : précisez les coloris souhaités sur la page de paiement. TODO : ajoutez un champ « Coloris » à vos Payment Links Stripe.",
+  },
+  {
     question: "Quel est le délai de livraison ?",
     answer:
       "TODO : indiquez votre délai réel. Les commandes sont expédiées avec un numéro de suivi envoyé par e-mail.",
