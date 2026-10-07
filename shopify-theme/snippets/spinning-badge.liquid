@@ -1,0 +1,10 @@
+{%- comment -%}
+  Pastille ronde avec texte circulaire qui tourne autour d'un contenu central.
+  Paramètres : text, content (HTML central), class
+{%- endcomment -%}
+<span class="badge-spin {{ class }}">
+  <svg viewBox="0 0 100 100" aria-hidden="true" class="badge-spin__ring spin-slow">
+    <text><textPath href="#badge-circle" textLength="238" lengthAdjust="spacing">{{ text }}</textPath></text>
+  </svg>
+  <span class="badge-spin__content">{{ content }}</span>
+</span>

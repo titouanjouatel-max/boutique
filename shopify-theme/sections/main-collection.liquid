@@ -1,0 +1,15 @@
+<section class="page-shell section-pad">
+  <div class="container">
+    {%- render 'reveal-text', text: collection.title, tag: 'h1', class: 'display display-xl text-obsidian', immediate: true -%}
+    {%- paginate collection.products by 12 -%}
+      <div class="product-grid">
+        {%- for p in collection.products -%}{%- render 'product-card', product: p -%}{%- else -%}<p class="lead">Aucun produit.</p>{%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}<div class="pagination">{{ paginate | default_pagination }}</div>{%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Collection" }
+{% endschema %}

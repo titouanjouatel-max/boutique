@@ -1,0 +1,130 @@
+{%- liquid
+  capture price_from
+    render 'pack-stats', output: 'from', fallback: settings.fallback_price
+  endcapture
+  capture lowest_unit
+    render 'pack-stats', output: 'lowest_unit', fallback: '20,00 €'
+  endcapture
+-%}
+<section id="produit" class="showcase" data-showcase>
+  <div class="showcase__sticky">
+    <div class="showcase__track" data-showcase-track>
+      <div class="showcase__intro">
+        <span class="tag tag--lime">{{ section.settings.tag }}</span>
+        {%- render 'reveal-text', text: section.settings.title, class: 'display display-lg text-lime' -%}
+        <p class="showcase__lead">{{ section.settings.text }}</p>
+      </div>
+
+      {%- for block in section.blocks -%}
+        <div class="tilt showcase__card-wrap" data-tilt {{ block.shopify_attributes }}>
+          <article class="feature" data-cursor="Défilez">
+            <div class="feature__visual feature__visual--{{ block.settings.background }}">
+              <div class="feature__art">
+                {%- if block.settings.image != blank -%}
+                  {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', class: 'feature__img' }}
+                {%- else -%}
+                  {%- case block.settings.visual -%}
+                    {%- when 'double' -%}
+                      <div class="art-double">
+                        {%- render 'hand-warmer', color: 'argent', level: 3 -%}
+                        {%- render 'hand-warmer', color: 'argent', level: 3, class: 'is-flipped' -%}
+                      </div>
+                    {%- when 'levels' -%}
+                      <div class="art-levels">
+                        <div>{%- render 'hand-warmer', color: 'or', level: 1 -%}<span class="display">45°</span></div>
+                        <div>{%- render 'hand-warmer', color: 'or', level: 2 -%}<span class="display">50°</span></div>
+                        <div>{%- render 'hand-warmer', color: 'or', level: 3 -%}<span class="display">60°</span></div>
+                      </div>
+                    {%- when 'battery' -%}
+                      <div class="art-battery">
+                        {%- render 'hand-warmer', color: 'noir', level: 0, heat: false -%}
+                        <svg viewBox="0 0 60 20" class="art-battery__arrow" aria-hidden="true"><path d="M2 10 h40" stroke="currentColor" stroke-width="3" stroke-dasharray="6 5"/><path d="M42 3 l12 7 l-12 7z" fill="currentColor"/></svg>
+                        <span class="art-battery__phone">{% render 'icon', name: 'battery-charging' %}</span>
+                      </div>
+                    {%- else -%}
+                      <div class="art-pocket">
+                        {%- render 'hand-warmer', color: 'rose', level: 2 -%}
+                        <span class="art-pocket__ruler"><span></span><span class="display">10,2 cm</span><span></span></span>
+                      </div>
+                  {%- endcase -%}
+                {%- endif -%}
+              </div>
+              <span class="feature__num display">{{ forloop.index | prepend: '0' }}</span>
+            </div>
+            <div class="feature__body">
+              <h3 class="display feature__title">{{ block.settings.title }}</h3>
+              <p class="feature__text">{{ block.settings.text }}</p>
+            </div>
+          </article>
+        </div>
+      {%- endfor -%}
+
+      <div class="showcase__end">
+        <p class="display showcase__end-title">{{ section.settings.end_title }}</p>
+        <div>
+          <p class="showcase__end-small">À partir de</p>
+          <p class="display showcase__end-price">{{ price_from }}</p>
+          <p class="showcase__end-note">ou {{ lowest_unit }} / unité en pack {{ section.settings.best_pack_name }}</p>
+          {%- render 'button', href: '#packs', label: 'Voir les packs', kind: 'dark', scale: 'lg', arrow: true, attrs: 'data-anchor' -%}
+        </div>
+      </div>
+    </div>
+
+    <div class="showcase__progress container" aria-hidden="true">
+      <span>Défilez</span>
+      <div class="showcase__bar"><span data-showcase-bar></span></div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Produit (défilement)",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "Le produit" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Petit galet.|Grosse chaleur." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Aluminium, batterie rechargeable, chaleur des deux côtés. Faites défiler pour tout découvrir." },
+    { "type": "text", "id": "end_title", "label": "Carte finale — titre", "default": "Prêt·e pour l'hiver ?" },
+    { "type": "text", "id": "best_pack_name", "label": "Nom du pack le moins cher à l'unité", "default": "Famille" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Carte",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre", "default": "Chauffe double face" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Les deux faces du galet chauffent : la chaleur enveloppe toute la paume." },
+        { "type": "image_picker", "id": "image", "label": "Photo (remplace l'illustration)" },
+        {
+          "type": "select", "id": "visual", "label": "Illustration", "default": "double",
+          "options": [
+            { "value": "double", "label": "Double face" },
+            { "value": "levels", "label": "3 niveaux" },
+            { "value": "battery", "label": "Batterie externe" },
+            { "value": "pocket", "label": "Format poche" }
+          ]
+        },
+        {
+          "type": "select", "id": "background", "label": "Fond", "default": "mist",
+          "options": [
+            { "value": "mist", "label": "Vert clair" },
+            { "value": "fog", "label": "Gris" },
+            { "value": "lime", "label": "Lime" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Produit (défilement)",
+      "blocks": [
+        { "type": "feature", "settings": { "title": "Chauffe double face", "text": "Les deux faces du galet chauffent : la chaleur enveloppe toute la paume, pas seulement un point.", "visual": "double", "background": "mist" } },
+        { "type": "feature", "settings": { "title": "3 niveaux de chaleur", "text": "Environ 45 °C, 50 °C et 60 °C : les voyants rouges indiquent le niveau choisi.", "visual": "levels", "background": "fog" } },
+        { "type": "feature", "settings": { "title": "Batterie externe", "text": "Sortie USB 5 V / 1,5 A : de quoi redonner un peu d'énergie à votre téléphone en dépannage.", "visual": "battery", "background": "lime" } },
+        { "type": "feature", "settings": { "title": "Format galet de poche", "text": "102 × 59 × 24 mm, 135 g : il se glisse dans une poche de manteau, avec sa dragonne pour ne pas le perdre.", "visual": "pocket", "background": "mist" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

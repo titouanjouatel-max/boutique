@@ -1,0 +1,7 @@
+<a href="{{ product.url }}" class="product-card">
+  <span class="product-card__media">
+    {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy' }}{%- else -%}{%- render 'hand-warmer', color: 'or', level: 2 -%}{%- endif -%}
+  </span>
+  <span class="product-card__title">{{ product.title }}</span>
+  <span class="product-card__price">dès {{ product.price_min | money }}</span>
+</a>

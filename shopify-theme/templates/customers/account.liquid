@@ -1,0 +1,16 @@
+<section class="page-shell section-pad">
+  <div class="container container--text">
+    <h1 class="display display-lg text-obsidian">Mon compte</h1>
+    <p><a class="link-underline" href="{{ routes.account_logout_url }}">Se déconnecter</a> · <a class="link-underline" href="{{ routes.account_addresses_url }}">Mes adresses</a></p>
+    <h2>Mes commandes</h2>
+    {%- paginate customer.orders by 20 -%}
+      <ul class="link-list">
+        {%- for order in customer.orders -%}
+          <li><a class="link-underline" href="{{ order.customer_url }}">{{ order.name }}</a> — {{ order.created_at | date: '%d/%m/%Y' }} — {{ order.total_price | money }} — {{ order.fulfillment_status_label }}</li>
+        {%- else -%}
+          <li>Vous n'avez pas encore passé de commande.</li>
+        {%- endfor -%}
+      </ul>
+    {%- endpaginate -%}
+  </div>
+</section>

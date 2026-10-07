@@ -1,0 +1,40 @@
+{%- comment -%}
+  Illustration du chauffe-mains (galet 102 × 59 mm, bouton, voyants, port USB).
+  Paramètres :
+  - color : argent | or | rose | noir (handle du coloris Shopify)
+  - level : 0 à 3 (voyants allumés)
+  - heat  : false pour masquer les ondes de chaleur
+  - class, title
+  Le coloris et le niveau sont des attributs data-* : le JS peut les changer sans re-rendu.
+  TODO : remplacez par vos vraies photos produit quand vous les aurez.
+{%- endcomment -%}
+{%- liquid
+  assign hw_color = color | default: 'argent' | handleize
+  assign hw_level = level | default: 0
+  if level == blank
+    assign hw_level = 2
+  endif
+  assign hw_heat = true
+  if heat == false
+    assign hw_heat = false
+  endif
+-%}
+<svg class="hw {{ class }}" viewBox="0 0 200 320" data-color="{{ hw_color }}" data-level="{{ hw_level }}" data-heat="{{ hw_heat }}"
+  {%- if title != blank %} role="img" aria-label="{{ title | escape }}"{% else %} aria-hidden="true"{% endif %} focusable="false">
+  <g class="hw__waves" fill="none" stroke-width="6" stroke-linecap="round">
+    <path class="hw__wave" d="M70 52 q-10 -12 0 -24 q10 -12 0 -24"/>
+    <path class="hw__wave hw__wave--2" d="M100 48 q-10 -12 0 -24 q10 -12 0 -24"/>
+    <path class="hw__wave hw__wave--3" d="M130 52 q-10 -12 0 -24 q10 -12 0 -24"/>
+  </g>
+  <path class="hw__strap" d="M58 78 q-30 -6 -34 -40" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <rect class="hw__body" x="40" y="62" width="120" height="208" rx="60"/>
+  <rect x="40" y="62" width="120" height="208" rx="60" fill="url(#hw-shade)"/>
+  <rect class="hw__edge" x="40" y="62" width="120" height="208" rx="60" fill="none" stroke-width="2"/>
+  <rect class="hw__shine" x="62" y="80" width="14" height="150" rx="7"/>
+  <rect class="hw__port" x="86" y="58" width="28" height="8" rx="3"/>
+  <circle class="hw__btn-out" cx="100" cy="110" r="11"/>
+  <circle class="hw__btn-in" cx="100" cy="110" r="7"/>
+  <circle class="hw__led hw__led--1" cx="86" cy="238" r="4.5"/>
+  <circle class="hw__led hw__led--2" cx="100" cy="238" r="4.5"/>
+  <circle class="hw__led hw__led--3" cx="114" cy="238" r="4.5"/>
+</svg>

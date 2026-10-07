@@ -1,0 +1,20 @@
+{%- assign items = section.settings.top | split: ',' -%}
+{%- assign item_icons = 'truck,rotate-ccw,lock,gift,shield-check,flame' | split: ',' -%}
+<section class="trust-band" aria-label="Nos engagements">
+  <ul class="container trust-band__list">
+    {%- for item in items -%}
+      {%- assign item_icon = item_icons[forloop.index0] | default: 'check' -%}
+      <li data-reveal style="--d: {{ forloop.index0 | times: 0.06 }}s">{% render 'icon', name: item_icon %}{{ item | strip }}</li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Bandeau engagements",
+  "settings": [
+    { "type": "text", "id": "top", "label": "Engagements (séparés par des virgules)", "default": "Livraison suivie,Retour 30 jours,Paiement sécurisé,Idée cadeau" }
+  ],
+  "presets": [{ "name": "Bandeau engagements" }]
+}
+{% endschema %}

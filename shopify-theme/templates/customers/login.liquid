@@ -1,0 +1,17 @@
+<section class="page-shell section-pad">
+  <div class="container container--text">
+    <h1 class="display display-lg text-obsidian">Connexion</h1>
+    {%- form 'customer_login', class: 'contact-form' -%}
+      {{ form.errors | default_errors }}
+      <label>E-mail<input type="email" name="customer[email]" autocomplete="email" required></label>
+      <label>Mot de passe<input type="password" name="customer[password]" autocomplete="current-password" required></label>
+      {%- render 'button', tag: 'button', label: 'Se connecter', arrow: true -%}
+    {%- endform -%}
+    <p><a class="link-underline" href="{{ routes.account_register_url }}">Créer un compte</a></p>
+    {%- form 'recover_customer_password', class: 'contact-form' -%}
+      {%- if form.posted_successfully? -%}<p class="notice">Un e-mail de réinitialisation vous a été envoyé.</p>{%- endif -%}
+      <label>Mot de passe oublié ? Votre e-mail<input type="email" name="email" autocomplete="email"></label>
+      {%- render 'button', tag: 'button', label: 'Réinitialiser', kind: 'outline' -%}
+    {%- endform -%}
+  </div>
+</section>

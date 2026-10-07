@@ -1,0 +1,15 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "pack_option_name": "Pack",
+      "color_option_name": "Couleur",
+      "fallback_price": "24,99 €",
+      "contact_email": "contact@exemple.fr",
+      "intro_enabled": false,
+      "cursor_enabled": false,
+      "smooth_scroll": true,
+      "type_font": "inter_n4"
+    }
+  }
+}

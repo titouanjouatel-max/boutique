@@ -1,0 +1,16 @@
+<section class="page-shell section-pad">
+  <div class="container container--text">
+    <p><a class="link-underline" href="{{ routes.account_url }}">← Mon compte</a></p>
+    <h1 class="display display-lg text-obsidian">Commande {{ order.name }}</h1>
+    <p>Passée le {{ order.created_at | date: '%d/%m/%Y' }} · {{ order.financial_status_label }} · {{ order.fulfillment_status_label }}</p>
+    <ul class="link-list">
+      {%- for item in order.line_items -%}
+        <li>{{ item.title }} × {{ item.quantity }} — {{ item.final_line_price | money }}
+          {%- if item.fulfillment.tracking_url -%} · <a class="link-underline" href="{{ item.fulfillment.tracking_url }}">Suivre le colis</a>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+    <p class="cart__total"><span>Total</span><span class="display">{{ order.total_price | money }}</span></p>
+    {%- if order.shipping_address -%}<p>Livraison : {{ order.shipping_address | format_address }}</p>{%- endif -%}
+  </div>
+</section>

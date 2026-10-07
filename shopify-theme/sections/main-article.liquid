@@ -1,0 +1,13 @@
+<section class="page-shell section-pad">
+  <article class="container container--text">
+    <p class="small-note">{{ article.published_at | date: '%d/%m/%Y' }}</p>
+    <h1 class="display display-lg text-obsidian">{{ article.title }}</h1>
+    {%- if article.image -%}{{ article.image | image_url: width: 1400 | image_tag: class: 'article-image' }}{%- endif -%}
+    <div class="rte page-content">{{ article.content }}</div>
+    <a href="{{ blog.url }}" class="link-underline">← Retour au blog</a>
+  </article>
+</section>
+
+{% schema %}
+{ "name": "Article" }
+{% endschema %}

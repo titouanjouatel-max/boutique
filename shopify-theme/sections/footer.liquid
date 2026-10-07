@@ -1,0 +1,83 @@
+{%- liquid
+  assign home = routes.root_url
+  if home != '/'
+    assign home = home | append: '/'
+  endif
+  assign packs_url = home | append: '#packs'
+  capture price_from
+    render 'pack-stats', output: 'from', fallback: settings.fallback_price
+  endcapture
+  assign cta_label = section.settings.cta_label | append: ' — dès ' | append: price_from
+-%}
+<footer class="footer">
+  <div class="container">
+    <div class="footer__top">
+      <p class="display display-md footer__claim">{{ section.settings.claim }}</p>
+      {%- render 'button', href: packs_url, label: cta_label, kind: 'light', scale: 'lg', arrow: true, attrs: 'data-anchor' -%}
+    </div>
+
+    <div class="footer__cols">
+      <div>
+        <p class="footer__heading">{{ section.settings.tagline }}</p>
+        <p class="footer__about">{{ section.settings.about }}</p>
+        <div class="footer__socials">
+          {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" aria-label="Instagram" class="social">{% render 'icon', name: 'share-2' %}</a>{%- endif -%}
+          {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" aria-label="TikTok" class="social">{% render 'icon', name: 'globe' %}</a>{%- endif -%}
+          {%- if settings.contact_email != blank -%}<a href="mailto:{{ settings.contact_email }}" aria-label="E-mail" class="social">{% render 'icon', name: 'mail' %}</a>{%- endif -%}
+        </div>
+      </div>
+      <div>
+        <p class="footer__heading">Boutique</p>
+        <ul>
+          <li><a class="link-reveal" href="{{ home }}#avantages" data-anchor>Avantages</a></li>
+          <li><a class="link-reveal" href="{{ home }}#packs" data-anchor>Packs</a></li>
+          <li><a class="link-reveal" href="{{ home }}#avis" data-anchor>Avis clients</a></li>
+          <li><a class="link-reveal" href="{{ home }}#faq" data-anchor>FAQ</a></li>
+          <li><a class="link-reveal" href="{{ routes.cart_url }}">Panier</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="footer__heading">Légal</p>
+        <ul>
+          {%- for policy in shop.policies -%}
+            <li><a class="link-reveal" href="{{ policy.url }}">{{ policy.title }}</a></li>
+          {%- else -%}
+            <li>Ajoutez vos politiques dans Paramètres › Politiques.</li>
+          {%- endfor -%}
+          {%- if section.settings.contact_page != blank -%}<li><a class="link-reveal" href="{{ section.settings.contact_page.url }}">Contact</a></li>{%- endif -%}
+        </ul>
+      </div>
+      <div>
+        <p class="footer__heading">Contact</p>
+        <ul>
+          {%- if settings.contact_email != blank -%}<li><a class="link-reveal" href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a></li>{%- endif -%}
+          {%- if settings.contact_phone != blank -%}<li>{{ settings.contact_phone }}</li>{%- endif -%}
+          {%- if settings.contact_address != blank -%}<li>{{ settings.contact_address }}</li>{%- endif -%}
+        </ul>
+      </div>
+    </div>
+
+    <p class="wordmark display" aria-hidden="true" data-wordmark>
+      {%- assign letters = shop.name | upcase | split: '' -%}
+      {%- for letter in letters -%}<span class="wordmark__mask"><span class="wordmark__l" style="--i: {{ forloop.index0 }}"><span>{{ letter }}</span></span></span>{%- endfor -%}
+    </p>
+
+    <div class="footer__bottom">
+      <p>© {{ 'now' | date: '%Y' }} {{ shop.name }}. Tous droits réservés.</p>
+      <p>Paiement 100% sécurisé via Shopify</p>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "settings": [
+    { "type": "text", "id": "claim", "label": "Phrase d'accroche", "default": "Des mains au chaud, tout l'hiver." },
+    { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Commander" },
+    { "type": "text", "id": "tagline", "label": "Titre de colonne", "default": "Chauffe-mains rechargeable" },
+    { "type": "textarea", "id": "about", "label": "Présentation", "default": "Le chauffe-mains rechargeable qui chauffe des deux côtés et recharge votre téléphone en dépannage." },
+    { "type": "page", "id": "contact_page", "label": "Page contact" }
+  ]
+}
+{% endschema %}

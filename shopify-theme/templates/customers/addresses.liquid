@@ -1,0 +1,28 @@
+<section class="page-shell section-pad">
+  <div class="container container--text">
+    <p><a class="link-underline" href="{{ routes.account_url }}">← Mon compte</a></p>
+    <h1 class="display display-lg text-obsidian">Mes adresses</h1>
+    {%- paginate customer.addresses by 10 -%}
+      {%- for address in customer.addresses -%}
+        <div class="notice">{{ address | format_address }}
+          {%- form 'customer_address', address, class: 'contact-form' -%}
+            <input type="hidden" name="_method" value="delete">
+            <button type="submit" class="link-underline">Supprimer</button>
+          {%- endform -%}
+        </div>
+      {%- endfor -%}
+    {%- endpaginate -%}
+    <h2>Ajouter une adresse</h2>
+    {%- form 'customer_address', customer.new_address, class: 'contact-form' -%}
+      <label>Prénom<input type="text" name="address[first_name]" autocomplete="given-name"></label>
+      <label>Nom<input type="text" name="address[last_name]" autocomplete="family-name"></label>
+      <label>Adresse<input type="text" name="address[address1]" autocomplete="address-line1"></label>
+      <label>Ville<input type="text" name="address[city]" autocomplete="address-level2"></label>
+      <label>Code postal<input type="text" name="address[zip]" autocomplete="postal-code"></label>
+      <label>Pays<input type="text" name="address[country]" autocomplete="country-name" value="France"></label>
+      <label>Téléphone<input type="tel" name="address[phone]" autocomplete="tel"></label>
+      <label><input type="checkbox" name="address[default]" value="1"> Adresse par défaut</label>
+      {%- render 'button', tag: 'button', label: 'Enregistrer', arrow: true -%}
+    {%- endform -%}
+  </div>
+</section>

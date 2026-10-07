@@ -1,0 +1,10 @@
+<section class="page-shell section-pad">
+  <div class="container container--text">
+    {%- render 'reveal-text', text: page.title, tag: 'h1', class: 'display display-lg text-obsidian', immediate: true -%}
+    <div class="rte page-content">{{ page.content }}</div>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Page" }
+{% endschema %}

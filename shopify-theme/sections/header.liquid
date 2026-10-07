@@ -1,0 +1,104 @@
+{%- liquid
+  assign home = routes.root_url
+  if home != '/'
+    assign home = home | append: '/'
+  endif
+  assign menu = linklists[section.settings.menu]
+  assign packs_url = home | append: '#packs'
+-%}
+<header class="header" data-header>
+  {%- if section.settings.announcement != blank -%}
+    <div class="announce">
+      <p class="container">{{ section.settings.announcement }} <a href="{{ packs_url }}" data-anchor>{{ section.settings.announcement_link }} →</a></p>
+    </div>
+  {%- endif -%}
+  <div class="header__inner container">
+    <a href="{{ routes.root_url }}" class="logo" data-logo aria-label="{{ shop.name }} — accueil">
+      <span class="logo__mark">{% render 'icon', name: 'flame' %}</span>
+      <span class="logo__text">{{ shop.name }}</span>
+    </a>
+
+    <nav class="nav" aria-label="Navigation principale">
+      <span class="nav__pill" aria-hidden="true" data-nav-pill></span>
+      <ul class="nav__list" data-nav>
+        {%- if menu.links.size > 0 -%}
+          {%- for link in menu.links -%}
+            <li><a href="{{ link.url }}" class="nav__link" data-nav-link data-anchor>{{ link.title }}</a></li>
+          {%- endfor -%}
+        {%- else -%}
+          <li><a href="{{ home }}#avantages" class="nav__link" data-nav-link data-anchor>Avantages</a></li>
+          <li><a href="{{ home }}#packs" class="nav__link" data-nav-link data-anchor>Packs</a></li>
+          <li><a href="{{ home }}#avis" class="nav__link" data-nav-link data-anchor>Avis</a></li>
+          <li><a href="{{ home }}#faq" class="nav__link" data-nav-link data-anchor>FAQ</a></li>
+        {%- endif -%}
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a href="{{ routes.cart_url }}" class="cart-link" aria-label="Panier ({{ cart.item_count }})">
+        {%- render 'icon', name: 'shopping-bag' -%}
+        <span class="cart-link__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+      </a>
+      {%- render 'button', href: packs_url, label: section.settings.cta_label, class: 'header__cta', attrs: 'data-anchor' -%}
+      <button type="button" class="burger" aria-expanded="false" aria-controls="mobile-menu" aria-label="Ouvrir le menu" data-burger>
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <span class="header__progress" aria-hidden="true" data-progress></span>
+</header>
+
+<div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+  <nav aria-label="Menu mobile">
+    <ul>
+      {%- if menu.links.size > 0 -%}
+        {%- for link in menu.links -%}
+          <li><a href="{{ link.url }}" class="mobile-menu__link display" style="--i: {{ forloop.index0 }}" data-anchor>{{ link.title }}</a></li>
+        {%- endfor -%}
+      {%- else -%}
+        <li><a href="{{ home }}#avantages" class="mobile-menu__link display" style="--i: 0" data-anchor>Avantages</a></li>
+        <li><a href="{{ home }}#packs" class="mobile-menu__link display" style="--i: 1" data-anchor>Packs</a></li>
+        <li><a href="{{ home }}#avis" class="mobile-menu__link display" style="--i: 2" data-anchor>Avis</a></li>
+        <li><a href="{{ home }}#faq" class="mobile-menu__link display" style="--i: 3" data-anchor>FAQ</a></li>
+      {%- endif -%}
+    </ul>
+  </nav>
+  <div class="mobile-menu__foot">
+    {%- capture mm_label -%}{{ section.settings.cta_label }} — dès {% render 'pack-stats', output: 'from', fallback: settings.fallback_price %}{%- endcapture -%}
+    {%- render 'button', href: packs_url, label: mm_label, kind: 'light', scale: 'lg', arrow: true, attrs: 'data-anchor' -%}
+    {%- if settings.contact_email != blank -%}<p>{{ settings.contact_email }}{% if settings.contact_phone != blank %} · {{ settings.contact_phone }}{% endif %}</p>{%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu (optionnel)",
+      "info": "Laissez vide pour utiliser les ancres de la page d'accueil : Avantages, Packs, Avis, FAQ."
+    },
+    {
+      "type": "text",
+      "id": "announcement",
+      "label": "Bandeau d'annonce",
+      "default": "Livraison offerte dès 2 chauffe-mains."
+    },
+    {
+      "type": "text",
+      "id": "announcement_link",
+      "label": "Lien du bandeau",
+      "default": "Voir les packs"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Texte du bouton",
+      "default": "Commander"
+    }
+  ]
+}
+{% endschema %}

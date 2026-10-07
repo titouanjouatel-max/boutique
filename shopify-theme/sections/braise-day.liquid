@@ -1,0 +1,57 @@
+<section id="usages" class="day section-pad">
+  <div class="container">
+    <div class="center">
+      <span class="tag tag--spruce">{{ section.settings.tag }}</span>
+      {%- render 'reveal-text', text: section.settings.title, class: 'display display-xl text-lime' -%}
+    </div>
+
+    <div class="timeline" data-timeline>
+      <div class="timeline__rail" aria-hidden="true"><span data-timeline-fill></span></div>
+      {%- for block in section.blocks -%}
+        <div class="milestone {% cycle 'milestone--left', 'milestone--right' %}" data-milestone {{ block.shopify_attributes }}>
+          <span class="milestone__dot" aria-hidden="true"></span>
+          <div class="milestone__content" data-reveal-side>
+            <span class="milestone__when">{{ block.settings.when }}</span>
+            <h3 class="display display-md">{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    {%- if section.settings.note != blank -%}<p class="day__note">{{ section.settings.note }}</p>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Journée d'hiver",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "Au quotidien" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Une journée|d'hiver." },
+    { "type": "text", "id": "note", "label": "Note", "default": "* Exemple d'utilisation. L'autonomie dépend du niveau choisi et de la température extérieure." }
+  ],
+  "blocks": [
+    {
+      "type": "milestone",
+      "name": "Moment",
+      "settings": [
+        { "type": "text", "id": "when", "label": "Heure", "default": "7 h 45" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Le trajet du matin" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Niveau 2 dans la poche du manteau." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Journée d'hiver",
+      "blocks": [
+        { "type": "milestone", "settings": { "when": "7 h 45", "title": "Le trajet du matin", "text": "Niveau 2 dans la poche du manteau pendant l'attente du bus ou le trajet à pied." } },
+        { "type": "milestone", "settings": { "when": "12 h 30", "title": "La pause dehors", "text": "Un passage au niveau 3 pour se réchauffer les doigts entre deux réunions." } },
+        { "type": "milestone", "settings": { "when": "16 h 00", "title": "Téléphone à plat", "text": "Branchez votre téléphone sur sa sortie USB pour finir la journée en dépannage." } },
+        { "type": "milestone", "settings": { "when": "19 h 30", "title": "Match ou marché de Noël", "text": "Une main au chaud, l'autre sur le vin chaud. Rechargez-le en rentrant pour le lendemain." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

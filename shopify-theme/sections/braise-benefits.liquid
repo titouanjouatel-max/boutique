@@ -1,0 +1,75 @@
+<section id="avantages" class="benefits section-pad" aria-labelledby="benefits-title-{{ section.id }}">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="tag tag--paper">{{ section.settings.tag }}</span>
+        {%- assign benefits_id = 'benefits-title-' | append: section.id -%}
+        {%- render 'reveal-text', text: section.settings.title, id: benefits_id, class: 'display display-lg text-obsidian' -%}
+      </div>
+      <p class="lead" data-reveal style="--d: .2s">{{ section.settings.text }}</p>
+    </div>
+
+    <div class="benefits__grid">
+      {%- for block in section.blocks -%}
+        {%- assign benefit_icon = block.settings.icon -%}
+        <div data-reveal style="--d: {{ forloop.index0 | modulo: 3 | times: 0.1 }}s" {{ block.shopify_attributes }}>
+          <article class="benefit">
+            <span class="benefit__disc" aria-hidden="true"></span>
+            <div class="benefit__in">
+              <span class="benefit__icon">{% render 'icon', name: benefit_icon %}</span>
+              <h3>{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          </article>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Bénéfices",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "Bénéfices" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Six bonnes|raisons." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Ce que le chauffe-mains change dans vos journées d'hiver. Survolez les cartes pour les découvrir." }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Bénéfice",
+      "settings": [
+        {
+          "type": "select", "id": "icon", "label": "Icône", "default": "flame",
+          "options": [
+            { "value": "timer", "label": "Chrono" },
+            { "value": "flame", "label": "Flamme" },
+            { "value": "leaf", "label": "Feuille" },
+            { "value": "battery-charging", "label": "Batterie" },
+            { "value": "ruler", "label": "Règle" },
+            { "value": "gift", "label": "Cadeau" },
+            { "value": "truck", "label": "Camion" },
+            { "value": "shield-check", "label": "Bouclier" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Deux faces chauffantes" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Les deux côtés du galet chauffent : toute la paume en profite." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bénéfices",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "timer", "title": "Chaud très vite", "text": "La chaleur monte en une trentaine de secondes après l'allumage, d'après la notice." } },
+        { "type": "benefit", "settings": { "icon": "flame", "title": "Deux faces chauffantes", "text": "Les deux côtés du galet chauffent : toute la paume en profite." } },
+        { "type": "benefit", "settings": { "icon": "leaf", "title": "Fini le jetable", "text": "Une batterie rechargeable remplace les chaufferettes à usage unique, hiver après hiver." } },
+        { "type": "benefit", "settings": { "icon": "battery-charging", "title": "Batterie de secours", "text": "Sa sortie USB 5 V / 1,5 A dépanne votre téléphone quand il tombe à plat." } },
+        { "type": "benefit", "settings": { "icon": "ruler", "title": "Format poche", "text": "102 × 59 × 24 mm pour 135 g, avec une dragonne pour l'avoir toujours sous la main." } },
+        { "type": "benefit", "settings": { "icon": "gift", "title": "Prêt à offrir", "text": "Livré dans sa boîte cadeau avec câble USB et notice. Quatre coloris au choix." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+<section class="page-shell section-pad">
+  <div class="container">
+    {%- render 'reveal-text', text: 'Collections', tag: 'h1', class: 'display display-xl text-obsidian', immediate: true -%}
+    <ul class="link-list">
+      {%- for c in collections -%}<li><a class="link-underline" href="{{ c.url }}">{{ c.title }}</a></li>{%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Liste des collections" }
+{% endschema %}

@@ -1,0 +1,21 @@
+<section class="page-shell section-pad">
+  <div class="container">
+    {%- render 'reveal-text', text: 'Recherche', tag: 'h1', class: 'display display-xl text-obsidian', immediate: true -%}
+    <form action="{{ routes.search_url }}" method="get" class="search-form">
+      <label class="visually-hidden" for="q">Rechercher</label>
+      <input id="q" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Rechercher…">
+      {%- render 'button', tag: 'button', label: 'Rechercher' -%}
+    </form>
+    {%- if search.performed -%}
+      <div class="product-grid">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}{%- render 'product-card', product: item -%}{%- else -%}<a class="link-underline" href="{{ item.url }}">{{ item.title }}</a>{%- endif -%}
+        {%- else -%}<p class="lead">Aucun résultat.</p>{%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Recherche" }
+{% endschema %}

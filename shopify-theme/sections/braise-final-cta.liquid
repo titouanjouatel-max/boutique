@@ -1,0 +1,33 @@
+{%- capture price_from -%}{%- render 'pack-stats', output: 'from', fallback: settings.fallback_price -%}{%- endcapture -%}
+<section class="final-cta" aria-label="Commander" data-final-cta>
+  <div aria-hidden="true" class="final-cta__rows">
+    <p class="display display-giant final-cta__row final-cta__row--forest" data-final-row="left">{{ section.settings.row }}{{ section.settings.row }}</p>
+    <p class="display display-giant final-cta__row final-cta__row--fog" data-final-row="right">{{ section.settings.row }}{{ section.settings.row }}</p>
+  </div>
+  <div class="final-cta__center">
+    <div class="magnetic" data-magnetic data-strength="0.4">
+      <a href="#packs" class="final-cta__link" data-anchor>
+        {%- capture badge_content -%}
+          <span class="final-cta__badge-in">
+            {%- render 'icon', name: 'arrow-up-right', class: 'icon final-cta__arrow' -%}
+            <span class="small">dès</span>
+            <span class="display final-cta__price">{{ price_from }}</span>
+            <span class="small">Commander</span>
+          </span>
+        {%- endcapture -%}
+        {%- render 'spinning-badge', text: section.settings.badge_text, content: badge_content, class: 'badge-spin--lime final-cta__badge' -%}
+      </a>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Appel final",
+  "settings": [
+    { "type": "text", "id": "row", "label": "Texte géant", "default": "Commandez ✦ Mains au chaud ✦ " },
+    { "type": "text", "id": "badge_text", "label": "Texte du badge", "default": "Livraison offerte dès 2 • Retour 30 jours • " }
+  ],
+  "presets": [{ "name": "Appel final" }]
+}
+{% endschema %}

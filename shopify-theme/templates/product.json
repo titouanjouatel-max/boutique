@@ -1,0 +1,153 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {},
+      "blocks": {
+        "pack-1": {
+          "type": "pack",
+          "settings": {
+            "option_value": "Solo ×1",
+            "tagline": "Pour vous",
+            "free_shipping": false
+          }
+        },
+        "pack-2": {
+          "type": "pack",
+          "settings": {
+            "option_value": "Duo ×2",
+            "tagline": "Un pour vous, un à offrir",
+            "badge": "Le plus choisi",
+            "free_shipping": true,
+            "is_default": true
+          }
+        },
+        "pack-3": {
+          "type": "pack",
+          "settings": {
+            "option_value": "Famille ×3",
+            "tagline": "Toute la famille au chaud",
+            "badge": "Meilleur prix",
+            "free_shipping": true
+          }
+        }
+      },
+      "block_order": [
+        "pack-1",
+        "pack-2",
+        "pack-3"
+      ]
+    },
+    "reviews": {
+      "type": "braise-reviews",
+      "settings": {},
+      "blocks": {
+        "review-1": {
+          "type": "review",
+          "settings": {
+            "name": "Camille",
+            "location": "Lyon",
+            "rating": 5,
+            "text": "Je l'ai dans la poche du manteau tous les matins pour le trajet. Plus besoin de gants pour attendre le tram."
+          }
+        },
+        "review-2": {
+          "type": "review",
+          "settings": {
+            "name": "Thomas",
+            "location": "Grenoble",
+            "rating": 5,
+            "text": "Indispensable au stade. Le niveau 3 chauffe vraiment, je repasse au 2 au bout d'un moment."
+          }
+        },
+        "review-3": {
+          "type": "review",
+          "settings": {
+            "name": "Julie",
+            "location": "Lille",
+            "rating": 4,
+            "text": "Joli en rose, tient bien en main. J'aurais aimé un peu plus d'autonomie au niveau max."
+          }
+        },
+        "review-4": {
+          "type": "review",
+          "settings": {
+            "name": "Nadia",
+            "location": "Strasbourg",
+            "rating": 5,
+            "text": "Offert à ma mère qui a toujours les mains gelées. Elle l'utilise même devant la télé."
+          }
+        },
+        "review-5": {
+          "type": "review",
+          "settings": {
+            "name": "Hugo",
+            "location": "Annecy",
+            "rating": 5,
+            "text": "Pratique en rando : il m'a dépanné le téléphone quand la batterie est tombée à 5 %."
+          }
+        }
+      },
+      "block_order": [
+        "review-1",
+        "review-2",
+        "review-3",
+        "review-4",
+        "review-5"
+      ]
+    },
+    "faq": {
+      "type": "braise-faq",
+      "settings": {},
+      "blocks": {
+        "question-1": {
+          "type": "question",
+          "settings": {
+            "question": "Combien de temps chauffe-t-il ?",
+            "answer": "<p>Cela dépend du niveau et du froid extérieur. D'après les retours d'utilisateurs, comptez environ 1 h 30 à 2 h au niveau 2, et moins au niveau 3 par grand froid. Il se recharge ensuite en USB.</p>"
+          }
+        },
+        "question-3": {
+          "type": "question",
+          "settings": {
+            "question": "Comment le recharger ?",
+            "answer": "<p>Avec le câble USB fourni, sur n'importe quel chargeur 5 V / 1 A. Les voyants bleus clignotent pendant la charge et restent fixes quand la batterie est pleine. La notice indique environ 5 h pour une charge complète.</p>"
+          }
+        },
+        "question-6": {
+          "type": "question",
+          "settings": {
+            "question": "Pourquoi prendre un pack ?",
+            "answer": "<p>Chaque chauffe-mains revient moins cher : 22,50 € l'unité en pack Duo, 20,00 € en pack Famille, au lieu de 24,99 €. La livraison est offerte dès 2 chauffe-mains. Pratique pour en offrir un ou équiper toute la famille.</p>"
+          }
+        },
+        "question-8": {
+          "type": "question",
+          "settings": {
+            "question": "Quel est le délai de livraison ?",
+            "answer": "<p>À COMPLÉTER : indiquez votre délai réel. Les commandes sont expédiées avec un numéro de suivi envoyé par e-mail.</p>"
+          }
+        },
+        "question-9": {
+          "type": "question",
+          "settings": {
+            "question": "Et si je ne suis pas satisfait(e) ?",
+            "answer": "<p>Vous disposez de 30 jours pour nous le retourner et être remboursé(e). Voir notre politique de remboursement pour les conditions.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "question-1",
+        "question-3",
+        "question-6",
+        "question-8",
+        "question-9"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "reviews",
+    "faq"
+  ]
+}

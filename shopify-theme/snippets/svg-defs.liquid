@@ -1,0 +1,15 @@
+{%- comment -%}
+  Définitions SVG partagées (dégradé d'ombre du chauffe-mains, cercle des badges rotatifs).
+  Placées une seule fois dans la page, invisibles mais pas en display:none.
+{%- endcomment -%}
+<svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="hw-shade" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.32"/>
+      <stop offset="0.35" stop-color="#000" stop-opacity="0"/>
+      <stop offset="0.6" stop-color="#000" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.32"/>
+    </linearGradient>
+    <path id="badge-circle" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/>
+  </defs>
+</svg>

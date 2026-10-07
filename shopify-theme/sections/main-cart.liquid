@@ -1,0 +1,43 @@
+<section class="page-shell section-pad">
+  <div class="container">
+    {%- render 'reveal-text', text: 'Votre|panier.', tag: 'h1', class: 'display display-xl text-obsidian', immediate: true -%}
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" class="cart">
+        <ul class="cart__items">
+          {%- for item in cart.items -%}
+            <li class="cart-item">
+              <div class="cart-item__media">
+                {%- if item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy' }}{%- else -%}{%- render 'hand-warmer', color: 'or', level: 2 -%}{%- endif -%}
+              </div>
+              <div class="cart-item__info">
+                <a href="{{ item.url }}" class="cart-item__title">{{ item.product.title }}</a>
+                {%- unless item.product.has_only_default_variant -%}<p class="cart-item__variant">{{ item.variant.title }}</p>{%- endunless -%}
+                <p class="cart-item__price">{{ item.final_line_price | money }}</p>
+              </div>
+              <div class="qty">
+                <label class="visually-hidden" for="qty-{{ forloop.index }}">Quantité</label>
+                <input id="qty-{{ forloop.index }}" type="number" name="updates[]" value="{{ item.quantity }}" min="0">
+              </div>
+              <a href="{{ item.url_to_remove }}" class="cart-item__remove" aria-label="Retirer">{% render 'icon', name: 'x' %}</a>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="cart__summary">
+          <p class="cart__total"><span>Total</span><span class="display">{{ cart.total_price | money }}</span></p>
+          <p class="small-note">Taxes incluses. Frais de port calculés au paiement.</p>
+          <div class="cart__actions">
+            <button type="submit" name="update" class="link-underline">Mettre à jour</button>
+            {%- render 'button', tag: 'button', label: 'Payer', scale: 'lg', arrow: true, attrs: 'name="checkout"' -%}
+          </div>
+        </div>
+      </form>
+    {%- else -%}
+      <p class="lead">Votre panier est vide.</p>
+      {%- render 'button', href: routes.root_url, label: 'Retour à la boutique', arrow: true -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Panier" }
+{% endschema %}

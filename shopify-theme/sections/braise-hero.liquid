@@ -1,0 +1,89 @@
+{%- liquid
+  assign words = section.settings.rotating_words | split: ','
+  capture price_from
+    render 'pack-stats', output: 'from', fallback: settings.fallback_price
+  endcapture
+  capture max_saving
+    render 'pack-stats', output: 'max_saving', fallback: '20'
+  endcapture
+  assign cta_label = section.settings.cta_label | append: ' — dès ' | append: price_from
+-%}
+<section id="top" class="hero" data-hero>
+  <div class="container hero__grid">
+    <div class="hero__copy" data-hero-head>
+      <p class="hero__chip" data-intro-anim style="--d: 0s">
+        <span class="ping" aria-hidden="true"><span></span><span></span></span>
+        {{ section.settings.chip }}
+      </p>
+
+      <h1 class="display display-hero hero__title" aria-label="{{ section.settings.line_1 | escape }} {{ words.first | strip | escape }} {{ section.settings.line_3 | escape }}">
+        <span aria-hidden="true">
+          <span class="hero__line"><span class="hero__line-in" style="--d: 0s">{{ section.settings.line_1 }}</span></span>
+          <span class="hero__line">
+            <span class="hero__line-in" style="--d: .08s">
+              <span class="rotator" data-rotator data-words="{{ section.settings.rotating_words | escape }}">
+                <span class="rotator__word">{{ words.first | strip }}</span>
+              </span>
+            </span>
+          </span>
+          <span class="hero__line"><span class="hero__line-in" style="--d: .16s">{{ section.settings.line_3 }}</span></span>
+        </span>
+      </h1>
+
+      <div class="hero__text rte" data-intro-anim style="--d: .3s">{{ section.settings.text }}</div>
+
+      <div class="hero__actions" data-intro-anim style="--d: .4s">
+        {%- render 'button', href: '#packs', label: cta_label, scale: 'lg', arrow: true, attrs: 'data-anchor' -%}
+        <a href="#avantages" class="ghost-link" data-anchor>{% render 'icon', name: 'arrow-up-right' %}{{ section.settings.secondary_label }}</a>
+      </div>
+
+      <ul class="hero__perks" data-intro-anim style="--d: .5s">
+        {%- assign perk_icons = 'flame,battery-charging,truck,shield-check' | split: ',' -%}
+        {%- assign perks = section.settings.perks | split: ',' -%}
+        {%- for perk in perks -%}
+          {%- assign perk_icon = perk_icons[forloop.index0] | default: 'check' -%}
+          <li>{% render 'icon', name: perk_icon %}{{ perk | strip }}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+
+    <div class="hero__visual" data-hero-visual data-intro-anim style="--d: .2s">
+      {%- if section.settings.image != blank -%}
+        {{ section.settings.image | image_url: width: 1400 | image_tag: class: 'hero__photo', loading: 'eager', sizes: '(min-width: 1024px) 600px, 100vw' }}
+      {%- else -%}
+        <p class="hero__caption">{{ section.settings.caption }}</p>
+        <div class="hero__main" data-hero-warmer>
+          {%- render 'hand-warmer', color: 'or', level: 3, title: 'Chauffe-mains, coloris or, niveau 3' -%}
+        </div>
+        <div class="hero__side hero__side--left">{%- render 'hand-warmer', color: 'noir', level: 0, heat: false -%}</div>
+        <div class="hero__side hero__side--right">{%- render 'hand-warmer', color: 'rose', level: 0, heat: false -%}</div>
+      {%- endif -%}
+      <div class="hero__badge">
+        <span class="hero__badge-num">-{{ max_saving | strip }}%</span>
+        <span>{{ section.settings.badge_text }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero BRAISE",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "chip", "label": "Pastille", "default": "Rechargeable · 3 niveaux · jusqu'à 60 °C" },
+    { "type": "text", "id": "line_1", "label": "Titre — ligne 1", "default": "Vos mains" },
+    { "type": "text", "id": "rotating_words", "label": "Mots qui tournent (séparés par des virgules)", "default": "au chaud,réchauffées,dégelées" },
+    { "type": "text", "id": "line_3", "label": "Titre — ligne 3", "default": "tout l'hiver." },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Un galet en aluminium qui chauffe des deux côtés, se glisse dans la poche et recharge votre téléphone en dépannage. Fini les chaufferettes jetables.</p>" },
+    { "type": "text", "id": "cta_label", "label": "Bouton principal", "default": "Commander" },
+    { "type": "text", "id": "secondary_label", "label": "Lien secondaire", "default": "Pourquoi l'adopter" },
+    { "type": "text", "id": "perks", "label": "Arguments (séparés par des virgules, 4 max)", "default": "Chauffe double face,Batterie externe USB,Livraison suivie,Retour 30 jours" },
+    { "type": "header", "content": "Visuel" },
+    { "type": "image_picker", "id": "image", "label": "Photo (remplace l'illustration)", "info": "Photo produit sur fond clair, format carré conseillé." },
+    { "type": "text", "id": "caption", "label": "Légende", "default": "Niveau 3 · environ 60 °C d'après la notice" },
+    { "type": "text", "id": "badge_text", "label": "Texte sous la remise", "default": "en pack Famille" }
+  ],
+  "presets": [{ "name": "Hero BRAISE" }]
+}
+{% endschema %}

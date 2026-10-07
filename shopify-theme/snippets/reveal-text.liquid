@@ -1,0 +1,23 @@
+{%- comment -%}
+  Titre d'affichage dont chaque mot surgit d'un masque, en cascade.
+  Paramètres : text (« | » = retour à la ligne), tag (h1, h2, p…), class, id, immediate (true = au chargement)
+{%- endcomment -%}
+{%- liquid
+  assign rt_tag = tag | default: 'h2'
+  assign rt_lines = text | split: '|'
+  assign rt_label = text | replace: '|', ' '
+  assign rt_i = 0
+-%}
+<{{ rt_tag }}{% if id %} id="{{ id }}"{% endif %} class="reveal-text {{ class }}" aria-label="{{ rt_label | strip | escape }}" data-reveal-text{% if immediate %} data-immediate{% endif %}>
+  <span aria-hidden="true" class="reveal-text__inner">
+    {%- for line in rt_lines -%}
+      <span class="reveal-text__line">
+        {%- assign rt_words = line | strip | split: ' ' -%}
+        {%- for word in rt_words -%}
+          <span class="reveal-text__mask"><span class="reveal-text__word" style="--i: {{ rt_i }}">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+          {%- assign rt_i = rt_i | plus: 1 -%}
+        {%- endfor -%}
+      </span>
+    {%- endfor -%}
+  </span>
+</{{ rt_tag }}>

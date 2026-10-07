@@ -1,0 +1,26 @@
+{%- comment -%}
+  Pilule Wise : remplissage qui monte au survol + libellé qui « roule ».
+  Paramètres : href, label, kind (primary | dark | outline | light), scale (md | lg), arrow (true), class,
+  tag ('button' pour un <button type="submit">), attrs (attributs bruts supplémentaires)
+{%- endcomment -%}
+{%- liquid
+  assign b_variant = kind | default: 'primary'
+  assign b_size = scale | default: 'md'
+  assign b_class = 'btn btn--' | append: b_variant | append: ' btn--' | append: b_size
+  if arrow
+    assign b_class = b_class | append: ' btn--arrow'
+  endif
+  if class
+    assign b_class = b_class | append: ' ' | append: class
+  endif
+-%}
+{%- capture b_inner -%}
+  <span class="btn__fill" aria-hidden="true"></span>
+  <span class="btn__label"><span class="btn__text">{{ label }}</span><span class="btn__text btn__text--clone" aria-hidden="true">{{ label }}</span></span>
+  {%- if arrow -%}<span class="btn__arrow" aria-hidden="true">{% render 'icon', name: 'arrow-up-right' %}</span>{%- endif -%}
+{%- endcapture -%}
+{%- if tag == 'button' -%}
+  <button type="submit" class="{{ b_class }}" {{ attrs }}>{{ b_inner }}</button>
+{%- else -%}
+  <a href="{{ href }}" class="{{ b_class }}" {{ attrs }}>{{ b_inner }}</a>
+{%- endif -%}

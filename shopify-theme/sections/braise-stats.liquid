@@ -1,0 +1,42 @@
+<section class="stats section-pad-sm" aria-label="{{ shop.name }} en chiffres">
+  <div class="container stats__grid">
+    {%- for block in section.blocks -%}
+      <div class="stat" data-reveal style="--d: {{ forloop.index0 | times: 0.1 }}s" {{ block.shopify_attributes }}>
+        <p class="visually-hidden">{{ block.settings.value }}{{ block.settings.suffix }} {{ block.settings.label }}</p>
+        <p class="stat__value display" aria-hidden="true"><span data-counter="{{ block.settings.value }}">0</span>{%- if block.settings.suffix != blank -%}<span class="stat__suffix">{{ block.settings.suffix }}</span>{%- endif -%}</p>
+        <p class="stat__label" aria-hidden="true">{{ block.settings.label }}</p>
+        <p class="stat__detail">{{ block.settings.detail }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Chiffres clés",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Chiffre",
+      "settings": [
+        { "type": "number", "id": "value", "label": "Valeur", "default": 3 },
+        { "type": "text", "id": "suffix", "label": "Suffixe" },
+        { "type": "text", "id": "label", "label": "Libellé", "default": "niveaux de chaleur" },
+        { "type": "text", "id": "detail", "label": "Détail", "default": "Environ 45, 50 et 60 °C" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chiffres clés",
+      "blocks": [
+        { "type": "stat", "settings": { "value": 3, "label": "niveaux de chaleur", "detail": "Environ 45, 50 et 60 °C" } },
+        { "type": "stat", "settings": { "value": 60, "suffix": "°C", "label": "au niveau max", "detail": "Valeur indiquée par la notice" } },
+        { "type": "stat", "settings": { "value": 135, "suffix": "g", "label": "seulement", "detail": "102 × 59 × 24 mm" } },
+        { "type": "stat", "settings": { "value": 4, "label": "coloris", "detail": "Argent, Or, Rose, Noir" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

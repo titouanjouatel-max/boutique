@@ -1,0 +1,71 @@
+{%- liquid
+  assign pk_product = section.settings.product
+  if pk_product == blank
+    assign pk_product = settings.featured_product
+  endif
+  if pk_product != blank and pk_product.id == blank
+    assign pk_product = all_products[pk_product]
+  endif
+  capture max_saving
+    render 'pack-stats', source: pk_product, output: 'max_saving', fallback: '20'
+  endcapture
+-%}
+<section id="packs" class="packs-section section-pad">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <span class="tag tag--forest">{{ section.settings.tag | replace: '[remise]', max_saving }}</span>
+        {%- render 'reveal-text', text: section.settings.title, class: 'display display-lg text-obsidian' -%}
+      </div>
+      <p class="lead" data-reveal style="--d: .2s">{{ section.settings.text }}</p>
+    </div>
+
+    <div class="packs-section__box" data-reveal>
+      {%- if pk_product != blank and pk_product.id != blank -%}
+        {%- render 'buy-box', product: pk_product, section: section -%}
+      {%- else -%}
+        <div class="notice">
+          <strong>Aucun produit choisi.</strong>
+          Importez le fichier <code>produit-braise.csv</code> (Produits › Importer), puis choisissez le produit dans
+          Personnaliser › Paramètres du thème › Produit, ou dans cette section.
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Packs (achat)",
+  "settings": [
+    { "type": "product", "id": "product", "label": "Produit", "info": "Vide = produit vedette des paramètres du thème." },
+    { "type": "text", "id": "tag", "label": "Étiquette", "info": "[remise] = meilleure remise calculée", "default": "Jusqu'à -[remise]% en pack" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Plus on est,|moins c'est cher." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Un pour vous, un pour offrir, un pour la voiture : les packs font baisser le prix de chaque chauffe-mains." },
+    { "type": "text", "id": "shipping_note", "label": "Mention livraison", "default": "Livraison offerte dès 2" }
+  ],
+  "blocks": [
+    {
+      "type": "pack",
+      "name": "Pack",
+      "settings": [
+        { "type": "text", "id": "option_value", "label": "Valeur de l'option Pack", "info": "Exactement comme dans Shopify, ex. « Duo ×2 ».", "default": "Duo ×2" },
+        { "type": "text", "id": "tagline", "label": "Accroche", "default": "Un pour vous, un à offrir" },
+        { "type": "text", "id": "badge", "label": "Badge" },
+        { "type": "checkbox", "id": "free_shipping", "label": "Afficher « Livraison offerte »", "default": false },
+        { "type": "checkbox", "id": "is_default", "label": "Sélectionné par défaut", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Packs (achat)",
+      "blocks": [
+        { "type": "pack", "settings": { "option_value": "Solo ×1", "tagline": "Pour vous", "free_shipping": false } },
+        { "type": "pack", "settings": { "option_value": "Duo ×2", "tagline": "Un pour vous, un à offrir", "badge": "Le plus choisi", "free_shipping": true, "is_default": true } },
+        { "type": "pack", "settings": { "option_value": "Famille ×3", "tagline": "Toute la famille au chaud", "badge": "Meilleur prix", "free_shipping": true } }
+      ]
+    }
+  ]
+}
+{% endschema %}

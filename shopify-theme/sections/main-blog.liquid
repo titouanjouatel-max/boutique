@@ -1,0 +1,22 @@
+<section class="page-shell section-pad">
+  <div class="container">
+    {%- render 'reveal-text', text: blog.title, tag: 'h1', class: 'display display-xl text-obsidian', immediate: true -%}
+    {%- paginate blog.articles by 9 -%}
+      <div class="article-grid">
+        {%- for article in blog.articles -%}
+          <a href="{{ article.url }}" class="article-card">
+            {%- if article.image -%}{{ article.image | image_url: width: 800 | image_tag: loading: 'lazy' }}{%- endif -%}
+            <span class="small-note">{{ article.published_at | date: '%d/%m/%Y' }}</span>
+            <h2>{{ article.title }}</h2>
+            <p>{{ article.excerpt_or_content | strip_html | truncate: 140 }}</p>
+          </a>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}<div class="pagination">{{ paginate | default_pagination }}</div>{%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{ "name": "Blog" }
+{% endschema %}

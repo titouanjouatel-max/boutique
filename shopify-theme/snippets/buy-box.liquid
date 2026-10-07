@@ -1,0 +1,223 @@
+{%- comment -%}
+  Choix du pack + coloris, puis ajout au panier et redirection directe vers le paiement Shopify.
+  Paramètres :
+  - product : le produit (options « Pack » et « Couleur », voir README)
+  - section : la section appelante (ses blocs « pack » donnent badge, accroche, livraison)
+  Les valeurs de l'option Pack finissent par « ×N » : « Solo ×1 », « Duo ×2 », « Famille ×3 ».
+  Les économies sont calculées par rapport au prix du pack ×1 : pas de faux prix barré.
+{%- endcomment -%}
+{%- liquid
+  assign pack_target = settings.pack_option_name | default: 'Pack' | downcase | strip
+  assign color_target = settings.color_option_name | default: 'Couleur' | downcase | strip
+  assign pack_index = 0
+  assign color_index = 0
+  for option in product.options_with_values
+    assign oname = option.name | downcase | strip
+    if oname == pack_target
+      assign pack_index = forloop.index
+      assign pack_values = option.values
+    elsif oname == color_target
+      assign color_index = forloop.index
+      assign color_values = option.values
+    endif
+  endfor
+  if pack_index == 0
+    assign pack_values = 'Unité ×1' | split: '|'
+  endif
+
+  assign current = product.selected_or_first_available_variant
+  assign current_color = ''
+  case color_index
+    when 1
+      assign current_color = current.option1
+    when 2
+      assign current_color = current.option2
+    when 3
+      assign current_color = current.option3
+  endcase
+
+  comment
+    Pack sélectionné par défaut : le bloc coché « par défaut », sinon le 2e pack, sinon le 1er.
+  endcomment
+  assign default_pack = pack_values[1] | default: pack_values[0]
+  for block in section.blocks
+    if block.type == 'pack' and block.settings.is_default
+      for value in pack_values
+        assign v_clean = value | strip | downcase
+        assign b_clean = block.settings.option_value | strip | downcase
+        if v_clean == b_clean
+          assign default_pack = value
+        endif
+      endfor
+    endif
+  endfor
+
+  comment
+    Prix unitaire de référence : la variante ×1 du coloris courant.
+  endcomment
+  assign unit_price = product.price_min
+  for v in product.variants
+    case pack_index
+      when 1
+        assign v_pack = v.option1
+      when 2
+        assign v_pack = v.option2
+      when 3
+        assign v_pack = v.option3
+      else
+        assign v_pack = '×1'
+    endcase
+    assign v_qty = v_pack | split: '×' | last | strip | plus: 0
+    if v_qty <= 1
+      case color_index
+        when 1
+          assign v_color = v.option1
+        when 2
+          assign v_color = v.option2
+        when 3
+          assign v_color = v.option3
+        else
+          assign v_color = ''
+      endcase
+      if v_color == current_color
+        assign unit_price = v.price
+      endif
+    endif
+  endfor
+
+  assign uid = section.id | append: '-' | append: product.id
+-%}
+
+<div class="buybox" data-buybox data-pack-index="{{ pack_index }}" data-color-index="{{ color_index }}" data-money-format="{{ shop.money_format | strip_html | escape }}">
+  <script type="application/json" data-product-json>{{ product | json }}</script>
+
+  {%- form 'product', product, class: 'buybox__form', data-buybox-form: '' -%}
+    <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+    <input type="hidden" name="quantity" value="1">
+    <input type="hidden" name="return_to" value="{% if routes.root_url == '/' %}/checkout{% else %}{{ routes.root_url }}/checkout{% endif %}">
+
+    {%- if color_index > 0 -%}
+      <fieldset class="buybox__colors">
+        <legend class="buybox__legend">Coloris : <span data-color-label>{{ current_color }}</span></legend>
+        <div class="swatches">
+          {%- for value in color_values -%}
+            <label class="swatch" title="{{ value | escape }}">
+              <input type="radio" name="color-{{ uid }}" value="{{ value | escape }}" data-color-input{% if value == current_color %} checked{% endif %}>
+              <span class="swatch__dot hw-swatch" data-color="{{ value | handleize }}"></span>
+              <span class="visually-hidden">{{ value }}</span>
+            </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    {%- endif -%}
+
+    <div class="packs" role="radiogroup" aria-label="Choix du pack">
+      {%- for value in pack_values -%}
+        {%- liquid
+          assign qty = value | split: '×' | last | strip | plus: 0
+          if qty < 1
+            assign qty = 1
+          endif
+          assign pack_name = value | split: '×' | first | strip
+          assign pack_block = nil
+          for block in section.blocks
+            assign b_clean = block.settings.option_value | strip | downcase
+            assign v_clean = value | strip | downcase
+            if block.type == 'pack' and b_clean == v_clean
+              assign pack_block = block
+            endif
+          endfor
+
+          assign pack_variant = nil
+          for v in product.variants
+            case pack_index
+              when 1
+                assign v_pack = v.option1
+              when 2
+                assign v_pack = v.option2
+              when 3
+                assign v_pack = v.option3
+              else
+                assign v_pack = value
+            endcase
+            case color_index
+              when 1
+                assign v_color = v.option1
+              when 2
+                assign v_color = v.option2
+              when 3
+                assign v_color = v.option3
+              else
+                assign v_color = current_color
+            endcase
+            if v_pack == value and v_color == current_color and pack_variant == nil
+              assign pack_variant = v
+            endif
+          endfor
+          assign pack_price = pack_variant.price | default: 0
+          assign full_price = unit_price | times: qty
+          assign saving = full_price | minus: pack_price
+          assign per_unit = pack_price | times: 1.0 | divided_by: qty | round
+          assign half = full_price | divided_by: 2
+          assign saving_percent = 0
+          if full_price > 0 and saving > 0
+            assign saving_percent = saving | times: 100 | plus: half | divided_by: full_price
+          endif
+          assign selected = false
+          if value == default_pack
+            assign selected = true
+          endif
+        -%}
+        <label class="pack{% if selected %} is-selected{% endif %}" data-pack data-qty="{{ qty }}" data-cursor="Choisir">
+          <input type="radio" class="visually-hidden" name="pack-{{ uid }}" value="{{ value | escape }}" data-pack-input{% if selected %} checked{% endif %}>
+          {%- if pack_block.settings.badge != blank -%}
+            <span class="pack__badge">{{ pack_block.settings.badge }}</span>
+          {%- endif -%}
+          <span class="pack__visual" aria-hidden="true">
+            {%- for i in (1..qty) -%}
+              {%- assign tilt = forloop.index0 | times: 2 | minus: qty | plus: 1 | times: 5 -%}
+              <span class="pack__unit" style="--tilt: {{ tilt }}deg; --delay: {{ forloop.index0 | times: 0.15 }}s">
+                {%- render 'hand-warmer', color: current_color, level: 2 -%}
+              </span>
+            {%- endfor -%}
+          </span>
+          <span class="pack__body">
+            <span class="pack__head">
+              <span class="pack__check" aria-hidden="true">{% render 'icon', name: 'check', stroke: 3 %}</span>
+              <span class="pack__name">{{ pack_name }} · {{ qty }} chauffe-mains</span>
+            </span>
+            {%- if pack_block.settings.tagline != blank -%}
+              <span class="pack__tagline">{{ pack_block.settings.tagline }}</span>
+            {%- endif -%}
+            <span class="pack__prices">
+              <span>
+                <span class="pack__price display" data-pack-price>{{ pack_price | money }}</span>
+                <span class="pack__unit-price">soit <span data-pack-unit>{{ per_unit | money }}</span> / unité</span>
+              </span>
+              <span class="pack__saving"{% if saving <= 0 %} hidden{% endif %} data-pack-saving>
+                -<span data-pack-saving-amount>{{ saving | money }}</span> (-<span data-pack-saving-percent>{{ saving_percent }}</span>%)
+              </span>
+            </span>
+            <span class="pack__shipping">
+              {%- render 'icon', name: 'truck' -%}
+              {%- if pack_block.settings.free_shipping -%}Livraison offerte{%- else -%}Livraison suivie{%- endif -%}
+            </span>
+          </span>
+        </label>
+      {%- endfor -%}
+    </div>
+
+    <div class="buybox__cta">
+      <div class="magnetic" data-magnetic>
+        {%- capture cta_label -%}<span data-cta-label>Commander</span>{%- endcapture -%}
+        {%- render 'button', tag: 'button', label: cta_label, scale: 'lg', arrow: true, attrs: 'data-submit name="add"' -%}
+      </div>
+      <p class="buybox__error" role="alert" hidden data-buybox-error></p>
+      <ul class="trust">
+        <li>{% render 'icon', name: 'lock' %} Paiement sécurisé</li>
+        <li>{% render 'icon', name: 'truck' %} {{ section.settings.shipping_note | default: 'Livraison offerte dès 2' }}</li>
+        <li>{% render 'icon', name: 'rotate-ccw' %} Retour 30 jours</li>
+      </ul>
+    </div>
+  {%- endform -%}
+</div>

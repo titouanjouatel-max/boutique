@@ -1,0 +1,27 @@
+<section class="page-shell section-pad">
+  <div class="container container--text">
+    {%- render 'reveal-text', text: section.settings.title, tag: 'h1', class: 'display display-lg text-obsidian', immediate: true -%}
+    {%- if page.content != blank -%}<div class="rte page-content">{{ page.content }}</div>{%- endif -%}
+    {%- form 'contact', class: 'contact-form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="notice" role="status">Merci ! Nous vous répondons sous 24h ouvrées.</p>
+      {%- elsif form.errors -%}
+        <div class="notice notice--error" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <label>Nom<input type="text" name="contact[name]" autocomplete="name" value="{{ form.name }}"></label>
+      <label>E-mail<input type="email" name="contact[email]" autocomplete="email" required value="{{ form.email }}"></label>
+      <label>Numéro de commande (facultatif)<input type="text" name="contact[order]"></label>
+      <label>Message<textarea name="contact[body]" rows="6" required>{{ form.body }}</textarea></label>
+      {%- render 'button', tag: 'button', label: 'Envoyer', scale: 'lg', arrow: true -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Formulaire de contact",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Nous|contacter." }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,19 @@
+{%- comment -%} Police servie par Shopify (Inter par défaut) : normal, 500, 600, 700 et 900 pour les titres. {%- endcomment -%}
+{%- liquid
+  assign font = settings.type_font
+  assign font_500 = font | font_modify: 'weight', '500'
+  assign font_600 = font | font_modify: 'weight', '600'
+  assign font_700 = font | font_modify: 'weight', '700'
+  assign font_900 = font | font_modify: 'weight', '900'
+-%}
+{%- if font_900 != blank -%}
+  {{ font_900 | font_url | preload_tag: as: 'font', type: 'font/woff2', crossorigin: true }}
+{%- endif -%}
+<style>
+  {{ font | font_face: font_display: 'swap' }}
+  {{ font_500 | font_face: font_display: 'swap' }}
+  {{ font_600 | font_face: font_display: 'swap' }}
+  {{ font_700 | font_face: font_display: 'swap' }}
+  {{ font_900 | font_face: font_display: 'swap' }}
+  :root { --font: {{ font.family }}, {{ font.fallback_families }}; }
+</style>

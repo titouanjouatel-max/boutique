@@ -1,0 +1,84 @@
+{%- comment -%}
+  Avis clients. TODO : les avis par défaut sont des EXEMPLES. Remplacez-les par de vrais avis
+  (afficher de faux avis comme authentiques est interdit) puis décochez « Avis d'exemple ».
+{%- endcomment -%}
+{%- capture review_cards -%}
+  {%- for block in section.blocks -%}
+    <figure class="review {% cycle 'review--tilt-l', 'review--tilt-r' %}">
+      <div class="review__top">
+        {%- render 'star-rating', rating: block.settings.rating -%}
+        {%- render 'icon', name: 'quote', class: 'icon review__quote' -%}
+      </div>
+      <blockquote>“{{ block.settings.text }}”</blockquote>
+      <figcaption>
+        <span class="review__avatar display">{{ block.settings.name | slice: 0 }}</span>
+        <span>
+          <strong>{{ block.settings.name }}</strong>
+          <span>{{ block.settings.location }}{% if section.settings.examples %} · Avis d'exemple{% endif %}</span>
+        </span>
+      </figcaption>
+    </figure>
+  {%- endfor -%}
+{%- endcapture -%}
+<section id="avis" class="reviews section-pad">
+  <div class="container section-head">
+    <div>
+      <span class="tag tag--mist">{{ section.settings.tag }}</span>
+      {%- render 'reveal-text', text: section.settings.title, class: 'display display-xl text-obsidian' -%}
+    </div>
+    <p class="lead">
+      {{ section.settings.text }}
+      {%- if section.settings.examples -%}<span class="small-note">Avis d'exemple, à remplacer par ceux de vos clients.</span>{%- endif -%}
+    </p>
+  </div>
+  <div class="reviews__rows">
+    <div class="marquee">
+      <div class="marquee__track" style="--duration: 55s">
+        <div class="marquee__group">{{ review_cards }}</div>
+        <div class="marquee__group" aria-hidden="true">{{ review_cards }}</div>
+      </div>
+    </div>
+    <div class="marquee">
+      <div class="marquee__track marquee__track--reverse" style="--duration: 65s">
+        <div class="marquee__group">{{ review_cards }}</div>
+        <div class="marquee__group" aria-hidden="true">{{ review_cards }}</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Avis clients",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "Avis clients" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Ils l'ont|adopté." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Au chaud au bureau, au stade ou en balade : ils ne sortent plus sans." },
+    { "type": "checkbox", "id": "examples", "label": "Avis d'exemple", "info": "Décochez quand vous aurez remplacé les avis par de vrais avis clients.", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Avis",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Prénom", "default": "Camille" },
+        { "type": "text", "id": "location", "label": "Ville", "default": "Lyon" },
+        { "type": "range", "id": "rating", "label": "Note", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "textarea", "id": "text", "label": "Avis", "default": "Super produit." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Avis clients",
+      "blocks": [
+        { "type": "review", "settings": { "name": "Camille", "location": "Lyon", "rating": 5, "text": "Je l'ai dans la poche du manteau tous les matins pour le trajet. Plus besoin de gants pour attendre le tram." } },
+        { "type": "review", "settings": { "name": "Thomas", "location": "Grenoble", "rating": 5, "text": "Indispensable au stade. Le niveau 3 chauffe vraiment, je repasse au 2 au bout d'un moment." } },
+        { "type": "review", "settings": { "name": "Julie", "location": "Lille", "rating": 4, "text": "Joli en rose, tient bien en main. J'aurais aimé un peu plus d'autonomie au niveau max." } },
+        { "type": "review", "settings": { "name": "Nadia", "location": "Strasbourg", "rating": 5, "text": "Offert à ma mère qui a toujours les mains gelées. Elle l'utilise même devant la télé." } },
+        { "type": "review", "settings": { "name": "Hugo", "location": "Annecy", "rating": 5, "text": "Pratique en rando : il m'a dépanné le téléphone quand la batterie est tombée à 5 %." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

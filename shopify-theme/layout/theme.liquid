@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    {%- endif -%}
+
+    {%- render 'fonts' -%}
+
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    <script>document.documentElement.classList.replace('no-js', 'js');</script>
+    <script src="{{ 'lenis.min.js' | asset_url }}" defer></script>
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name }}{% if template.name == 'index' and settings.intro_enabled %} has-intro{% endif %}" data-smooth="{{ settings.smooth_scroll }}">
+    <a class="skip-link" href="#main">Aller au contenu</a>
+
+    {%- if template.name == 'index' and settings.intro_enabled -%}
+      <div class="intro" aria-hidden="true">
+        <div class="intro__word"><span class="display">{{ shop.name }}</span></div>
+        <div class="intro__bar"></div>
+      </div>
+    {%- endif -%}
+
+    {%- render 'svg-defs' -%}
+
+    {% section 'header' %}
+
+    <main id="main" class="main" role="main">
+      {{ content_for_layout }}
+    </main>
+
+    {% section 'footer' %}
+
+    {%- unless template.name == 'cart' -%}
+      {%- render 'floating-order' -%}
+    {%- endunless -%}
+
+    {%- if settings.cursor_enabled -%}
+      <div class="cursor" aria-hidden="true"><span class="cursor__dot"><span class="cursor__label"></span></span></div>
+    {%- endif -%}
+  </body>
+</html>

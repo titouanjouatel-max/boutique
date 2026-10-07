@@ -1,0 +1,97 @@
+{%- comment -%}
+  Calcule un chiffre à partir des variantes « Pack » du produit et l'affiche.
+  Les valeurs de l'option Pack doivent finir par « ×N » (ex. « Solo ×1 », « Duo ×2 », « Famille ×3 »).
+  Paramètres :
+  - source : produit (par défaut : le produit vedette des réglages du thème)
+  - output : 'from' (prix d'appel), 'max_saving' (meilleure remise en %), 'lowest_unit' (prix unitaire le plus bas)
+  - fallback : texte affiché si aucun produit n'est configuré
+{%- endcomment -%}
+{%- liquid
+  assign ps_product = source
+  if ps_product == blank
+    assign ps_product = settings.featured_product
+  endif
+  if ps_product != blank and ps_product.id == blank
+    assign ps_product = all_products[ps_product]
+  endif
+
+  if ps_product == blank or ps_product.id == blank
+    echo fallback
+  else
+
+  assign ps_target = settings.pack_option_name | default: 'Pack' | downcase | strip
+  assign ps_index = 0
+  for option in ps_product.options_with_values
+    assign ps_name = option.name | downcase | strip
+    if ps_name == ps_target
+      assign ps_index = forloop.index
+    endif
+  endfor
+
+  assign ps_unit = 0
+  for v in ps_product.variants
+    case ps_index
+      when 1
+        assign ps_value = v.option1
+      when 2
+        assign ps_value = v.option2
+      when 3
+        assign ps_value = v.option3
+      else
+        assign ps_value = '×1'
+    endcase
+    assign ps_qty = ps_value | split: '×' | last | strip | plus: 0
+    if ps_qty < 1
+      assign ps_qty = 1
+    endif
+    if ps_qty == 1
+      if ps_unit == 0 or v.price < ps_unit
+        assign ps_unit = v.price
+      endif
+    endif
+  endfor
+  if ps_unit == 0
+    assign ps_unit = ps_product.price_min
+  endif
+
+  assign ps_best_saving = 0
+  assign ps_lowest_unit = ps_unit
+  for v in ps_product.variants
+    case ps_index
+      when 1
+        assign ps_value = v.option1
+      when 2
+        assign ps_value = v.option2
+      when 3
+        assign ps_value = v.option3
+      else
+        assign ps_value = '×1'
+    endcase
+    assign ps_qty = ps_value | split: '×' | last | strip | plus: 0
+    if ps_qty < 1
+      assign ps_qty = 1
+    endif
+    assign ps_full = ps_unit | times: ps_qty
+    assign ps_per_unit = v.price | times: 1.0 | divided_by: ps_qty | round
+    if ps_per_unit < ps_lowest_unit
+      assign ps_lowest_unit = ps_per_unit
+    endif
+    if ps_full > v.price
+      assign ps_half = ps_full | divided_by: 2
+      assign ps_saving = ps_full | minus: v.price | times: 100 | plus: ps_half | divided_by: ps_full
+      if ps_saving > ps_best_saving
+        assign ps_best_saving = ps_saving
+      endif
+    endif
+  endfor
+
+  case output
+    when 'max_saving'
+      echo ps_best_saving
+    when 'lowest_unit'
+      echo ps_lowest_unit | money
+    else
+      echo ps_unit | money
+  endcase
+  endif
+-%}

@@ -1,0 +1,62 @@
+<section id="faq" class="faq section-pad">
+  <div class="container faq__grid">
+    <div class="faq__intro">
+      <span class="tag tag--paper">FAQ</span>
+      {%- render 'reveal-text', text: section.settings.title, class: 'display display-xl text-forest' -%}
+      <p class="lead">{{ section.settings.text }}</p>
+      {%- if section.settings.contact_url != blank -%}
+        {%- render 'button', href: section.settings.contact_url, label: 'Nous contacter', kind: 'outline', arrow: true -%}
+      {%- endif -%}
+    </div>
+    <div class="faq__list">
+      {%- for block in section.blocks -%}
+        <div class="faq-item{% if forloop.first %} is-open{% endif %}" data-faq data-reveal style="--d: {{ forloop.index0 | times: 0.06 }}s" {{ block.shopify_attributes }}>
+          <button type="button" class="faq-item__q" id="faq-q-{{ block.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="faq-a-{{ block.id }}">
+            <span>{{ block.settings.question }}</span>
+            <span class="faq-item__plus" aria-hidden="true">{% render 'icon', name: 'plus' %}</span>
+          </button>
+          <div class="faq-item__a" id="faq-a-{{ block.id }}" role="region" aria-labelledby="faq-q-{{ block.id }}">
+            <div class="faq-item__a-in rte">{{ block.settings.answer }}</div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Vos|questions." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Une autre question ? Notre équipe vous répond sous 24h ouvrées." },
+    { "type": "url", "id": "contact_url", "label": "Lien du bouton contact", "default": "/pages/contact" }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Quel est le délai de livraison ?" },
+        { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Réponse.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        { "type": "question", "settings": { "question": "Combien de temps chauffe-t-il ?", "answer": "<p>Cela dépend du niveau et du froid extérieur. D'après les retours d'utilisateurs, comptez environ 1 h 30 à 2 h au niveau 2, et moins au niveau 3 par grand froid. Il se recharge ensuite en USB.</p>" } },
+        { "type": "question", "settings": { "question": "Quelle température atteint-il ?", "answer": "<p>La notice indique environ 45 °C au niveau 1, 50 °C au niveau 2 et 60 °C au niveau 3. La chaleur monte en une trentaine de secondes après l'allumage.</p>" } },
+        { "type": "question", "settings": { "question": "Comment le recharger ?", "answer": "<p>Avec le câble USB fourni, sur n'importe quel chargeur 5 V / 1 A. Les voyants bleus clignotent pendant la charge et restent fixes quand la batterie est pleine. La notice indique environ 5 h pour une charge complète.</p>" } },
+        { "type": "question", "settings": { "question": "Peut-il vraiment recharger mon téléphone ?", "answer": "<p>Oui, il fait office de petite batterie externe grâce à sa sortie USB 5 V / 1,5 A. Il est pensé pour dépanner, pas pour remplacer une vraie batterie externe de grande capacité.</p>" } },
+        { "type": "question", "settings": { "question": "Y a-t-il des précautions d'utilisation ?", "answer": "<p>Si la chaleur devient trop forte, glissez-le dans une poche ou baissez le niveau pour éviter les brûlures. Ne le jetez jamais au feu et rangez-le au sec. Surveillez son usage par les enfants et les personnes peu sensibles à la chaleur.</p>" } },
+        { "type": "question", "settings": { "question": "Pourquoi prendre un pack ?", "answer": "<p>Chaque chauffe-mains revient moins cher : 22,50 € l'unité en pack Duo, 20,00 € en pack Famille, au lieu de 24,99 €. La livraison est offerte dès 2 chauffe-mains. Pratique pour en offrir un ou équiper toute la famille.</p>" } },
+        { "type": "question", "settings": { "question": "Puis-je choisir le coloris ?", "answer": "<p>Oui, quatre coloris au choix : argent, or, rose et noir. Un pack contient des chauffe-mains du même coloris.</p>" } },
+        { "type": "question", "settings": { "question": "Quel est le délai de livraison ?", "answer": "<p>À COMPLÉTER : indiquez votre délai réel. Les commandes sont expédiées avec un numéro de suivi envoyé par e-mail.</p>" } },
+        { "type": "question", "settings": { "question": "Et si je ne suis pas satisfait(e) ?", "answer": "<p>Vous disposez de 30 jours pour nous le retourner et être remboursé(e). Voir notre politique de remboursement pour les conditions.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

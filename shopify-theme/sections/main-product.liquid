@@ -1,0 +1,50 @@
+<section class="product-main section-pad" id="packs">
+  <div class="container product-main__grid">
+    <div class="product-main__media">
+      {%- if product.featured_media != blank -%}
+        <div class="product-main__gallery">
+          {%- for media in product.media limit: 6 -%}
+            {%- if media.media_type == 'image' -%}
+              {{ media | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 50vw, 100vw', class: 'product-main__img' }}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- else -%}
+        <div class="product-main__art">
+          <span class="hero__halo hero__halo--1" aria-hidden="true"></span>
+          {%- render 'hand-warmer', color: 'or', level: 3, title: product.title -%}
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="product-main__info">
+      <span class="tag tag--mist">{{ product.vendor }}</span>
+      <h1 class="display display-md text-forest">{{ product.title }}</h1>
+      {%- render 'buy-box', product: product, section: section -%}
+      {%- if product.description != blank -%}
+        <div class="product-main__desc rte">{{ product.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Fiche produit",
+  "settings": [
+    { "type": "text", "id": "shipping_note", "label": "Mention livraison", "default": "Livraison offerte dès 2" }
+  ],
+  "blocks": [
+    {
+      "type": "pack",
+      "name": "Pack",
+      "settings": [
+        { "type": "text", "id": "option_value", "label": "Valeur de l'option Pack", "default": "Duo ×2" },
+        { "type": "text", "id": "tagline", "label": "Accroche" },
+        { "type": "text", "id": "badge", "label": "Badge" },
+        { "type": "checkbox", "id": "free_shipping", "label": "Afficher « Livraison offerte »", "default": false },
+        { "type": "checkbox", "id": "is_default", "label": "Sélectionné par défaut", "default": false }
+      ]
+    }
+  ]
+}
+{% endschema %}

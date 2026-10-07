@@ -1,0 +1,96 @@
+{%- assign colors = 'argent:Argent,or:Or,rose:Rose,noir:Noir' | split: ',' -%}
+<section class="heat" aria-label="Niveaux de chaleur" data-heat-section>
+  <div class="container heat__grid">
+    <div class="heat__copy">
+      <span class="tag tag--forest">{{ section.settings.tag }}</span>
+      {%- render 'reveal-text', text: section.settings.title, class: 'display display-lg text-forest' -%}
+
+      <div class="segmented" role="tablist" aria-label="Niveaux de chaleur" data-heat-tabs>
+        <span class="segmented__pill" aria-hidden="true" data-heat-pill></span>
+        {%- for block in section.blocks -%}
+          <button type="button" role="tab" class="segmented__tab" id="tab-{{ block.id }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="heat-panel-{{ section.id }}" tabindex="{% if forloop.first %}0{% else %}-1{% endif %}" data-heat-tab data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            <span class="segmented__dots" aria-hidden="true">
+              {%- for dot in (1..3) -%}<span{% if dot <= forloop.parentloop.index %} class="on"{% endif %}></span>{%- endfor -%}
+            </span>
+            {{ block.settings.label }}
+            <span class="segmented__progress" aria-hidden="true"></span>
+          </button>
+        {%- endfor -%}
+      </div>
+
+      <div class="heat__panels" id="heat-panel-{{ section.id }}" role="tabpanel" aria-live="polite">
+        {%- for block in section.blocks -%}
+          <div class="heat__panel{% if forloop.first %} is-active{% endif %}" data-heat-panel data-temp="{{ block.settings.temp }}" data-color="{{ block.settings.color }}" data-label="{{ block.settings.label | escape }}">
+            <p class="heat__temp">Environ {{ block.settings.temp }} °C</p>
+            <h3 class="display display-md">{{ block.settings.title }}</h3>
+            <p class="heat__text">{{ block.settings.text }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <fieldset class="heat__colors">
+        <legend>Coloris : <span data-heat-color-label>Or</span></legend>
+        <div class="swatches">
+          {%- for c in colors -%}
+            {%- assign parts = c | split: ':' -%}
+            <label class="swatch">
+              <input type="radio" name="heat-color-{{ section.id }}" value="{{ parts[0] }}" data-label="{{ parts[1] }}" data-heat-color{% if parts[0] == 'or' %} checked{% endif %}>
+              <span class="swatch__dot hw-swatch" data-color="{{ parts[0] }}"></span>
+              <span class="visually-hidden">{{ parts[1] }}</span>
+            </label>
+          {%- endfor -%}
+        </div>
+      </fieldset>
+    </div>
+
+    <div class="heat__visual" data-heat-visual style="--heat: {{ section.blocks.first.settings.color }}">
+      <span class="ripple" aria-hidden="true"></span>
+      <span class="ripple" aria-hidden="true" style="animation-delay: .9s"></span>
+      <span class="ripple" aria-hidden="true" style="animation-delay: 1.8s"></span>
+      <span class="heat__dashed spin-slow" aria-hidden="true"></span>
+      <div class="heat__disc">
+        <div class="heat__warmer" data-heat-warmer>
+          {%- render 'hand-warmer', color: 'or', level: 1, title: 'Chauffe-mains' -%}
+        </div>
+      </div>
+      <div class="heat__chip" data-heat-chip>
+        <span class="display" data-heat-chip-temp>{{ section.blocks.first.settings.temp }}°</span>
+        <span data-heat-chip-label>{{ section.blocks.first.settings.label }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Niveaux de chaleur",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "3 niveaux, 1 bouton" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Réglez|votre chaleur." }
+  ],
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "level",
+      "name": "Niveau",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Onglet", "default": "Niveau 1" },
+        { "type": "number", "id": "temp", "label": "Température (°C)", "default": 45 },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Douceur" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Une chaleur légère pour garder les mains tièdes." },
+        { "type": "color", "id": "color", "label": "Couleur des ondes", "default": "#ffb347" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Niveaux de chaleur",
+      "blocks": [
+        { "type": "level", "settings": { "label": "Niveau 1", "temp": 45, "title": "Douceur", "text": "Une chaleur légère pour garder les mains tièdes au bureau, en lisant ou devant un film.", "color": "#ffb347" } },
+        { "type": "level", "settings": { "label": "Niveau 2", "temp": 50, "title": "Confort", "text": "Le réglage du quotidien : trajet à pied, attente à l'arrêt de bus, promenade du chien.", "color": "#ff7a3d" } },
+        { "type": "level", "settings": { "label": "Niveau 3", "temp": 60, "title": "Grand froid", "text": "Pour le stade, le marché de Noël ou la piste de ski. Si c'est trop chaud, glissez-le dans une poche, comme le conseille la notice.", "color": "#cb272f" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

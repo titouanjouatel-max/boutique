@@ -1,0 +1,66 @@
+{%- assign step_icons = 'plug-zap,power,thermometer-sun,hand' | split: ',' -%}
+{%- assign step_themes = 'fog,mist,forest,lime' | split: ',' -%}
+<section id="comment-ca-marche" class="method section-pad">
+  <div class="container method__grid">
+    <div class="method__intro">
+      <span class="tag tag--mist">{{ section.settings.tag }}</span>
+      {%- render 'reveal-text', text: section.settings.title, class: 'display display-lg text-obsidian' -%}
+      <p class="lead">{{ section.settings.text }}</p>
+      {%- render 'button', href: '#packs', label: section.settings.cta_label, kind: 'outline', arrow: true, attrs: 'data-anchor' -%}
+    </div>
+
+    <div class="method__stack" data-stack style="--total: {{ section.blocks.size }}">
+      {%- for block in section.blocks -%}
+        {%- assign theme_index = forloop.index0 | modulo: 4 -%}
+        {%- assign step_icon = step_icons[theme_index] -%}
+        <div class="step-holder" style="--i: {{ forloop.index0 }}" {{ block.shopify_attributes }}>
+          <article class="step step--{{ step_themes[theme_index] }}" data-stack-card data-index="{{ forloop.index0 }}">
+            <span class="step__num display" aria-hidden="true">{{ forloop.index | prepend: '0' }}</span>
+            <div class="step__top">
+              <span class="step__icon">{% render 'icon', name: step_icon %}</span>
+              <span class="step__count">Étape {{ forloop.index }}/{{ forloop.length }}</span>
+            </div>
+            <div class="step__body">
+              <h3 class="display display-md">{{ block.settings.title }}</h3>
+              <p>{{ block.settings.text }}</p>
+            </div>
+          </article>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Méthode (cartes empilées)",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "La méthode" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne", "default": "Chaud en|30 secondes." },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Un seul bouton, pas d'appli, pas de pile à racheter. Voici comment l'utiliser, d'après la notice du fabricant." },
+    { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Je le veux" }
+  ],
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Étape",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre", "default": "Rechargez-le" },
+        { "type": "textarea", "id": "text", "label": "Texte", "default": "Branchez le câble USB fourni." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Méthode (cartes empilées)",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Rechargez-le", "text": "Branchez le câble USB fourni. Les voyants bleus clignotent pendant la charge, puis restent fixes une fois la batterie pleine." } },
+        { "type": "step", "settings": { "title": "Appui long 3 secondes", "text": "Maintenez le bouton 3 secondes : le voyant rouge s'allume et la chaleur monte en une trentaine de secondes." } },
+        { "type": "step", "settings": { "title": "Choisissez le niveau", "text": "Appuyez à nouveau pour passer d'un niveau à l'autre : 1, 2 ou 3 voyants rouges, d'environ 45 à 60 °C." } },
+        { "type": "step", "settings": { "title": "Glissez-le en poche", "text": "Gardez-le en main ou dans la poche du manteau, accroché à sa dragonne. Les deux faces chauffent." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

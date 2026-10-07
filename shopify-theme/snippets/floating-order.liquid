@@ -1,0 +1,12 @@
+{%- comment -%} Badge de commande flottant, affiché après le hero (voir theme.js). {%- endcomment -%}
+{%- capture fo_price -%}{%- render 'pack-stats', output: 'from', fallback: settings.fallback_price -%}{%- endcapture -%}
+<div class="floating-order" data-floating-order hidden>
+  <a href="{{ routes.root_url }}#packs" class="floating-order__link" data-anchor>
+    <span class="floating-order__visual">{%- render 'hand-warmer', color: 'or', level: 2 -%}</span>
+    <span class="floating-order__text">{{ shop.name }} <span>dès {{ fo_price }}</span></span>
+    <span class="floating-order__cta">
+      <span class="floating-order__cta-mobile">Commander</span>
+      <span class="floating-order__cta-desktop">Dès {{ fo_price }}</span>
+    </span>
+  </a>
+</div>

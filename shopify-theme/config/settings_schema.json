@@ -1,0 +1,117 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "BRAISE",
+    "theme_version": "2.0.0",
+    "theme_author": "BRAISE",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/"
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_font",
+        "label": "Police",
+        "default": "inter_n4",
+        "info": "Choisissez une police qui existe en graisse 900 pour les titres."
+      }
+    ]
+  },
+  {
+    "name": "Produit",
+    "settings": [
+      {
+        "type": "product",
+        "id": "featured_product",
+        "label": "Produit vedette",
+        "info": "Utilisé pour les prix affichés partout sur le site et la section Packs."
+      },
+      {
+        "type": "text",
+        "id": "pack_option_name",
+        "label": "Nom de l'option Pack",
+        "default": "Pack",
+        "info": "Les valeurs doivent finir par « ×N » : Solo ×1, Duo ×2, Famille ×3."
+      },
+      {
+        "type": "text",
+        "id": "color_option_name",
+        "label": "Nom de l'option Coloris",
+        "default": "Couleur"
+      },
+      {
+        "type": "text",
+        "id": "fallback_price",
+        "label": "Prix affiché si aucun produit n'est choisi",
+        "default": "24,99 €"
+      }
+    ]
+  },
+  {
+    "name": "Contact",
+    "settings": [
+      {
+        "type": "text",
+        "id": "contact_email",
+        "label": "E-mail",
+        "default": "contact@exemple.fr"
+      },
+      {
+        "type": "text",
+        "id": "contact_phone",
+        "label": "Téléphone"
+      },
+      {
+        "type": "text",
+        "id": "contact_address",
+        "label": "Adresse"
+      },
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Lien Instagram"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "Lien TikTok"
+      }
+    ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "intro_enabled",
+        "label": "Rideau d'intro sur la page d'accueil",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "cursor_enabled",
+        "label": "Curseur animé (souris uniquement)",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "smooth_scroll",
+        "label": "Défilement fluide",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Favicon",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32 × 32 px"
+      }
+    ]
+  }
+]

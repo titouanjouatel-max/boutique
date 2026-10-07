@@ -1,0 +1,70 @@
+{%- liquid
+  capture max_saving
+    render 'pack-stats', output: 'max_saving', fallback: '20'
+  endcapture
+  capture lowest_unit
+    render 'pack-stats', output: 'lowest_unit', fallback: '20,00 €'
+  endcapture
+  assign title = section.settings.title | replace: '[remise]', max_saving
+  assign remaining = section.settings.stock_remaining
+  assign total = section.settings.stock_total
+  assign claimed = total | minus: remaining | times: 100 | divided_by: total
+-%}
+<section class="urgency" aria-labelledby="offer-title-{{ section.id }}">
+  <div class="urgency__card container-narrow" data-reveal-scale>
+    {%- render 'icon', name: 'flame', class: 'icon urgency__flame spin-slow', stroke: 1 -%}
+    <div class="urgency__grid">
+      <div>
+        <span class="tag tag--mist">{% render 'icon', name: 'gift' %} {{ section.settings.tag }}</span>
+        {%- assign offer_id = 'offer-title-' | append: section.id -%}
+        {%- render 'reveal-text', text: title, id: offer_id, class: 'display display-lg text-lime' -%}
+        <p class="urgency__text">{{ section.settings.text }}</p>
+        <div class="urgency__actions">
+          <div class="magnetic" data-magnetic>
+            {%- render 'button', href: '#packs', label: section.settings.cta_label, scale: 'lg', arrow: true, attrs: 'data-anchor' -%}
+          </div>
+          <p>dès {{ lowest_unit }} / unité</p>
+        </div>
+      </div>
+      <div>
+        {%- if section.settings.deadline != blank -%}
+          <div class="countdown" role="timer" data-countdown="{{ section.settings.deadline }}">
+            {%- assign units = 'Jours,Heures,Min,Sec' | split: ',' -%}
+            {%- for unit in units -%}
+              <div class="countdown__unit">
+                <span class="countdown__value display" data-unit="{{ forloop.index0 }}">
+                  <span class="digit"><span class="digit__col">{% for d in (0..9) %}<span>{{ d }}</span>{% endfor %}</span></span><span class="digit"><span class="digit__col">{% for d in (0..9) %}<span>{{ d }}</span>{% endfor %}</span></span>
+                </span>
+                <span class="countdown__label">{{ unit }}</span>
+              </div>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+        {%- if section.settings.show_stock -%}
+          <div class="stock">
+            <div class="stock__row"><span>Stock limité</span><span>{{ remaining }} restants sur {{ total }}</span></div>
+            <div class="stock__bar"><span data-stock-fill style="--w: {{ claimed }}%"></span></div>
+            <p>{{ claimed }}% du stock déjà réservé</p>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Offre limitée",
+  "settings": [
+    { "type": "text", "id": "tag", "label": "Étiquette", "default": "Offre de Noël · durée limitée" },
+    { "type": "text", "id": "title", "label": "Titre", "info": "« | » = retour à la ligne, [remise] = meilleure remise", "default": "Jusqu'à -[remise]%|en pack." },
+    { "type": "textarea", "id": "text", "label": "Texte", "info": "Adaptez-le à votre délai de livraison réel.", "default": "Le cadeau qu'on garde en poche tout l'hiver. Commandez maintenant pour le recevoir à temps pour les fêtes." },
+    { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Choisir mon pack" },
+    { "type": "text", "id": "deadline", "label": "Fin de l'offre (AAAA-MM-JJ)", "info": "Vide = pas de compte à rebours.", "default": "2026-12-25" },
+    { "type": "checkbox", "id": "show_stock", "label": "Afficher la jauge de stock", "info": "N'affichez que des chiffres réels.", "default": false },
+    { "type": "number", "id": "stock_remaining", "label": "Stock restant", "default": 37 },
+    { "type": "number", "id": "stock_total", "label": "Stock total", "default": 200 }
+  ],
+  "presets": [{ "name": "Offre limitée" }]
+}
+{% endschema %}
