@@ -1,37 +1,73 @@
 "use client";
 
 import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
-import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { BatteryCharging } from "lucide-react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Button } from "@/components/Button";
+import { HandWarmer } from "@/components/HandWarmer";
 import { RevealText } from "@/components/RevealText";
 import { TiltCard } from "@/components/TiltCard";
-import { PRODUCT } from "@/lib/constants";
+import { COMPARE_AT_LABEL, PRICE_LABEL, SPECS } from "@/lib/constants";
 
-const features = [
+// Chaque carte = une illustration (en attendant de vraies photos) + un argument.
+const features: { title: string; text: string; bg: string; visual: ReactNode }[] = [
   {
-    src: "/images/feature-led.webp",
-    alt: "7 couleurs de photothérapie LED",
-    title: "7 couleurs LED",
-    text: "Rouge, bleu, vert, jaune, violet, cyan et proche infrarouge : une lumière pour chaque besoin.",
+    title: "Chauffe double face",
+    text: "Les deux faces du galet chauffent : la chaleur enveloppe toute la paume, pas seulement un point.",
+    bg: "bg-mist",
+    visual: (
+      <div className="flex items-end gap-3">
+        <HandWarmer color="argent" level={3} className="w-28 -rotate-6 sm:w-32" />
+        <HandWarmer color="argent" level={3} className="w-28 rotate-6 scale-x-[-1] sm:w-32" />
+      </div>
+    ),
   },
   {
-    src: "/images/feature-thin.webp",
-    alt: "CRYOLUME™ ultra-fin et léger",
-    title: "Ultra-fin & léger",
-    text: "3 mm d'épaisseur et 118 g pour le masque visage : on oublie qu'on le porte.",
+    title: "3 niveaux de chaleur",
+    text: `Environ ${SPECS.levels.map((l) => `${l.temp} °C`).join(", ").replace(/, ([^,]*)$/, " et $1")} : les voyants rouges indiquent le niveau choisi.`,
+    bg: "bg-fog",
+    visual: (
+      <div className="flex items-end gap-4">
+        {SPECS.levels.map((l) => (
+          <div key={l.level} className="flex flex-col items-center gap-2">
+            <HandWarmer color="or" level={l.level as 1 | 2 | 3} className="w-16 sm:w-20" />
+            <span className="display text-xl text-forest">{l.temp}°</span>
+          </div>
+        ))}
+      </div>
+    ),
   },
   {
-    src: "/images/feature-waterproof.webp",
-    alt: "CRYOLUME™ étanche IPX7",
-    title: "Étanche IPX7",
-    text: "Surface en silicone résistante à l'eau, qui se nettoie en quelques secondes.",
+    title: "Batterie externe",
+    text: `Sortie ${SPECS.output} : de quoi redonner un peu d'énergie à votre téléphone en dépannage.`,
+    bg: "bg-lime",
+    visual: (
+      <div className="flex items-center gap-4">
+        <HandWarmer color="noir" level={0} heat={false} className="w-24 sm:w-28" />
+        <svg viewBox="0 0 60 20" className="w-14 text-forest" aria-hidden>
+          <path d="M2 10 h40" stroke="currentColor" strokeWidth="3" strokeDasharray="6 5" />
+          <path d="M42 3 l12 7 l-12 7z" fill="currentColor" />
+        </svg>
+        <div className="flex h-36 w-20 flex-col items-center justify-center rounded-[18px] border-[5px] border-forest bg-paper sm:h-40 sm:w-[88px]">
+          <BatteryCharging className="h-8 w-8 text-forest" />
+        </div>
+      </div>
+    ),
   },
   {
-    src: "/images/feature-ergonomic.webp",
-    alt: "Silicone souple et ergonomique",
-    title: "Souple & ergonomique",
-    text: "Silicone de qualité alimentaire qui épouse les contours du visage et du cou.",
+    title: "Format galet de poche",
+    text: `${SPECS.size}, ${SPECS.weight} : il se glisse dans une poche de manteau, avec sa dragonne pour ne pas le perdre.`,
+    bg: "bg-mist",
+    visual: (
+      <div className="relative flex items-center gap-4">
+        <HandWarmer color="rose" level={2} className="w-28 sm:w-32" />
+        <div className="flex h-44 flex-col items-center justify-between text-forest">
+          <span className="h-0.5 w-4 bg-forest" />
+          <span className="display -rotate-90 whitespace-nowrap text-lg">10,2 cm</span>
+          <span className="h-0.5 w-4 bg-forest" />
+        </div>
+      </div>
+    ),
   },
 ];
 
@@ -93,11 +129,11 @@ export function ProductShowcase() {
               Le produit
             </span>
             <RevealText
-              text={"Un masque.\nSept lumières."}
+              text={"Petit galet.\nGrosse chaleur."}
               className="display display-lg text-lime"
             />
             <p className="mt-6 max-w-md text-lg text-paper/80">
-              Un soin visage + cou complet, pensé pour être porté chaque jour.
+              Aluminium, batterie rechargeable, chaleur des deux côtés.
               Faites défiler pour tout découvrir.
             </p>
           </div>
@@ -111,14 +147,10 @@ export function ProductShowcase() {
                 data-cursor="Défilez"
                 className="group h-full rounded-[28px] bg-spruce p-3 transition-colors duration-500 hover:bg-lime"
               >
-                <div className="relative aspect-square overflow-hidden rounded-[20px]">
-                  <Image
-                    src={feature.src}
-                    alt={feature.alt}
-                    fill
-                    sizes="(min-width: 1024px) 400px, 80vw"
-                    className="object-cover transition-transform duration-700 ease-out-expo group-hover:scale-110"
-                  />
+                <div className={`relative flex aspect-square items-center justify-center overflow-hidden rounded-[20px] ${feature.bg}`}>
+                  <div className="transition-transform duration-700 ease-out-expo group-hover:-rotate-3 group-hover:scale-110">
+                    {feature.visual}
+                  </div>
                   <span className="display absolute bottom-4 right-4 flex h-12 w-12 items-center justify-center rounded-full bg-forest text-lg text-lime transition-transform duration-500 ease-out-expo group-hover:rotate-[360deg]">
                     0{i + 1}
                   </span>
@@ -137,17 +169,11 @@ export function ProductShowcase() {
 
           <div className="flex w-[78vw] flex-none snap-start flex-col justify-between rounded-[28px] bg-lime p-8 sm:w-[360px] lg:w-[min(400px,30vw)]">
             <p className="display text-[clamp(2.4rem,4vw,3.6rem)] text-forest">
-              Prêt·e à briller&nbsp;?
+              Prêt·e pour l&apos;hiver&nbsp;?
             </p>
             <div className="mt-10">
-              <p className="display text-6xl text-forest">
-                {PRODUCT.price}
-                {PRODUCT.currency}
-              </p>
-              <p className="mt-1 text-forest/70 line-through">
-                {PRODUCT.compareAtPrice}
-                {PRODUCT.currency}
-              </p>
+              <p className="display text-6xl text-forest">{PRICE_LABEL}</p>
+              <p className="mt-1 text-forest/70 line-through">{COMPARE_AT_LABEL}</p>
               <Button href="/checkout" variant="dark" size="lg" arrow className="mt-6">
                 Commander
               </Button>

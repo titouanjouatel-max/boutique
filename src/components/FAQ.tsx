@@ -7,32 +7,43 @@ import { Button } from "@/components/Button";
 import { Reveal } from "@/components/Reveal";
 import { RevealText } from "@/components/RevealText";
 
-// TODO: adaptez les réponses (délais de livraison, zones desservies, durée de garantie réelle) à votre activité.
+// Réponses tirées de la notice du fabricant (modèle Q11) et des retours d'acheteurs.
+// TODO: adaptez délais de livraison, garantie et retours à votre activité réelle.
 const faqs = [
+  {
+    question: "Combien de temps chauffe-t-il ?",
+    answer:
+      "Cela dépend du niveau et du froid extérieur. D'après les retours d'utilisateurs, comptez environ 1 h 30 à 2 h au niveau 2, et moins au niveau 3 par grand froid. Il se recharge ensuite en USB.",
+  },
+  {
+    question: "Quelle température atteint-il ?",
+    answer:
+      "La notice indique environ 45 °C au niveau 1, 50 °C au niveau 2 et 60 °C au niveau 3. La chaleur monte en une trentaine de secondes après l'allumage.",
+  },
+  {
+    question: "Comment le recharger ?",
+    answer:
+      "Avec le câble USB fourni, sur n'importe quel chargeur 5 V / 1 A. Les voyants bleus clignotent pendant la charge et restent fixes quand la batterie est pleine. La notice indique environ 5 h pour une charge complète.",
+  },
+  {
+    question: "Peut-il vraiment recharger mon téléphone ?",
+    answer:
+      "Oui, il fait office de petite batterie externe grâce à sa sortie USB 5 V / 1,5 A. Il est pensé pour dépanner, pas pour remplacer une vraie batterie externe de grande capacité.",
+  },
+  {
+    question: "Y a-t-il des précautions d'utilisation ?",
+    answer:
+      "Si la chaleur devient trop forte, glissez-le dans une poche ou baissez le niveau pour éviter les brûlures. Ne le jetez jamais au feu et rangez-le au sec. Surveillez son usage par les enfants et les personnes peu sensibles à la chaleur.",
+  },
   {
     question: "Quel est le délai de livraison ?",
     answer:
-      "Vos commandes sont expédiées sous 24 à 48h et livrées en 3 à 5 jours ouvrés en France métropolitaine. Un e-mail de suivi vous est envoyé dès l'expédition.",
+      "TODO : indiquez votre délai réel. Les commandes sont expédiées avec un numéro de suivi envoyé par e-mail.",
   },
   {
-    question: "Quelle garantie proposez-vous ?",
+    question: "Et si je ne suis pas satisfait(e) ?",
     answer:
-      "CRYOLUME™ est couvert par une garantie satisfait ou remboursé de 30 jours, ainsi qu'une garantie fabricant de 12 mois contre tout défaut technique.",
-  },
-  {
-    question: "Le masque est-il sûr pour ma peau et mes yeux ?",
-    answer:
-      "Oui. Le masque utilise des LED basse intensité certifiées CE, sans UV, et intègre une protection oculaire. Il est déconseillé aux femmes enceintes, aux épileptiques et aux porteurs de pacemaker — consultez un professionnel de santé en cas de doute.",
-  },
-  {
-    question: "Combien de temps par jour dois-je l'utiliser ?",
-    answer:
-      "Une séance de 10 à 15 minutes par jour est recommandée. Les premiers effets sur le gonflement sont visibles dès la première utilisation, les résultats anti-âge après 3 à 4 semaines.",
-  },
-  {
-    question: "Comment entretenir mon masque ?",
-    answer:
-      "Nettoyez la surface en contact avec la peau avec un chiffon doux et sec (ou légèrement humide) après chaque utilisation. Ne pas immerger l'appareil dans l'eau.",
+      "Vous disposez de 30 jours pour nous le retourner et être remboursé(e). Voir notre politique de remboursement pour les conditions.",
   },
 ];
 

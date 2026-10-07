@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { Droplet, Power, Sparkles, Timer, type LucideIcon } from "lucide-react";
+import { Hand, PlugZap, Power, ThermometerSun, type LucideIcon } from "lucide-react";
 import { useRef } from "react";
 import { Button } from "@/components/Button";
 import { RevealText } from "@/components/RevealText";
@@ -15,9 +15,9 @@ type Step = {
 
 const steps: Step[] = [
   {
-    icon: Droplet,
-    title: "Nettoyez votre visage",
-    text: "Démaquillez et nettoyez votre peau pour une absorption optimale de la lumière LED.",
+    icon: PlugZap,
+    title: "Rechargez-le",
+    text: "Branchez le câble USB fourni. Les voyants bleus clignotent pendant la charge, puis restent fixes une fois la batterie pleine.",
     theme: {
       card: "bg-fog",
       title: "text-obsidian",
@@ -28,8 +28,8 @@ const steps: Step[] = [
   },
   {
     icon: Power,
-    title: "Enfilez le masque",
-    text: "Positionnez CRYOLUME confortablement grâce aux sangles ajustables, visage et cou.",
+    title: "Appui long 3 secondes",
+    text: "Maintenez le bouton 3 secondes : le voyant rouge s'allume et la chaleur monte en une trentaine de secondes.",
     theme: {
       card: "bg-mist",
       title: "text-forest",
@@ -39,9 +39,9 @@ const steps: Step[] = [
     },
   },
   {
-    icon: Sparkles,
-    title: "Choisissez votre mode",
-    text: "LED rouge (anti-âge), bleue (imperfections) ou effet cryo anti-gonflement : à vous de jouer.",
+    icon: ThermometerSun,
+    title: "Choisissez le niveau",
+    text: "Appuyez à nouveau pour passer d'un niveau à l'autre : 1, 2 ou 3 voyants rouges, d'environ 45 à 60 °C.",
     theme: {
       card: "bg-forest",
       title: "text-lime",
@@ -51,9 +51,9 @@ const steps: Step[] = [
     },
   },
   {
-    icon: Timer,
-    title: "Détendez-vous 10 min",
-    text: "Laissez agir pendant que vous lisez ou vous relaxez. Le masque s'éteint tout seul.",
+    icon: Hand,
+    title: "Glissez-le en poche",
+    text: "Gardez-le en main ou dans la poche du manteau, accroché à sa dragonne. Les deux faces chauffent.",
     theme: {
       card: "bg-lime",
       title: "text-forest",
@@ -128,13 +128,13 @@ export function HowItWorks() {
           <span className="mb-6 inline-flex rounded-full bg-mist px-3 py-2 text-xs font-medium text-forest">
             La méthode
           </span>
-          <RevealText text={"4 étapes.\n10 minutes."} className="display display-lg text-obsidian" />
+          <RevealText text={"Chaud en\n30 secondes."} className="display display-lg text-obsidian" />
           <p className="mt-6 max-w-md text-lg text-charcoal">
-            Un rituel simple et sans risque, à glisser dans votre routine du
-            matin ou du soir. Aucun rendez-vous, aucune aiguille.
+            Un seul bouton, pas d&apos;appli, pas de pile à racheter. Voici
+            comment l&apos;utiliser, d&apos;après la notice du fabricant.
           </p>
           <Button href="/checkout" variant="outline" arrow className="mt-8">
-            Je commence mon rituel
+            Je le veux
           </Button>
         </div>
 

@@ -1,10 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import Image from "next/image";
 import { useState } from "react";
 import { AnchorLink } from "@/components/AnchorLink";
-import { PRODUCT } from "@/lib/constants";
+import { HandWarmer } from "@/components/HandWarmer";
+import { PRICE_LABEL, PRODUCT } from "@/lib/constants";
 
 // Badge de commande flottant (façon « QR badge » Wise), affiché après le hero.
 export function FloatingOrder() {
@@ -30,27 +30,19 @@ export function FloatingOrder() {
             href="/checkout"
             className="group flex items-center gap-3 rounded-full bg-forest p-2 pr-3 shadow-xl ring-1 ring-lime/40 transition-transform duration-500 ease-out-expo sm:w-[132px] sm:flex-col sm:gap-2 sm:rounded-2xl sm:p-3 sm:hover:-translate-y-1.5"
           >
-            <span className="relative h-12 w-12 flex-none overflow-hidden rounded-full bg-paper sm:aspect-square sm:h-auto sm:w-full sm:rounded-[10px]">
-              <Image
-                src="/images/checkout-packshot.webp"
-                alt=""
-                fill
-                sizes="(min-width: 640px) 108px, 48px"
-                className="object-cover object-top transition-transform duration-700 ease-out-expo group-hover:scale-110 group-hover:-rotate-6"
-              />
+            <span className="flex h-12 w-12 flex-none items-center justify-center overflow-hidden rounded-full bg-spruce sm:aspect-square sm:h-auto sm:w-full sm:rounded-[10px] sm:py-2">
+              <HandWarmer color="or" level={2} className="h-10 transition-transform duration-700 ease-out-expo group-hover:-rotate-12 group-hover:scale-110 sm:h-20" />
             </span>
             <span className="flex-1 text-sm font-semibold text-paper sm:hidden">
               {PRODUCT.name}{" "}
               <span className="text-lime">
-                {PRODUCT.price}
-                {PRODUCT.currency}
+                {PRICE_LABEL}
               </span>
             </span>
             <span className="rounded-full bg-lime px-5 py-3 text-sm font-semibold text-forest sm:bg-transparent sm:p-0 sm:text-center sm:text-xs sm:font-medium sm:text-lime">
               <span className="sm:hidden">Commander</span>
               <span className="hidden sm:inline">
-                Commander · {PRODUCT.price}
-                {PRODUCT.currency}
+                Commander · {PRICE_LABEL}
               </span>
             </span>
           </AnchorLink>

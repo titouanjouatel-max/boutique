@@ -6,9 +6,9 @@ import { useRef } from "react";
 import { AnchorLink } from "@/components/AnchorLink";
 import { Magnetic } from "@/components/Magnetic";
 import { SpinningBadge } from "@/components/SpinningBadge";
-import { PRODUCT } from "@/lib/constants";
+import { PRICE_LABEL } from "@/lib/constants";
 
-const ROW = "Commandez ✦ Votre glow ✦ Commandez ✦ Votre glow ✦ ";
+const ROW = "Commandez ✦ Mains au chaud ✦ Commandez ✦ Mains au chaud ✦ ";
 
 // Typographie géante qui glisse en sens inverse au scroll, autour d'un bouton magnétique.
 export function FinalCta() {
@@ -18,7 +18,7 @@ export function FinalCta() {
   const right = useTransform(scrollYProgress, [0, 1], ["-40%", "0%"]);
 
   return (
-    <section ref={ref} aria-label="Commander CRYOLUME" className="relative overflow-hidden bg-paper py-20 lg:py-28">
+    <section ref={ref} aria-label="Commander BRAISE" className="relative overflow-hidden bg-paper py-20 lg:py-28">
       <div aria-hidden className="select-none">
         <motion.p style={{ x: left }} className="display display-giant whitespace-nowrap text-forest">
           {ROW}
@@ -43,8 +43,7 @@ export function FinalCta() {
               <span className="flex flex-col items-center text-forest">
                 <ArrowUpRight className="h-10 w-10 transition-transform duration-500 ease-out-expo group-hover:rotate-45" />
                 <span className="display mt-1 text-2xl sm:text-3xl">
-                  {PRODUCT.price}
-                  {PRODUCT.currency}
+                  {PRICE_LABEL}
                 </span>
                 <span className="text-xs font-semibold">Commander</span>
               </span>

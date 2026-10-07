@@ -252,6 +252,44 @@ body {
   animation: spin-slow 14s linear infinite;
 }
 
+/* ---------- Chaleur (illustration du chauffe-mains) ---------- */
+
+@keyframes heat-rise {
+  0% {
+    transform: translate3d(0, 14px, 0);
+    opacity: 0;
+  }
+  35% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, -14px, 0);
+    opacity: 0;
+  }
+}
+
+.heat-wave {
+  animation: heat-rise 2.2s ease-in-out infinite;
+}
+
+.heat-wave-2 {
+  animation-delay: 0.45s;
+}
+
+.heat-wave-3 {
+  animation-delay: 0.9s;
+}
+
+@keyframes led-glow {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.led-on {
+  animation: led-glow 1.6s ease-in-out infinite;
+}
+
 /* ---------- Accessibilité : mouvement réduit ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -261,7 +299,9 @@ body {
 
   .marquee-track,
   .ripple,
-  .spin-slow {
+  .spin-slow,
+  .heat-wave,
+  .led-on {
     animation: none;
   }
 

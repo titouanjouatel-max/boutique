@@ -4,22 +4,27 @@ import { motion, useInView, useScroll, useSpring } from "framer-motion";
 import { useRef } from "react";
 import { RevealText } from "@/components/RevealText";
 
-// TODO: ajoutez vos vraies photos avant/après clients (avec autorisation) si vous en disposez.
+// Scénario d'usage sur une journée (exemples d'utilisation, pas des mesures).
 const milestones = [
   {
-    when: "Jour 1",
-    title: "Visage dégonflé",
-    text: "L'effet froid réduit les poches et le gonflement dès la première séance.",
+    when: "7 h 45",
+    title: "Le trajet du matin",
+    text: "Niveau 2 dans la poche du manteau pendant l'attente du bus ou le trajet à pied.",
   },
   {
-    when: "Semaine 2",
-    title: "Teint éclatant",
-    text: "La microcirculation est relancée : le teint paraît plus lumineux et plus unifié.",
+    when: "12 h 30",
+    title: "La pause dehors",
+    text: "Un passage au niveau 3 pour se réchauffer les doigts entre deux réunions.",
   },
   {
-    when: "Semaine 4",
-    title: "Peau plus ferme",
-    text: "Les ridules s'estompent, la peau gagne en fermeté et en densité.",
+    when: "16 h 00",
+    title: "Téléphone à plat",
+    text: "Branchez votre téléphone sur sa sortie USB pour finir la journée en dépannage.",
+  },
+  {
+    when: "19 h 30",
+    title: "Match ou marché de Noël",
+    text: "Une main au chaud, l'autre sur le vin chaud. Rechargez-le en rentrant pour le lendemain.",
   },
 ];
 
@@ -56,7 +61,7 @@ function Milestone({ item, index }: { item: (typeof milestones)[number]; index: 
   );
 }
 
-export function Results() {
+export function WinterDay() {
   const timelineRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: timelineRef,
@@ -65,14 +70,14 @@ export function Results() {
   const lineScale = useSpring(scrollYProgress, { stiffness: 120, damping: 30 });
 
   return (
-    <section id="resultats" className="bg-forest py-24 lg:py-32">
+    <section id="usages" className="bg-forest py-24 lg:py-32">
       <div className="mx-auto max-w-[1200px] px-4 sm:px-6">
         <div className="text-center">
           <span className="mb-6 inline-flex rounded-full bg-spruce px-3 py-2 text-xs font-medium text-lime">
-            Résultats
+            Au quotidien
           </span>
           <RevealText
-            text={"Des résultats\nqui se voient."}
+            text={"Une journée\nd'hiver."}
             className="display display-xl text-lime"
           />
         </div>
@@ -87,7 +92,7 @@ export function Results() {
         </div>
 
         <p className="mt-20 text-center text-sm text-paper/50">
-          * Résultats individuels, présentés à titre indicatif, pour une utilisation quotidienne.
+          * Exemple d&apos;utilisation. L&apos;autonomie dépend du niveau choisi et de la température extérieure.
         </p>
       </div>
     </section>

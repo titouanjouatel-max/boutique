@@ -9,23 +9,21 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import Image from "next/image";
-import { ShieldCheck, Snowflake, Truck } from "lucide-react";
+import { BatteryCharging, Flame, ShieldCheck, Truck } from "lucide-react";
 import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { AnchorLink } from "@/components/AnchorLink";
 import { Button } from "@/components/Button";
+import { HandWarmer } from "@/components/HandWarmer";
 import { Magnetic } from "@/components/Magnetic";
 import { SpinningBadge } from "@/components/SpinningBadge";
-import { StarRating } from "@/components/StarRating";
-import { PRODUCT, RATING_LABEL } from "@/lib/constants";
+import { COLORS, DISCOUNT_PERCENT, PRICE_LABEL, PRODUCT, SPECS } from "@/lib/constants";
 
 const EXPO = [0.16, 1, 0.3, 1] as const;
 // Les animations démarrent pendant que le rideau d'intro se lève.
 const INTRO_DELAY = 0.55;
 
-const WORDS = ["dégonflé", "illuminé", "raffermi", "apaisé", "reposé"];
-
-const discount = Math.round((1 - PRODUCT.price / PRODUCT.compareAtPrice) * 100);
+const WORDS = ["au chaud", "réchauffées", "dégelées"];
+const maxTemp = SPECS.levels[SPECS.levels.length - 1].temp;
 
 function RotatingWord() {
   const [index, setIndex] = useState(0);
@@ -41,7 +39,7 @@ function RotatingWord() {
     <motion.span
       layout
       transition={{ layout: { duration: 0.7, ease: EXPO } }}
-      className="relative inline-flex overflow-hidden rounded-full bg-lime px-[0.2em] pb-[0.06em] pt-[0.16em] align-top leading-[0.85]"
+      className="relative inline-flex overflow-hidden rounded-full bg-lime px-[0.2em] pb-[0.06em] pt-[0.24em] align-top leading-[0.85]"
     >
       <AnimatePresence mode="popLayout" initial={false}>
         <motion.span key={current} layout="position" className="inline-flex">
@@ -54,7 +52,7 @@ function RotatingWord() {
               transition={{ duration: 0.7, ease: EXPO, delay: i * 0.03 }}
               className="inline-block"
             >
-              {char}
+              {char === " " ? " " : char}
             </motion.span>
           ))}
         </motion.span>
@@ -125,7 +123,8 @@ export function Hero() {
   });
   const visualScale = useTransform(visualProgress, [0.1, 0.5], [0.86, 1]);
   const visualRadius = useTransform(visualProgress, [0.1, 0.5], [180, 28]);
-  const imageY = useTransform(visualProgress, [0, 1], ["-10%", "10%"]);
+  const warmerY = useTransform(visualProgress, [0, 1], ["12%", "-12%"]);
+  const warmerRotate = useTransform(visualProgress, [0, 1], [-8, 8]);
 
   // Le titre remonte plus lentement que la page (parallaxe) et s'estompe.
   const { scrollYProgress: heroProgress } = useScroll({
@@ -139,6 +138,8 @@ export function Hero() {
   const mouseY = useMotionValue(0);
   const smoothX = useSpring(mouseX, { stiffness: 60, damping: 18 });
   const smoothY = useSpring(mouseY, { stiffness: 60, damping: 18 });
+  const sideLeftX = useTransform(smoothX, (v) => v * -30);
+  const sideRightX = useTransform(smoothX, (v) => v * 30);
 
   const handlePointerMove = (event: PointerEvent<HTMLElement>) => {
     if (event.pointerType !== "mouse") return;
@@ -167,19 +168,19 @@ export function Hero() {
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-forest/50" />
             <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-forest" />
           </span>
-          Nouveau · LED 7 couleurs + effet cryo
+          Rechargeable · 3 niveaux · jusqu&apos;à {maxTemp} °C
         </motion.div>
 
         <h1
           className="display display-hero text-forest"
-          aria-label="Votre visage dégonflé, illuminé, raffermi en 10 minutes"
+          aria-label="Vos mains au chaud tout l'hiver"
         >
           <span aria-hidden>
-            <HeadlineLine delay={0}>Votre visage</HeadlineLine>
+            <HeadlineLine delay={0}>Vos mains</HeadlineLine>
             <HeadlineLine delay={0.08}>
               <RotatingWord />
             </HeadlineLine>
-            <HeadlineLine delay={0.16}>en 10 minutes</HeadlineLine>
+            <HeadlineLine delay={0.16}>tout l&apos;hiver</HeadlineLine>
           </span>
         </h1>
 
@@ -189,9 +190,9 @@ export function Hero() {
           transition={{ duration: 0.9, ease: EXPO, delay: INTRO_DELAY + 0.35 }}
           className="mx-auto mt-8 max-w-2xl text-lg text-charcoal sm:text-xl"
         >
-          {PRODUCT.fullName} associe 7 couleurs de photothérapie LED et un
-          effet froid intense pour dégonfler, raffermir et illuminer votre
-          peau — sans injections, sans rendez-vous.
+          {PRODUCT.fullName} : un galet en aluminium qui chauffe des deux
+          côtés, se glisse dans la poche et recharge votre téléphone en
+          dépannage. Fini les chaufferettes jetables.
         </motion.p>
 
         <motion.div
@@ -202,15 +203,14 @@ export function Hero() {
         >
           <Magnetic>
             <Button href="/checkout" size="lg" arrow>
-              Commander — {PRODUCT.price}
-              {PRODUCT.currency}
+              Commander — {PRICE_LABEL}
             </Button>
           </Magnetic>
           <AnchorLink
             href="/#comment-ca-marche"
             className="link-underline text-base font-medium text-forest"
           >
-            Découvrir la méthode
+            Voir comment ça marche
           </AnchorLink>
         </motion.div>
 
@@ -221,13 +221,10 @@ export function Hero() {
           className="mt-10 flex flex-wrap items-center justify-center gap-x-7 gap-y-3 text-sm font-medium text-slate"
         >
           {[
-            {
-              icon: <StarRating rating={PRODUCT.rating} size={14} />,
-              label: `${RATING_LABEL}/5 · ${PRODUCT.reviewCount} avis`,
-            },
-            { icon: <Truck className="h-4 w-4 text-forest" />, label: "Livraison rapide" },
-            { icon: <ShieldCheck className="h-4 w-4 text-forest" />, label: "Garantie 30 jours" },
-            { icon: <Snowflake className="h-4 w-4 text-forest" />, label: "Certifié CE" },
+            { icon: <Flame className="h-4 w-4 text-forest" />, label: "Chauffe double face" },
+            { icon: <BatteryCharging className="h-4 w-4 text-forest" />, label: "Batterie externe USB" },
+            { icon: <Truck className="h-4 w-4 text-forest" />, label: "Livraison suivie" },
+            { icon: <ShieldCheck className="h-4 w-4 text-forest" />, label: "Retour 30 jours" },
           ].map((item) => (
             <motion.li
               key={item.label}
@@ -251,32 +248,37 @@ export function Hero() {
             style={{ scale: visualScale, borderRadius: visualRadius }}
             className="group relative aspect-[4/5] overflow-hidden bg-forest sm:aspect-[16/10]"
           >
-            <motion.div style={{ y: imageY }} className="absolute -inset-y-[12%] inset-x-0">
-              <Image
-                src="/images/hero-main.webp"
-                alt="Masque LED CRYOLUME™ porté, effet lumineux"
-                fill
-                priority
-                sizes="(min-width: 1200px) 1152px, 100vw"
-                className="object-cover object-[50%_35%] transition-transform duration-[1.4s] ease-out-expo group-hover:scale-105"
-              />
+            {/* Halo concentrique (aplat, pas de flou) */}
+            <div aria-hidden className="absolute inset-0 flex items-center justify-center">
+              <span className="aspect-square w-[95%] rounded-full bg-spruce/60 sm:w-[62%]" />
+              <span className="absolute aspect-square w-[68%] rounded-full bg-spruce sm:w-[44%]" />
+            </div>
+
+            <p
+              aria-hidden
+              className="display absolute bottom-[4%] left-[5%] text-[clamp(3.5rem,13vw,10rem)] leading-none text-lime/90"
+            >
+              {maxTemp}°
+            </p>
+            <p className="absolute left-[5%] top-[6%] max-w-[12rem] text-sm font-medium text-paper/70">
+              Niveau 3 · environ {maxTemp} °C d&apos;après la notice
+            </p>
+
+            <motion.div style={{ x: sideLeftX }} className="absolute left-[6%] top-[22%] hidden w-[14%] sm:block">
+              <HandWarmer color="rose" level={1} className="w-full -rotate-[18deg] opacity-90" />
+            </motion.div>
+            <motion.div style={{ x: sideRightX }} className="absolute right-[7%] top-[30%] hidden w-[13%] sm:block">
+              <HandWarmer color="noir" level={2} className="w-full rotate-[16deg] opacity-90" />
+            </motion.div>
+
+            <motion.div
+              style={{ y: warmerY, rotate: warmerRotate }}
+              className="absolute inset-x-0 top-[8%] mx-auto w-[46%] transition-transform duration-[1.2s] ease-out-expo group-hover:scale-105 sm:w-[24%]"
+            >
+              <HandWarmer color="or" level={3} title={`${PRODUCT.name}, coloris or, niveau 3`} className="w-full drop-shadow-[0_30px_30px_rgba(0,0,0,0.35)]" />
             </motion.div>
           </motion.div>
         </motion.div>
-
-        <Floater
-          progress={visualProgress}
-          mouseX={smoothX}
-          mouseY={smoothY}
-          depth={-40}
-          speed={-120}
-          delay={0.7}
-          className="-left-1 top-[8%] sm:left-0 lg:-left-6"
-        >
-          <div className="relative h-24 w-24 overflow-hidden rounded-full shadow-xl ring-4 ring-paper sm:h-36 sm:w-36">
-            <Image src="/images/feature-led.webp" alt="" fill sizes="144px" className="object-cover" />
-          </div>
-        </Floater>
 
         <Floater
           progress={visualProgress}
@@ -290,9 +292,10 @@ export function Hero() {
           <SpinningBadge
             id="hero-badge"
             text="Offre de Noël • Offre de Noël • "
-            className="h-28 w-28 bg-forest sm:h-36 sm:w-36"
+            className="h-28 w-28 bg-lime sm:h-36 sm:w-36"
+            textClassName="fill-forest"
           >
-            <span className="display text-3xl text-lime sm:text-4xl">-{discount}%</span>
+            <span className="display text-3xl text-forest sm:text-4xl">-{DISCOUNT_PERCENT}%</span>
           </SpinningBadge>
         </Floater>
 
@@ -307,11 +310,11 @@ export function Hero() {
         >
           <div className="flex items-center gap-3 rounded-full bg-paper py-2 pl-2 pr-5 shadow-xl">
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-lime text-forest">
-              <Snowflake className="h-5 w-5" />
+              <BatteryCharging className="h-5 w-5" />
             </span>
             <span className="text-left text-sm leading-tight">
-              <span className="block font-semibold text-obsidian">Effet cryo</span>
-              <span className="text-slate">Visage dégonflé dès J1</span>
+              <span className="block font-semibold text-obsidian">Batterie externe</span>
+              <span className="text-slate">Sortie USB {SPECS.output.replace("USB ", "")}</span>
             </span>
           </div>
         </Floater>
@@ -326,23 +329,17 @@ export function Hero() {
           className="bottom-[8%] right-3 sm:right-8 lg:-right-8"
         >
           <div className="rounded-[10px] bg-paper p-4 text-left shadow-xl">
-            <StarRating rating={PRODUCT.rating} size={14} />
-            <p className="display mt-2 text-3xl text-forest">{RATING_LABEL}/5</p>
-            <p className="text-xs font-medium text-slate">{PRODUCT.reviewCount} avis clients</p>
-          </div>
-        </Floater>
-
-        <Floater
-          progress={visualProgress}
-          mouseX={smoothX}
-          mouseY={smoothY}
-          depth={-25}
-          speed={-90}
-          delay={1.2}
-          className="bottom-[34%] right-[18%] hidden lg:block"
-        >
-          <div className="relative h-28 w-28 overflow-hidden rounded-full shadow-xl ring-4 ring-paper">
-            <Image src="/images/feature-waterproof.webp" alt="" fill sizes="112px" className="object-cover" />
+            <p className="text-xs font-medium text-slate">4 coloris</p>
+            <div className="mt-2 flex gap-1.5">
+              {COLORS.map((c) => (
+                <span
+                  key={c.id}
+                  title={c.label}
+                  className="h-6 w-6 rounded-full ring-2 ring-paper"
+                  style={{ backgroundColor: c.metal, boxShadow: `0 0 0 1px ${c.shade}` }}
+                />
+              ))}
+            </div>
           </div>
         </Floater>
       </div>

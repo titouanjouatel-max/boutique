@@ -2,7 +2,7 @@ import { Globe, Mail, Share2 } from "lucide-react";
 import { AnchorLink } from "@/components/AnchorLink";
 import { Button } from "@/components/Button";
 import { FooterWordmark } from "@/components/FooterWordmark";
-import { CONTACT, PRODUCT, SITE } from "@/lib/constants";
+import { CONTACT, PRICE_LABEL, SITE } from "@/lib/constants";
 
 const shop = [
   { href: "/#produit", label: "Le produit" },
@@ -31,11 +31,10 @@ export function Footer() {
       <div className="mx-auto max-w-[1200px] px-4 pt-20 sm:px-6">
         <div className="flex flex-col justify-between gap-8 border-b border-spruce pb-14 lg:flex-row lg:items-end">
           <p className="display display-md max-w-xl text-lime">
-            Un visage reposé, chaque matin.
+            Des mains au chaud, tout l&apos;hiver.
           </p>
           <Button href="/checkout" variant="light" size="lg" arrow className="self-start lg:self-auto">
-            Commander — {PRODUCT.price}
-            {PRODUCT.currency}
+            Commander — {PRICE_LABEL}
           </Button>
         </div>
 
@@ -43,8 +42,8 @@ export function Footer() {
           <div>
             <p className="text-base font-semibold text-paper">{SITE.tagline}</p>
             <p className="mt-3 text-sm leading-relaxed">
-              Photothérapie LED &amp; cryothérapie pour un visage dégonflé et
-              lumineux, à la maison.
+              Le chauffe-mains rechargeable qui chauffe des deux côtés et
+              recharge votre téléphone en dépannage.
             </p>
             <div className="mt-5 flex gap-2">
               {socials.map(({ href, label, icon: Icon }) => (

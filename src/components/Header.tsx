@@ -7,19 +7,19 @@ import {
   useScroll,
   useSpring,
 } from "framer-motion";
-import { Snowflake } from "lucide-react";
+import { Flame } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState, type MouseEvent } from "react";
 import { AnchorLink } from "@/components/AnchorLink";
 import { Button } from "@/components/Button";
-import { CONTACT, PRODUCT, SITE } from "@/lib/constants";
+import { CONTACT, PRICE_LABEL, SITE } from "@/lib/constants";
 import { lockScroll, scrollToTarget } from "@/lib/scroll";
 
 const NAV = [
   { id: "produit", label: "Produit" },
   { id: "comment-ca-marche", label: "Méthode" },
-  { id: "resultats", label: "Résultats" },
+  { id: "usages", label: "Usages" },
   { id: "avis", label: "Avis" },
   { id: "faq", label: "FAQ" },
 ];
@@ -96,7 +96,7 @@ export function Header() {
             aria-label={`${SITE.name} — accueil`}
           >
             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-forest text-lime transition-colors duration-500 group-hover:bg-lime group-hover:text-forest">
-              <Snowflake className="h-4 w-4 transition-transform duration-700 ease-out-expo group-hover:rotate-180" />
+              <Flame className="h-4 w-4 transition-transform duration-700 ease-out-expo group-hover:rotate-12 group-hover:scale-110" />
             </span>
             <span
               className={`display text-[1.3rem] leading-none transition-colors duration-500 sm:text-[1.45rem] ${
@@ -225,8 +225,7 @@ export function Header() {
               className="flex flex-col gap-5"
             >
               <Button href="/checkout" variant="light" size="lg" arrow className="self-start">
-                Commander — {PRODUCT.price}
-                {PRODUCT.currency}
+                Commander — {PRICE_LABEL}
               </Button>
               <p className="text-sm text-paper/70">
                 {CONTACT.email} · {CONTACT.phone}

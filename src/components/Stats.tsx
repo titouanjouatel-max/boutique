@@ -2,19 +2,15 @@
 
 import { animate, motion, useInView } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { PRODUCT } from "@/lib/constants";
+import { COLORS, SPECS } from "@/lib/constants";
+
+const maxTemp = SPECS.levels[SPECS.levels.length - 1].temp;
 
 const stats = [
-  { value: 7, decimals: 0, suffix: "", label: "couleurs de LED", detail: "Du rouge à l'infrarouge" },
-  { value: 10, decimals: 0, suffix: "min", label: "par séance", detail: "Le temps d'un café" },
-  { value: 3, decimals: 0, suffix: "mm", label: "d'épaisseur", detail: "Silicone ultra-souple" },
-  {
-    value: PRODUCT.rating,
-    decimals: 1,
-    suffix: "/5",
-    label: "note moyenne",
-    detail: `Sur ${PRODUCT.reviewCount} avis`,
-  },
+  { value: SPECS.levels.length, decimals: 0, suffix: "", label: "niveaux de chaleur", detail: "Environ 45, 50 et 60 °C" },
+  { value: maxTemp, decimals: 0, suffix: "°C", label: "au niveau max", detail: "Valeur indiquée par la notice" },
+  { value: 135, decimals: 0, suffix: "g", label: "seulement", detail: SPECS.size },
+  { value: COLORS.length, decimals: 0, suffix: "", label: "coloris", detail: COLORS.map((c) => c.label).join(", ") },
 ];
 
 function format(value: number, decimals: number) {
@@ -46,7 +42,7 @@ function Counter({ value, decimals }: { value: number; decimals: number }) {
 
 export function Stats() {
   return (
-    <section aria-label="CRYOLUME en chiffres" className="bg-paper py-16 sm:py-24">
+    <section aria-label="BRAISE en chiffres" className="bg-paper py-16 sm:py-24">
       <div className="mx-auto grid max-w-[1200px] grid-cols-2 gap-3 px-4 sm:px-6 lg:grid-cols-4">
         {stats.map((stat, i) => (
           <motion.div

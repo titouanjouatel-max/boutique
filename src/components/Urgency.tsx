@@ -1,18 +1,17 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Gift, Snowflake } from "lucide-react";
+import { Flame, Gift } from "lucide-react";
 import { Button } from "@/components/Button";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { Magnetic } from "@/components/Magnetic";
 import { RevealText } from "@/components/RevealText";
-import { CHRISTMAS_DEADLINE_ISO, PRODUCT, STOCK } from "@/lib/constants";
+import { CHRISTMAS_DEADLINE_ISO, COMPARE_AT_LABEL, DISCOUNT_PERCENT, PRICE_LABEL, STOCK } from "@/lib/constants";
 
 const EXPO = [0.16, 1, 0.3, 1] as const;
 
 export function Urgency() {
   const claimedPercent = Math.round(((STOCK.total - STOCK.remaining) / STOCK.total) * 100);
-  const discount = Math.round((1 - PRODUCT.price / PRODUCT.compareAtPrice) * 100);
 
   return (
     <section aria-labelledby="offer-title" className="bg-paper px-4 py-16 sm:px-6 lg:py-24">
@@ -23,7 +22,7 @@ export function Urgency() {
         transition={{ duration: 1.1, ease: EXPO }}
         className="relative mx-auto max-w-[1200px] overflow-hidden rounded-[28px] bg-forest p-7 sm:p-10 lg:p-16"
       >
-        <Snowflake
+        <Flame
           aria-hidden
           strokeWidth={1}
           className="spin-slow pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] text-spruce"
@@ -36,25 +35,23 @@ export function Urgency() {
             </span>
             <RevealText
               id="offer-title"
-              text={`-${discount}%\npour Noël.`}
+              text={`-${DISCOUNT_PERCENT}%\npour Noël.`}
               className="display display-lg mt-6 text-lime"
             />
             <p className="mt-6 max-w-md text-lg text-paper/80">
-              Commandez maintenant pour recevoir votre CRYOLUME™ à temps pour
-              les fêtes. {/* TODO: ajuster le message selon votre délai de livraison réel */}
+              Le cadeau qu&apos;on garde en poche tout l&apos;hiver. Commandez
+              maintenant pour le recevoir à temps pour les fêtes. {/* TODO: ajuster le message selon votre délai de livraison réel */}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-6">
               <Magnetic>
                 <Button href="/checkout" size="lg" arrow>
-                  Commander — {PRODUCT.price}
-                  {PRODUCT.currency}
+                  Commander — {PRICE_LABEL}
                 </Button>
               </Magnetic>
               <p className="text-paper/60">
                 au lieu de{" "}
                 <span className="line-through">
-                  {PRODUCT.compareAtPrice}
-                  {PRODUCT.currency}
+                  {COMPARE_AT_LABEL}
                 </span>
               </p>
             </div>

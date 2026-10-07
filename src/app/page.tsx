@@ -6,10 +6,10 @@ import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
 import { HowItWorks } from "@/components/HowItWorks";
-import { LedModes } from "@/components/LedModes";
+import { HeatModes } from "@/components/HeatModes";
 import { MarqueeBands } from "@/components/MarqueeBands";
 import { ProductShowcase } from "@/components/ProductShowcase";
-import { Results } from "@/components/Results";
+import { WinterDay } from "@/components/WinterDay";
 import { Stats } from "@/components/Stats";
 import { Testimonials } from "@/components/Testimonials";
 import { Urgency } from "@/components/Urgency";
@@ -23,10 +23,10 @@ export default function Home() {
         <MarqueeBands />
         <Stats />
         <ProductShowcase />
-        <LedModes />
+        <HeatModes />
         <HowItWorks />
         <Benefits />
-        <Results />
+        <WinterDay />
         <Testimonials />
         <Urgency />
         <FAQ />

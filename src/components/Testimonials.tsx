@@ -1,39 +1,42 @@
 import { Quote } from "lucide-react";
 import { RevealText } from "@/components/RevealText";
 import { StarRating } from "@/components/StarRating";
-import { PRODUCT, RATING_LABEL } from "@/lib/constants";
 
-// TODO: remplacer les avis ci-dessous par vos vrais témoignages clients (texte, prénom, note, photo).
+// TODO: avis d'EXEMPLE — remplacez-les par les vrais avis de vos clients avant la mise en ligne
+// (afficher de faux avis comme authentiques est interdit). Le libellé « Avis d'exemple » est
+// affiché tant que REVIEWS_ARE_EXAMPLES vaut true.
+const REVIEWS_ARE_EXAMPLES = true;
+
 const reviews = [
   {
-    name: "Camille D.",
+    name: "Camille",
     location: "Lyon",
     rating: 5,
-    text: "Dès la première utilisation, mes poches sous les yeux avaient disparu. L'effet froid est incroyable au réveil.",
+    text: "Je l'ai dans la poche du manteau tous les matins pour le trajet. Plus besoin de gants pour attendre le tram.",
   },
   {
-    name: "Sophie M.",
-    location: "Paris",
+    name: "Thomas",
+    location: "Grenoble",
     rating: 5,
-    text: "Mon teint est beaucoup plus lumineux après 3 semaines. Le rituel du soir est devenu un vrai moment détente.",
+    text: "Indispensable au stade. Le niveau 3 chauffe vraiment, je repasse au 2 au bout d'un moment.",
   },
   {
-    name: "Julie R.",
-    location: "Bordeaux",
-    rating: 4,
-    text: "Facile à utiliser, confortable, et les résultats sur mes rides d'expression sont vraiment visibles.",
-  },
-  {
-    name: "Nadia K.",
+    name: "Julie",
     location: "Lille",
-    rating: 5,
-    text: "J'étais sceptique mais le combo LED + froid change vraiment la texture de la peau. Je recommande à 100%.",
+    rating: 4,
+    text: "Joli en rose, tient bien en main. J'aurais aimé un peu plus d'autonomie au niveau max.",
   },
   {
-    name: "Élodie T.",
-    location: "Nantes",
+    name: "Nadia",
+    location: "Strasbourg",
     rating: 5,
-    text: "Livraison rapide, masque premium et surtout efficace contre mon acné hormonale. Un vrai coup de cœur.",
+    text: "Offert à ma mère qui a toujours les mains gelées. Elle l'utilise même devant la télé.",
+  },
+  {
+    name: "Hugo",
+    location: "Annecy",
+    rating: 5,
+    text: "Pratique en rando : il m'a dépanné le téléphone quand la batterie est tombée à 5 %.",
   },
 ];
 
@@ -56,7 +59,7 @@ function ReviewCard({ review, tilt }: { review: (typeof reviews)[number]; tilt: 
         </span>
         <span>
           <span className="block text-base font-semibold text-obsidian">{review.name}</span>
-          <span className="text-sm text-slate">{review.location} · Achat vérifié</span>
+          <span className="text-sm text-slate">{review.location}{REVIEWS_ARE_EXAMPLES ? " · Avis d'exemple" : ""}</span>
         </span>
       </figcaption>
     </figure>
@@ -91,17 +94,17 @@ export function Testimonials() {
           <span className="mb-6 inline-flex rounded-full bg-mist px-3 py-2 text-xs font-medium text-forest">
             Avis clients
           </span>
-          <RevealText text={"Elles l'ont\nadopté."} className="display display-xl text-obsidian" />
+          <RevealText text={"Ils l'ont\nadopté."} className="display display-xl text-obsidian" />
         </div>
-        <div className="flex items-center gap-5 rounded-[28px] bg-forest p-6 pr-8">
-          <p className="display text-7xl text-lime">{RATING_LABEL}</p>
-          <div>
-            <StarRating rating={PRODUCT.rating} tone="lime" size={18} />
-            <p className="mt-2 text-sm text-paper/80">
-              Note moyenne sur {PRODUCT.reviewCount} avis
-            </p>
-          </div>
-        </div>
+        <p className="max-w-sm text-lg text-charcoal">
+          Au chaud au bureau, au stade ou en balade : ils ne sortent plus
+          sans.
+          {REVIEWS_ARE_EXAMPLES && (
+            <span className="mt-2 block text-sm text-slate">
+              Avis d&apos;exemple, à remplacer par ceux de vos clients.
+            </span>
+          )}
+        </p>
       </div>
 
       <div className="mt-16 space-y-3">

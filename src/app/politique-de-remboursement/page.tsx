@@ -29,7 +29,7 @@ export default function RefundPolicyPage() {
               <h2 className="text-2xl font-bold tracking-[-0.02em] text-obsidian">Garantie 30 jours satisfait ou remboursé</h2>
               <p className="mt-2">
                 Si vous n&apos;êtes pas entièrement satisfait(e) de votre
-                CRYOLUME™, vous pouvez demander un remboursement dans les 30
+                BRAISE™, vous pouvez demander un remboursement dans les 30
                 jours suivant la réception de votre commande. TODO : confirmer
                 la durée exacte et les conditions (produit non ouvert, etc.)
                 selon votre politique réelle.
@@ -59,7 +59,7 @@ export default function RefundPolicyPage() {
             <section>
               <h2 className="text-2xl font-bold tracking-[-0.02em] text-obsidian">Produits défectueux</h2>
               <p className="mt-2">
-                Si votre masque CRYOLUME™ présente un défaut de fabrication,
+                Si votre chauffe-mains BRAISE™ présente un défaut de fabrication,
                 il est remplacé ou remboursé gratuitement, frais de retour
                 inclus. TODO : préciser les modalités de prise en charge des
                 frais de retour selon le cas.

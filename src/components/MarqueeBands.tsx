@@ -1,8 +1,8 @@
-import { Snowflake, Sparkle } from "lucide-react";
+import { Flame, Sparkle } from "lucide-react";
 import { VelocityMarquee } from "@/components/VelocityMarquee";
 
-const top = ["Livraison rapide", "Garantie 30 jours", "Certifié CE", "Paiement sécurisé"];
-const bottom = ["7 couleurs LED", "Effet cryo", "Visage + cou", "Ultra-fin 3 mm", "Étanche IPX7"];
+const top = ["Livraison suivie", "Retour 30 jours", "Paiement sécurisé", "Idée cadeau"];
+const bottom = ["Chauffe double face", "3 niveaux", "Rechargeable USB", "Batterie externe", "Format poche"];
 
 // Deux bandeaux qui se croisent, entraînés par la vitesse de scroll.
 export function MarqueeBands() {
@@ -13,7 +13,7 @@ export function MarqueeBands() {
           {top.map((item) => (
             <span key={item} className="display flex items-center gap-6 pr-6 pt-[0.14em] text-[clamp(1.75rem,4.2vw,3.5rem)] text-lime">
               {item}
-              <Snowflake className="h-[0.7em] w-[0.7em] flex-none" strokeWidth={2.5} />
+              <Flame className="h-[0.7em] w-[0.7em] flex-none" strokeWidth={2.5} />
             </span>
           ))}
         </VelocityMarquee>

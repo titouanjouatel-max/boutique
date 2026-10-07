@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Lock, ShieldCheck, Snowflake, Truck } from "lucide-react";
+import { ArrowLeft, BatteryCharging, Lock, ShieldCheck, Truck } from "lucide-react";
 import { Button } from "@/components/Button";
+import { CheckoutVisual } from "@/components/CheckoutVisual";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
 import { Reveal } from "@/components/Reveal";
 import { RevealText } from "@/components/RevealText";
-import { PRODUCT, SITE, STRIPE_CHECKOUT_URL } from "@/lib/constants";
+import { COMPARE_AT_LABEL, PRICE_LABEL, PRODUCT, SITE, SPECS, STRIPE_CHECKOUT_URL, formatPrice } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: `Commander | ${SITE.name}`,
@@ -16,13 +16,13 @@ export const metadata: Metadata = {
 const isStripeLinkConfigured = !STRIPE_CHECKOUT_URL.includes("REMPLACER_PAR_VOTRE_LIEN");
 
 const perks = [
-  { icon: Truck, label: "Livraison rapide" },
-  { icon: ShieldCheck, label: "Garantie 30 jours" },
-  { icon: Snowflake, label: "Certifié CE" },
+  { icon: Truck, label: "Livraison suivie" },
+  { icon: ShieldCheck, label: "Retour 30 jours" },
+  { icon: BatteryCharging, label: "Câble USB inclus" },
 ];
 
 export default function CheckoutPage() {
-  const saving = PRODUCT.compareAtPrice - PRODUCT.price;
+  const saving = formatPrice(PRODUCT.compareAtPrice - PRODUCT.price);
 
   return (
     <>
@@ -64,20 +64,7 @@ export default function CheckoutPage() {
 
           <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_1.1fr]">
             <Reveal y={60}>
-              <div className="group relative aspect-[4/5] overflow-hidden rounded-[28px] bg-fog sm:aspect-square lg:aspect-auto lg:h-full lg:min-h-[520px]">
-                <Image
-                  src="/images/checkout-packshot.webp"
-                  alt="Packshot du masque LED CRYOLUME™"
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 560px, 100vw"
-                  className="object-cover object-top transition-transform duration-[1.2s] ease-out-expo group-hover:scale-105"
-                />
-                <span className="display absolute left-5 top-5 rounded-full bg-forest px-4 py-2 text-xl text-lime">
-                  -{saving}
-                  {PRODUCT.currency}
-                </span>
-              </div>
+              <CheckoutVisual badge={`-${saving}`} />
             </Reveal>
 
             <Reveal delay={0.1} y={60}>
@@ -87,30 +74,28 @@ export default function CheckoutPage() {
                 </span>
                 <h2 className="display display-md mt-6 text-lime">{PRODUCT.name}</h2>
                 <p className="mt-3 text-base text-paper/80">
-                  Masque LED visage + cou, 7 couleurs &amp; effet cryothérapie · 1 unité
+                  Chauffe-mains double face, 3 niveaux, batterie externe USB · 1 unité
                 </p>
+                <p className="mt-2 text-sm text-paper/60">Dans la boîte : {SPECS.inBox.toLowerCase()}.</p>
 
                 {/* Récapitulatif dans une carte blanche, façon sélecteur Wise. */}
                 <div className="mt-8 rounded-[10px] bg-paper p-5">
                   <div className="flex items-center justify-between gap-4 text-charcoal">
                     <span>Sous-total</span>
                     <span className="text-pebble line-through">
-                      {PRODUCT.compareAtPrice}
-                      {PRODUCT.currency}
+                      {COMPARE_AT_LABEL}
                     </span>
                   </div>
                   <div className="mt-2 flex items-center justify-between gap-4 text-charcoal">
                     <span>Remise de Noël</span>
                     <span className="font-semibold text-forest">
                       -{saving}
-                      {PRODUCT.currency}
                     </span>
                   </div>
                   <div className="mt-4 flex items-end justify-between gap-4 border-t border-fog pt-4">
                     <span className="font-semibold text-obsidian">Total</span>
                     <span className="display text-5xl text-forest">
-                      {PRODUCT.price}
-                      {PRODUCT.currency}
+                      {PRICE_LABEL}
                     </span>
                   </div>
                 </div>
@@ -136,8 +121,7 @@ export default function CheckoutPage() {
                     (app/api/checkout/route.ts) et redirigez vers session.url.
                   */}
                   <Button href={STRIPE_CHECKOUT_URL} external size="lg" arrow className="w-full">
-                    Payer {PRODUCT.price}
-                    {PRODUCT.currency} avec Stripe
+                    Payer {PRICE_LABEL} avec Stripe
                   </Button>
                   <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs text-paper/60">
                     <Lock className="h-3.5 w-3.5" />

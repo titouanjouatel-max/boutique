@@ -1,66 +1,49 @@
 "use client";
 
 import { AnimatePresence, motion, useInView } from "framer-motion";
-import Image from "next/image";
-import { Snowflake } from "lucide-react";
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { HandWarmer } from "@/components/HandWarmer";
 import { RevealText } from "@/components/RevealText";
+import { COLORS, SPECS, type ColorId } from "@/lib/constants";
 
+// Températures indicatives de la notice ; les usages sont des suggestions.
 const modes = [
   {
-    id: "rouge",
-    label: "Rouge",
-    wavelength: "655 nm",
-    title: "Anti-âge",
-    text: "Stimule la production de collagène pour une peau plus ferme et des ridules atténuées.",
-    color: "#ff4d4f",
+    id: "niveau-1",
+    label: "Niveau 1",
+    title: "Douceur",
+    text: "Une chaleur légère pour garder les mains tièdes au bureau, en lisant ou devant un film.",
+    color: "#ffb347",
   },
   {
-    id: "bleu",
-    label: "Bleu",
-    wavelength: "470 nm",
-    title: "Anti-imperfections",
-    text: "Cible les bactéries responsables des boutons et aide à apaiser les poussées d'acné.",
-    color: "#3d8bff",
+    id: "niveau-2",
+    label: "Niveau 2",
+    title: "Confort",
+    text: "Le réglage du quotidien : trajet à pied, attente à l'arrêt de bus, promenade du chien.",
+    color: "#ff7a3d",
   },
   {
-    id: "vert",
-    label: "Vert",
-    wavelength: "520 nm",
-    title: "Teint unifié",
-    text: "Aide à atténuer les taches et irrégularités pour un teint plus homogène.",
-    color: "#3ddc84",
+    id: "niveau-3",
+    label: "Niveau 3",
+    title: "Grand froid",
+    text: "Pour le stade, le marché de Noël ou la piste de ski. Si c'est trop chaud, glissez-le dans une poche, comme le conseille la notice.",
+    color: "#cb272f",
   },
-  {
-    id: "infrarouge",
-    label: "Infrarouge",
-    wavelength: "850 nm",
-    title: "Régénération",
-    text: "Agit plus en profondeur pour revitaliser la peau et soutenir sa récupération.",
-    color: "#c2185b",
-  },
-  {
-    id: "cryo",
-    label: "Cryo",
-    wavelength: "Effet froid",
-    title: "Anti-gonflement",
-    text: "Le froid resserre les tissus, dégonfle les poches et réveille le visage en quelques minutes.",
-    color: "#7cc8ff",
-  },
-];
+].map((mode, i) => ({ ...mode, level: (i + 1) as 1 | 2 | 3, temp: SPECS.levels[i].temp }));
 
 const AUTOPLAY_MS = 4500;
 const EXPO = [0.16, 1, 0.3, 1] as const;
 
-export function LedModes() {
+export function HeatModes() {
   const sectionRef = useRef<HTMLElement>(null);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const inView = useInView(sectionRef, { margin: "-20% 0px -20% 0px" });
   const [index, setIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
+  const [color, setColor] = useState<ColorId>("or");
   const mode = modes[index];
 
-  // Défilement automatique des modes tant que l'utilisateur n'a pas choisi.
+  // Défilement automatique des niveaux tant que l'utilisateur n'a pas choisi.
   useEffect(() => {
     if (!autoplay || !inView) return;
     const id = setTimeout(() => setIndex((i) => (i + 1) % modes.length), AUTOPLAY_MS);
@@ -81,20 +64,17 @@ export function LedModes() {
   };
 
   return (
-    <section ref={sectionRef} aria-label="Modes de lumière" className="overflow-hidden bg-mist py-24 lg:py-32">
+    <section ref={sectionRef} aria-label="Niveaux de chaleur" className="overflow-hidden bg-mist py-24 lg:py-32">
       <div className="mx-auto grid max-w-[1200px] items-center gap-14 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20">
         <div className="min-w-0">
           <span className="mb-6 inline-flex rounded-full bg-forest px-3 py-2 text-xs font-medium text-lime">
-            5 modes, 1 masque
+            3 niveaux, 1 bouton
           </span>
-          <RevealText
-            text={"Choisissez\nvotre lumière."}
-            className="display display-lg text-forest"
-          />
+          <RevealText text={"Réglez\nvotre chaleur."} className="display display-lg text-forest" />
 
           <div
             role="tablist"
-            aria-label="Modes LED"
+            aria-label="Niveaux de chaleur"
             onKeyDown={handleKeyDown}
             className="mt-10 flex w-fit max-w-full gap-1 overflow-x-auto rounded-full bg-paper p-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
@@ -110,14 +90,14 @@ export function LedModes() {
                   role="tab"
                   id={`tab-${m.id}`}
                   aria-selected={selected}
-                  aria-controls="led-panel"
+                  aria-controls="heat-panel"
                   tabIndex={selected ? 0 : -1}
                   onClick={() => select(i)}
                   className="relative flex-none overflow-hidden rounded-full px-4 py-2.5 text-[15px] font-medium text-charcoal transition-colors hover:text-forest"
                 >
                   {selected && (
                     <motion.span
-                      layoutId="led-tab"
+                      layoutId="heat-tab"
                       className="absolute inset-0 rounded-full bg-lime"
                       transition={{ type: "spring", stiffness: 420, damping: 34 }}
                     />
@@ -132,11 +112,14 @@ export function LedModes() {
                     />
                   )}
                   <span className="relative flex items-center gap-2">
-                    <span
-                      className="h-2.5 w-2.5 rounded-full"
-                      style={{ backgroundColor: m.color }}
-                      aria-hidden
-                    />
+                    <span className="flex gap-0.5" aria-hidden>
+                      {[0, 1, 2].map((dot) => (
+                        <span
+                          key={dot}
+                          className={`h-1.5 w-1.5 rounded-full ${dot <= i ? "bg-alarm" : "bg-fog"}`}
+                        />
+                      ))}
+                    </span>
                     {m.label}
                   </span>
                 </button>
@@ -144,7 +127,7 @@ export function LedModes() {
             })}
           </div>
 
-          <div id="led-panel" role="tabpanel" aria-labelledby={`tab-${mode.id}`} className="mt-10 min-h-[200px]">
+          <div id="heat-panel" role="tabpanel" aria-labelledby={`tab-${mode.id}`} className="mt-10 min-h-[220px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={mode.id}
@@ -154,13 +137,38 @@ export function LedModes() {
                 transition={{ duration: 0.45, ease: EXPO }}
               >
                 <p className="inline-flex rounded-full bg-paper px-3 py-1.5 text-sm font-semibold text-forest">
-                  {mode.wavelength}
+                  Environ {mode.temp} °C
                 </p>
                 <h3 className="display display-md mt-4 text-obsidian">{mode.title}</h3>
                 <p className="mt-4 max-w-md text-lg text-charcoal">{mode.text}</p>
               </motion.div>
             </AnimatePresence>
           </div>
+
+          <fieldset className="mt-4">
+            <legend className="text-sm font-semibold text-forest">
+              Coloris : {COLORS.find((c) => c.id === color)?.label}
+            </legend>
+            <div className="mt-3 flex gap-2">
+              {COLORS.map((c) => (
+                <label key={c.id} className="cursor-pointer">
+                  <input
+                    type="radio"
+                    name="heat-color"
+                    value={c.id}
+                    checked={color === c.id}
+                    onChange={() => setColor(c.id)}
+                    className="peer sr-only"
+                  />
+                  <span
+                    className="block h-10 w-10 rounded-full ring-2 ring-transparent ring-offset-2 ring-offset-mist transition-transform duration-300 hover:scale-110 peer-checked:ring-forest peer-focus-visible:ring-forest"
+                    style={{ backgroundColor: c.metal, boxShadow: `inset 0 0 0 1px ${c.shade}` }}
+                  />
+                  <span className="sr-only">{c.label}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
         </div>
 
         <div className="relative mx-auto aspect-square w-full max-w-[520px]">
@@ -169,39 +177,31 @@ export function LedModes() {
               key={`${mode.id}-${ring}`}
               aria-hidden
               className="ripple absolute inset-0 rounded-full"
-              style={{
-                border: `3px solid ${mode.color}`,
-                animationDelay: `${ring * 0.9}s`,
-              }}
+              style={{ border: `3px solid ${mode.color}`, animationDelay: `${ring * 0.9}s` }}
             />
           ))}
-          <span
-            aria-hidden
-            className="spin-slow absolute -inset-4 rounded-full border-2 border-dashed border-forest/25"
-          />
+          <span aria-hidden className="spin-slow absolute -inset-4 rounded-full border-2 border-dashed border-forest/25" />
           <motion.div
             animate={{ boxShadow: `0 0 0 10px ${mode.color}` }}
             transition={{ duration: 0.6 }}
-            className="absolute inset-[8%] overflow-hidden rounded-full bg-forest"
+            className="absolute inset-[8%] flex items-center justify-center overflow-hidden rounded-full bg-forest"
           >
-            <Image
-              src="/images/hero-main.webp"
-              alt="Masque CRYOLUME™ allumé"
-              fill
-              sizes="(min-width: 1024px) 440px, 80vw"
-              className="object-cover object-[50%_30%]"
-            />
-            <AnimatePresence>
-              <motion.span
-                key={mode.id}
-                aria-hidden
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.38 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
-                className="absolute inset-0 mix-blend-color"
-                style={{ backgroundColor: mode.color }}
-              />
+            <AnimatePresence mode="popLayout" initial={false}>
+              <motion.div
+                key={color}
+                initial={{ y: 60, opacity: 0, rotate: -10 }}
+                animate={{ y: 0, opacity: 1, rotate: 0 }}
+                exit={{ y: -60, opacity: 0, rotate: 10 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                className="w-[42%]"
+              >
+                <HandWarmer
+                  color={color}
+                  level={mode.level}
+                  title={`Chauffe-mains coloris ${COLORS.find((c) => c.id === color)?.label}, ${mode.label}`}
+                  className="w-full"
+                />
+              </motion.div>
             </AnimatePresence>
           </motion.div>
           <motion.div
@@ -209,16 +209,10 @@ export function LedModes() {
             initial={{ scale: 0.4, opacity: 0, rotate: -20 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 260, damping: 16 }}
-            className="absolute bottom-[6%] right-[2%] flex h-24 w-24 flex-col items-center justify-center rounded-full bg-forest text-center sm:h-28 sm:w-28"
+            className="absolute bottom-[6%] right-[2%] flex h-24 w-24 flex-col items-center justify-center rounded-full bg-lime text-center sm:h-28 sm:w-28"
           >
-            {mode.id === "cryo" ? (
-              <Snowflake className="h-8 w-8 text-lime sm:h-10 sm:w-10" aria-hidden />
-            ) : (
-              <span className="display text-3xl text-lime sm:text-4xl">{mode.wavelength.split(" ")[0]}</span>
-            )}
-            <span className="mt-1 text-[11px] font-medium text-paper/80">
-              {mode.id === "cryo" ? "froid" : "nm"}
-            </span>
+            <span className="display text-3xl text-forest sm:text-4xl">{mode.temp}°</span>
+            <span className="mt-1 text-[11px] font-semibold text-forest/80">{mode.label}</span>
           </motion.div>
         </div>
       </div>

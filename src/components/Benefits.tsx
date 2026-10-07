@@ -1,37 +1,37 @@
-import { Flame, Gem, Moon, Snowflake, Sparkle, Sun } from "lucide-react";
+import { BatteryCharging, Flame, Gift, Leaf, Ruler, Timer } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { RevealText } from "@/components/RevealText";
 
 const benefits = [
   {
-    icon: Snowflake,
-    title: "Visage dégonflé",
-    text: "L'effet froid resserre instantanément les tissus et réduit les poches, dès le matin.",
-  },
-  {
-    icon: Sun,
-    title: "Éclat immédiat",
-    text: "La lumière LED stimule la microcirculation pour un teint plus lumineux et unifié.",
-  },
-  {
-    icon: Gem,
-    title: "Effet anti-âge",
-    text: "La lumière rouge favorise la production de collagène pour une peau plus ferme.",
+    icon: Timer,
+    title: "Chaud très vite",
+    text: "La chaleur monte en une trentaine de secondes après l'allumage, d'après la notice.",
   },
   {
     icon: Flame,
-    title: "Imperfections apaisées",
-    text: "La lumière bleue cible les bactéries responsables des boutons et de l'acné.",
+    title: "Deux faces chauffantes",
+    text: "Les deux côtés du galet chauffent : toute la paume en profite.",
   },
   {
-    icon: Moon,
-    title: "Cernes atténués",
-    text: "Le froid décongestionne le contour des yeux et atténue les cernes de fatigue.",
+    icon: Leaf,
+    title: "Fini le jetable",
+    text: "Une batterie rechargeable remplace les chaufferettes à usage unique, hiver après hiver.",
   },
   {
-    icon: Sparkle,
-    title: "Rituel bien-être",
-    text: "10 minutes de détente pure, comme un soin spa, sans sortir de chez vous.",
+    icon: BatteryCharging,
+    title: "Batterie de secours",
+    text: "Sa sortie USB 5 V / 1,5 A dépanne votre téléphone quand il tombe à plat.",
+  },
+  {
+    icon: Ruler,
+    title: "Format poche",
+    text: "102 × 59 × 24 mm pour 135 g, avec une dragonne pour l'avoir toujours sous la main.",
+  },
+  {
+    icon: Gift,
+    title: "Prêt à offrir",
+    text: "Livré dans sa boîte cadeau avec câble USB et notice. Quatre coloris au choix.",
   },
 ];
 
@@ -46,14 +46,14 @@ export function Benefits() {
             </span>
             <RevealText
               id="benefits-title"
-              text={"Six effets.\nUn seul geste."}
+              text={"Six bonnes\nraisons."}
               className="display display-lg text-obsidian"
             />
           </div>
           <Reveal delay={0.2}>
             <p className="max-w-sm text-lg text-charcoal">
-              Ce que CRYOLUME change pour votre peau, jour après jour. Survolez
-              les cartes pour les découvrir.
+              Ce que BRAISE change dans vos journées d&apos;hiver. Survolez les
+              cartes pour les découvrir.
             </p>
           </Reveal>
         </div>

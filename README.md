@@ -1,7 +1,9 @@
-# CRYOLUME™ — Boutique e-commerce mono-produit
+# BRAISE™ — Boutique e-commerce mono-produit
 
 Landing page ultra-animée (Next.js + Tailwind CSS + Framer Motion) pour vendre
-un masque LED de photothérapie avec cryothérapie (effet froid anti-gonflement).
+un chauffe-mains rechargeable (galet double face, 3 niveaux de chaleur,
+batterie externe USB). Caractéristiques reprises de la notice du fabricant
+(modèle Q11) : voir `SPECS` dans `src/lib/constants.ts`.
 Direction artistique inspirée de Wise : vert forêt `#163300` dominant, lime
 électrique `#9fe870` en ponctuation, titres massifs en Inter 900, formes en pilule.
 
@@ -21,7 +23,8 @@ Ouvrez [http://localhost:3000](http://localhost:3000).
 - `src/app/checkout/page.tsx` — page de commande, redirige vers Stripe Checkout
 - `src/app/cgv`, `src/app/politique-de-remboursement`, `src/app/contact` — pages légales
 - `src/components/` — sections et composants UI
-- `src/lib/constants.ts` — informations produit, prix, lien Stripe, contact, stock
+- `src/lib/constants.ts` — informations produit, prix, caractéristiques, coloris, lien Stripe, contact, stock
+- `src/components/HandWarmer.tsx` — illustration SVG animée du produit (4 coloris, voyants de niveau)
 
 ## Effets au scroll et au survol
 
@@ -33,10 +36,10 @@ Ouvrez [http://localhost:3000](http://localhost:3000).
 | Bandeaux | Deux marquees croisés dont la vitesse et le sens suivent le scroll |
 | Chiffres | Compteurs animés à l'apparition, cartes qui s'inversent au survol |
 | Produit | Section épinglée : le scroll vertical fait défiler les cartes à l'horizontale (carrousel natif sur mobile), cartes inclinables en 3D |
-| Modes LED | Onglets segmentés avec défilement automatique, ondes lumineuses et teinte de la couleur choisie |
+| Niveaux de chaleur | Onglets segmentés avec défilement automatique, ondes de chaleur, choix du coloris |
 | Méthode | Cartes qui s'empilent au scroll |
 | Bénéfices | Disque vert qui envahit la carte depuis l'icône au survol |
-| Résultats | Ligne de temps qui se dessine au scroll |
+| Journée d'hiver | Ligne de temps qui se dessine au scroll |
 | Avis | Deux rangées défilantes en sens inverse, pause au survol |
 | Offre | Compte à rebours à chiffres roulants, jauge de stock animée |
 | Fin de page | Typographie géante qui glisse au scroll, badge rotatif magnétique, logo du footer lettre par lettre |
@@ -48,9 +51,13 @@ curseur affiche une étiquette à son survol.
 
 ## À faire avant la mise en ligne (TODO)
 
-- [ ] **Photos avant/après** : la section « Résultats » est une ligne de temps
-      sans photo ; ajoutez vos vraies photos clients (avec autorisation) si
-      vous en avez (`src/components/Results.tsx`).
+- [ ] **Photos produit** : le site utilise une illustration SVG
+      (`src/components/HandWarmer.tsx`). Ajoutez vos vraies photos dans
+      `public/images/` et remplacez l'illustration là où vous voulez.
+- [ ] **Prix** : `price` (24,90€) et `compareAtPrice` (39,90€) sont provisoires.
+- [ ] **Coloris au paiement** : le coloris choisi n'est pas transmis à Stripe ;
+      ajoutez un champ « Coloris » à votre Payment Link.
+- [ ] **Délai de livraison** : à indiquer dans la FAQ (`src/components/FAQ.tsx`).
 - [ ] **Lien Stripe Checkout** : copier `.env.example` en `.env.local` et
       renseigner `NEXT_PUBLIC_STRIPE_CHECKOUT_URL` avec votre vrai Payment
       Link Stripe (ou modifier `STRIPE_CHECKOUT_URL` dans
@@ -59,8 +66,9 @@ curseur affiche une étiquette à son survol.
       dans `src/lib/constants.ts`.
 - [ ] **Coordonnées** : mettre à jour `CONTACT` (e-mail, téléphone, adresse)
       dans `src/lib/constants.ts`.
-- [ ] **Avis clients** : remplacer les témoignages placeholders dans
-      `src/components/Testimonials.tsx` par de vrais avis (avec photos si possible).
+- [ ] **Avis clients** : les avis sont des EXEMPLES, affichés avec la mention
+      « Avis d'exemple ». Remplacez-les par de vrais avis puis passez
+      `REVIEWS_ARE_EXAMPLES` à `false` dans `src/components/Testimonials.tsx`.
 - [ ] **CGV / politique de remboursement** : faire relire et compléter les
       pages `src/app/cgv` et `src/app/politique-de-remboursement` par un
       professionnel du droit (SIRET, adresse légale, délais réels, etc.).

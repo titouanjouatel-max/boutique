@@ -13,9 +13,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "CRYOLUME™ | Masque LED Cryo-Photothérapie",
+  title: "BRAISE™ | Chauffe-mains rechargeable",
   description:
-    "Dégonflez, illuminez et rajeunissez votre visage en 10 minutes par jour grâce à la photothérapie LED et à la cryothérapie CRYOLUME™.",
+    "Le chauffe-mains rechargeable BRAISE™ : chauffe double face, 3 niveaux de chaleur, batterie externe USB. Vos mains au chaud tout l'hiver.",
 };
 
 export const viewport: Viewport = {

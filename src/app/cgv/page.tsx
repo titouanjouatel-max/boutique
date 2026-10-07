@@ -39,8 +39,8 @@ export default function CGVPage() {
             <section>
               <h2 className="text-2xl font-bold tracking-[-0.02em] text-obsidian">2. Produits</h2>
               <p className="mt-2">
-                Le site propose à la vente le masque LED de cryo-photothérapie
-                CRYOLUME™. Les photos et descriptions du produit sont fournies
+                Le site propose à la vente le chauffe-mains rechargeable
+                BRAISE™. Les photos et descriptions du produit sont fournies
                 à titre indicatif. TODO : compléter avec les caractéristiques
                 techniques précises et certifications (CE, etc.).
               </p>
